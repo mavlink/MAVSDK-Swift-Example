@@ -26,7 +26,30 @@
 		2CE6B6D120AED1CA0086958C /* empty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2CE6B6CF20AED1C90086958C /* empty.cpp */; };
 		2CE6B6D420AEECE10086958C /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE6B6D320AEECE10086958C /* CameraViewController.swift */; };
 		2CFF7271207750AF0060D31B /* ActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFF7270207750AF0060D31B /* ActionsViewController.swift */; };
-		DFBB1C5C20FF8ADE0080B093 /* BuildFile in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2B1212B7F4700B15E67 /* MobileVLCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2B0212B7F4700B15E67 /* MobileVLCKit.framework */; };
+		DF0AF2B3212B7F5900B15E67 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2B2212B7F5900B15E67 /* AVFoundation.framework */; };
+		DF0AF2B5212B7F6300B15E67 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2B4212B7F6200B15E67 /* AudioToolbox.framework */; };
+		DF0AF2B7212B7F6B00B15E67 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2B6212B7F6B00B15E67 /* CoreMedia.framework */; };
+		DF0AF2B9212B7F7600B15E67 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2B8212B7F7600B15E67 /* libiconv.tbd */; };
+		DF0AF2BB212B7F8100B15E67 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2BA212B7F8100B15E67 /* libbz2.tbd */; };
+		DF0AF2BD212B7F8A00B15E67 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2BC212B7F8A00B15E67 /* VideoToolbox.framework */; };
+		DF0AF2BF212B7FD500B15E67 /* Dronecode_SDK_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2BE212B7FD500B15E67 /* Dronecode_SDK_Swift.framework */; };
+		DF0AF2C0212B7FD500B15E67 /* Dronecode_SDK_Swift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2BE212B7FD500B15E67 /* Dronecode_SDK_Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2CA212B801D00B15E67 /* backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C2212B801C00B15E67 /* backend.framework */; };
+		DF0AF2CB212B801D00B15E67 /* backend.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C2212B801C00B15E67 /* backend.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2CC212B801D00B15E67 /* SwiftGRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C3212B801D00B15E67 /* SwiftGRPC.framework */; };
+		DF0AF2CD212B801D00B15E67 /* SwiftGRPC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C3212B801D00B15E67 /* SwiftGRPC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2CE212B801D00B15E67 /* CgRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C4212B801D00B15E67 /* CgRPC.framework */; };
+		DF0AF2CF212B801D00B15E67 /* CgRPC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C4212B801D00B15E67 /* CgRPC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2D0212B801D00B15E67 /* RxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C5212B801D00B15E67 /* RxBlocking.framework */; };
+		DF0AF2D1212B801D00B15E67 /* RxBlocking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C5212B801D00B15E67 /* RxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2D2212B801D00B15E67 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C6212B801D00B15E67 /* RxSwift.framework */; };
+		DF0AF2D3212B801D00B15E67 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C6212B801D00B15E67 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2D4212B801D00B15E67 /* SwiftProtobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C7212B801D00B15E67 /* SwiftProtobuf.framework */; };
+		DF0AF2D5212B801D00B15E67 /* SwiftProtobuf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C7212B801D00B15E67 /* SwiftProtobuf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DF0AF2D7212B80E400B15E67 /* BoringSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */; };
+		DF0AF2D8212B80E400B15E67 /* BoringSSL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DFBB1C5C20FF8ADE0080B093 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +69,15 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DFBB1C5C20FF8ADE0080B093 /* BuildFile in Embed Frameworks */,
+				DF0AF2D8212B80E400B15E67 /* BoringSSL.framework in Embed Frameworks */,
+				DF0AF2D1212B801D00B15E67 /* RxBlocking.framework in Embed Frameworks */,
+				DF0AF2CF212B801D00B15E67 /* CgRPC.framework in Embed Frameworks */,
+				DF0AF2CB212B801D00B15E67 /* backend.framework in Embed Frameworks */,
+				DF0AF2D5212B801D00B15E67 /* SwiftProtobuf.framework in Embed Frameworks */,
+				DF0AF2D3212B801D00B15E67 /* RxSwift.framework in Embed Frameworks */,
+				DFBB1C5C20FF8ADE0080B093 /* (null) in Embed Frameworks */,
+				DF0AF2C0212B7FD500B15E67 /* Dronecode_SDK_Swift.framework in Embed Frameworks */,
+				DF0AF2CD212B801D00B15E67 /* SwiftGRPC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +110,21 @@
 		2CE6B6D220AED28E0086958C /* DronecodeSDKSwiftDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "DronecodeSDKSwiftDemo-Bridging-Header.h"; path = "DronecodeSDKSwiftDemo/DronecodeSDKSwiftDemo-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		2CE6B6D320AEECE10086958C /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		2CFF7270207750AF0060D31B /* ActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsViewController.swift; sourceTree = "<group>"; };
+		DF0AF2B0212B7F4700B15E67 /* MobileVLCKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileVLCKit.framework; path = Carthage/Build/iOS/MobileVLCKit.framework; sourceTree = "<group>"; };
+		DF0AF2B2212B7F5900B15E67 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DF0AF2B4212B7F6200B15E67 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DF0AF2B6212B7F6B00B15E67 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		DF0AF2B8212B7F7600B15E67 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		DF0AF2BA212B7F8100B15E67 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		DF0AF2BC212B7F8A00B15E67 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		DF0AF2BE212B7FD500B15E67 /* Dronecode_SDK_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dronecode_SDK_Swift.framework; path = Carthage/Build/iOS/Dronecode_SDK_Swift.framework; sourceTree = "<group>"; };
+		DF0AF2C2212B801C00B15E67 /* backend.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = backend.framework; path = Carthage/Build/iOS/backend.framework; sourceTree = "<group>"; };
+		DF0AF2C3212B801D00B15E67 /* SwiftGRPC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftGRPC.framework; path = Carthage/Build/iOS/SwiftGRPC.framework; sourceTree = "<group>"; };
+		DF0AF2C4212B801D00B15E67 /* CgRPC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CgRPC.framework; path = Carthage/Build/iOS/CgRPC.framework; sourceTree = "<group>"; };
+		DF0AF2C5212B801D00B15E67 /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/iOS/RxBlocking.framework; sourceTree = "<group>"; };
+		DF0AF2C6212B801D00B15E67 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		DF0AF2C7212B801D00B15E67 /* SwiftProtobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftProtobuf.framework; path = Carthage/Build/iOS/SwiftProtobuf.framework; sourceTree = "<group>"; };
+		DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BoringSSL.framework; path = Carthage/Build/iOS/BoringSSL.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +132,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF0AF2BD212B7F8A00B15E67 /* VideoToolbox.framework in Frameworks */,
+				DF0AF2D2212B801D00B15E67 /* RxSwift.framework in Frameworks */,
+				DF0AF2CC212B801D00B15E67 /* SwiftGRPC.framework in Frameworks */,
+				DF0AF2D7212B80E400B15E67 /* BoringSSL.framework in Frameworks */,
+				DF0AF2BF212B7FD500B15E67 /* Dronecode_SDK_Swift.framework in Frameworks */,
+				DF0AF2CA212B801D00B15E67 /* backend.framework in Frameworks */,
+				DF0AF2BB212B7F8100B15E67 /* libbz2.tbd in Frameworks */,
+				DF0AF2D4212B801D00B15E67 /* SwiftProtobuf.framework in Frameworks */,
+				DF0AF2CE212B801D00B15E67 /* CgRPC.framework in Frameworks */,
+				DF0AF2B9212B7F7600B15E67 /* libiconv.tbd in Frameworks */,
+				DF0AF2B7212B7F6B00B15E67 /* CoreMedia.framework in Frameworks */,
+				DF0AF2B5212B7F6300B15E67 /* AudioToolbox.framework in Frameworks */,
+				DF0AF2D0212B801D00B15E67 /* RxBlocking.framework in Frameworks */,
+				DF0AF2B3212B7F5900B15E67 /* AVFoundation.framework in Frameworks */,
+				DF0AF2B1212B7F4700B15E67 /* MobileVLCKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,9 +174,18 @@
 		2C365EB4207610C500F42184 = {
 			isa = PBXGroup;
 			children = (
+				DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */,
+				DF0AF2C2212B801C00B15E67 /* backend.framework */,
+				DF0AF2C4212B801D00B15E67 /* CgRPC.framework */,
+				DF0AF2C5212B801D00B15E67 /* RxBlocking.framework */,
+				DF0AF2C6212B801D00B15E67 /* RxSwift.framework */,
+				DF0AF2C3212B801D00B15E67 /* SwiftGRPC.framework */,
+				DF0AF2C7212B801D00B15E67 /* SwiftProtobuf.framework */,
+				DF0AF2BE212B7FD500B15E67 /* Dronecode_SDK_Swift.framework */,
 				2C365EBF207610C500F42184 /* DronecodeSDKSwiftDemo */,
 				2C365ED4207610C500F42184 /* DronecodeSDKSwiftDemoTests */,
 				2C365EBE207610C500F42184 /* Products */,
+				DF0AF2AF212B7F4600B15E67 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -210,6 +280,20 @@
 			path = MobileVLCKit;
 			sourceTree = "<group>";
 		};
+		DF0AF2AF212B7F4600B15E67 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DF0AF2BC212B7F8A00B15E67 /* VideoToolbox.framework */,
+				DF0AF2BA212B7F8100B15E67 /* libbz2.tbd */,
+				DF0AF2B8212B7F7600B15E67 /* libiconv.tbd */,
+				DF0AF2B6212B7F6B00B15E67 /* CoreMedia.framework */,
+				DF0AF2B4212B7F6200B15E67 /* AudioToolbox.framework */,
+				DF0AF2B2212B7F5900B15E67 /* AVFoundation.framework */,
+				DF0AF2B0212B7F4700B15E67 /* MobileVLCKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -221,6 +305,7 @@
 				2C365EBA207610C500F42184 /* Frameworks */,
 				2C365EBB207610C500F42184 /* Resources */,
 				DFBB1C5D20FF8ADE0080B093 /* Embed Frameworks */,
+				DF5B5688212C721200923C8F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -308,6 +393,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DF5B5688212C721200923C8F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/BoringSSL.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftProtobuf.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CgRPC.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftGRPC.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Dronecode_SDK_Swift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxBlocking.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BoringSSL.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftProtobuf.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CgRPC.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftGRPC.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Dronecode_SDK_Swift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxBlocking.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2C365EB9207610C500F42184 /* Sources */ = {
@@ -486,7 +601,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/MobileVLCKit",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = DronecodeSDKSwiftDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -507,7 +622,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/MobileVLCKit",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = DronecodeSDKSwiftDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

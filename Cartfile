@@ -1,0 +1,2 @@
+github "Dronecode/DronecodeSDK-Swift" "master"
+binary "https://code.videolan.org/videolan/VLCKit/raw/master/Packaging/MobileVLCKit.json" == 3.1.1
