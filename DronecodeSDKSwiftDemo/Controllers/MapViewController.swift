@@ -1,11 +1,3 @@
-//
-//  MapViewController.swift
-//  DronecodeSDKSwiftDemo
-//
-//  Created by Marjory Silvestre on 05.04.18.
-//  Copyright © 2018 Marjory Silvestre. All rights reserved.
-//
-
 import UIKit
 import Dronecode_SDK_Swift
 import MapKit
@@ -45,7 +37,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
 
         // set initial location of drone and center map on it
-        let initialLocation = CLLocation(latitude: CoreManager.shared().droneState.location2D.latitude , longitude: CoreManager.shared().droneState.location2D.longitude)
+        let initialLocation = CLLocation(latitude: CoreManager.shared.droneState.location2D.latitude , longitude: CoreManager.shared.droneState.location2D.longitude)
         centerMapOnLocation(location: initialLocation)
         
         // init text for feedback and add round corner and border
@@ -106,7 +98,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         self.displayFeedback(message:"Start Mission Pressed")
         
         // /!\ NEED TO ARM BEFORE START THE MISSION
-        let armRoutine = CoreManager.shared().action.arm()
+        let armRoutine = CoreManager.shared.action.arm()
             .do(onError: { error in self.displayFeedback(message:"Arming failed")},
                 onCompleted: { self.startMission() })
         _ = armRoutine.subscribe()
@@ -138,7 +130,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         mapView.removeOverlays(mapView.overlays)
         
         // re-create drone annotation
-        droneAnnotation = DroneAnnotation(title: "Drone", coordinate: CoreManager.shared().droneState.location2D)
+        droneAnnotation = DroneAnnotation(title: "Drone", coordinate: CoreManager.shared.droneState.location2D)
         mapView.addAnnotation(droneAnnotation)
         
         // create new mission with first point of mission equal to center of the map
@@ -151,7 +143,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     func uploadMission(){
         
-        let sendMissionRoutine = CoreManager.shared().mission.uploadMission(missionItems: missionExample.missionItems).do(
+        let sendMissionRoutine = CoreManager.shared.mission.uploadMission(missionItems: missionExample.missionItems).do(
             onError: { error in self.displayFeedback(message:"Mission uploaded failed \(error)") },
             onCompleted: { self.displayFeedback(message:"Mission uploaded with success") })
         
@@ -160,7 +152,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func startMission(){
-        let startMissionRoutine = CoreManager.shared().mission.startMission().do(
+        let startMissionRoutine = CoreManager.shared.mission.startMission().do(
             onError: { error in self.displayFeedback(message: "Mission started failed \(error)") },
             onCompleted: { self.displayFeedback(message:"Mission started with success") })
         
@@ -180,7 +172,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @objc func updateDroneInfosDisplayed(_ _timer: Timer?) {
         DispatchQueue.main.async {
             // Update the UI
-            self.droneAnnotation.coordinate = CoreManager.shared().droneState.location2D
+            self.droneAnnotation.coordinate = CoreManager.shared.droneState.location2D
         }
     }
     

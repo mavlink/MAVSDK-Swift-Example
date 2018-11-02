@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  DronecodeSDKSwiftDemo
-//
-//  Created by Marjory Silvestre on 05.04.18.
-//  Copyright © 2018 Marjory Silvestre. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
