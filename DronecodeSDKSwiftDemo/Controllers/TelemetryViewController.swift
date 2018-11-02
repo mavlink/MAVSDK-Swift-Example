@@ -1,56 +1,109 @@
-//
-//  TelemetryViewController.swift
-//  DronecodeSDKSwiftDemo
-//
-//  Created by Marjory Silvestre on 05.04.18.
-//  Copyright © 2018 Marjory Silvestre. All rights reserved.
-//
-
-import UIKit
 import Dronecode_SDK_Swift
+import MapKit
 import RxSwift
+import UIKit
+
+private enum EntryType : Int {
+    case connection = 0
+    case health
+    case altitude
+    case latitude_longitude
+    case armed
+    case groundspeed
+    case battery
+    case attitude
+    case gps
+    case in_air
+    case entry_type_max
+}
+
+private class TelemetryEntry {
+
+    var property: String
+    var value: String
+
+    init(property: String, value: String = "-") {
+        self.property = property
+        self.value = value
+    }
+}
 
 class TelemetryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
 
-    // MARK: - IBOutlets
     @IBOutlet weak var connectionLabel: UILabel!
     @IBOutlet weak var telemetryTableView: UITableView!
     
-    // MARK: - Properties
-    private var telemetry_entries: TelemetryEntries?
-    private var timer: Timer?
+    private var entries = [TelemetryEntry]()
 
-    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         
         connectionLabel.text = "Starting system ..."
         
-        //TableView set datasource and delegate
         self.telemetryTableView.delegate = self
         self.telemetryTableView.dataSource = self
-        
-        // Start System
-        CoreManager.shared().start()
-        
-        // Telemetry entries
-        telemetry_entries = TelemetryEntries()
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector:  #selector(updateView), userInfo: nil, repeats: true)
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
 
+        entries = generateEntries()
+
+        _ = CoreManager.shared.startCompletable.subscribe(onCompleted: { self.startObserving() })
     }
-    
-    // MARK: - TableView
-    @objc func updateView(_ _timer: Timer?) {
-        let entry = telemetry_entries?.entries[EntryType.connection.rawValue]
-        if entry != nil {
-            connectionLabel.text = entry?.state == 1 ? "Connected" : "Disconnected"
-        } else {
-            connectionLabel.text = "No information about connection"
-        }
+
+    private func generateEntries() -> [TelemetryEntry] {
+        var entries = [TelemetryEntry]()
+
+        entries.append(TelemetryEntry(property: "Connection", value: "No Connection"))
+        entries.append(TelemetryEntry(property: "Health"))
+        entries.append(TelemetryEntry(property: "Relative, absolute altitude"))
+        entries.append(TelemetryEntry(property: "Latitude, longitude"))
+
+        return entries
+    }
+
+    private func startObserving() {
+        observeConnection()
+        observeHealth()
+        observePosition()
+    }
+
+    private func observeConnection() {
+        _ = CoreManager.shared.core.discoverObservable.subscribe(onNext: { uuid in self.onConnected(uuid: uuid)})
+    }
+
+    private func onConnected(uuid: UInt64) {
+        print("Drone Connected with UUID : \(uuid)")
+
+        connectionLabel.text = "Connected"
+        entries[EntryType.connection.rawValue].value = "Drone Connected with UUID : \(uuid)"
+
+        telemetryTableView.reloadData()
+    }
+
+    private func observeHealth() {
+        _ = CoreManager.shared.telemetry.healthObservable
+                .subscribe(onNext: { health in self.onHealthUpdate(health: health) },
+                           onError: { error in print(error) })
+    }
+
+    private func onHealthUpdate(health: Health)
+    {
+        entries[EntryType.health.rawValue].value = "Calibration \(health.isAccelerometerCalibrationOk ? "Ready" : "Not OK"), GPS \(health.isLocalPositionOk ? "Ready" : "Acquiring")"
+
+        telemetryTableView.reloadData()
+    }
+
+    private func observePosition() {
+        _ = CoreManager.shared.telemetry.positionObservable
+                .subscribe(onNext: { position in self.onPositionUpdate(position: position)},
+                           onError: { error in print(error) })
+    }
+
+    private func onPositionUpdate(position: Position) {
+        entries[EntryType.altitude.rawValue].value = "\(position.relativeAltitudeM) m, \(position.absoluteAltitudeM) m"
+
+        entries[EntryType.latitude_longitude.rawValue].value = "\(position.latitudeDeg) Deg, \(position.longitudeDeg) Deg"
+
+        CoreManager.shared.droneState.location2D = CLLocationCoordinate2DMake(position.latitudeDeg,position.longitudeDeg)
+
         telemetryTableView.reloadData()
     }
     
@@ -58,30 +111,20 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
         return 1
     }
     
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return telemetry_entries!.entries.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return entries.count
     }
 
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TelemetryCell", for: indexPath)
         
-        let count_entries : Int = (telemetry_entries?.entries.count)!
-        if (count_entries > 0) {
-            if let entry = telemetry_entries?.entries[indexPath.row] {
-                cell.textLabel?.text = entry.value;
-                cell.detailTextLabel?.text = entry.property;
-            }
+        if (entries.count > indexPath.row) {
+            let entry = entries[indexPath.row]
+            
+            cell.textLabel?.text = entry.value;
+            cell.detailTextLabel?.text = entry.property;
         }
         
         return cell
     }
-
-    // MARK: -
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
-

@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		2C0648C72091DC06002BD970 /* ExampleMission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0648C62091DC06002BD970 /* ExampleMission.swift */; };
 		2C0648CE2091FCC6002BD970 /* DroneState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0648CD2091FCC6002BD970 /* DroneState.swift */; };
-		2C0A6A5D208F6DB200B3E12F /* TelemetryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0A6A5C208F6DB200B3E12F /* TelemetryEntry.swift */; };
-		2C0A6A5F208F77E500B3E12F /* TelemetryEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0A6A5E208F77E500B3E12F /* TelemetryEntries.swift */; };
 		2C365EC1207610C500F42184 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C365EC0207610C500F42184 /* AppDelegate.swift */; };
 		2C365EC3207610C500F42184 /* TelemetryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C365EC2207610C500F42184 /* TelemetryViewController.swift */; };
 		2C365ECB207610C500F42184 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C365EC9207610C500F42184 /* Main.storyboard */; };
@@ -87,8 +85,6 @@
 /* Begin PBXFileReference section */
 		2C0648C62091DC06002BD970 /* ExampleMission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleMission.swift; sourceTree = "<group>"; };
 		2C0648CD2091FCC6002BD970 /* DroneState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneState.swift; sourceTree = "<group>"; };
-		2C0A6A5C208F6DB200B3E12F /* TelemetryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEntry.swift; sourceTree = "<group>"; };
-		2C0A6A5E208F77E500B3E12F /* TelemetryEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEntries.swift; sourceTree = "<group>"; };
 		2C365EBD207610C500F42184 /* DronecodeSDKSwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DronecodeSDKSwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C365EC0207610C500F42184 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C365EC2207610C500F42184 /* TelemetryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryViewController.swift; sourceTree = "<group>"; };
@@ -163,8 +159,6 @@
 		2C0A6A5B208F6D9A00B3E12F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2C0A6A5C208F6DB200B3E12F /* TelemetryEntry.swift */,
-				2C0A6A5E208F77E500B3E12F /* TelemetryEntries.swift */,
 				2C0648C62091DC06002BD970 /* ExampleMission.swift */,
 				2C0648CD2091FCC6002BD970 /* DroneState.swift */,
 			);
@@ -420,7 +414,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -431,11 +425,9 @@
 			files = (
 				2CA1F0CE20CE618700C913D6 /* CustomPinAnnotationView.swift in Sources */,
 				2CA1F0CF20CE618700C913D6 /* CustomPointAnnotation.swift in Sources */,
-				2C0A6A5D208F6DB200B3E12F /* TelemetryEntry.swift in Sources */,
 				2CA1F0D420CE625D00C913D6 /* DroneAnnotation.swift in Sources */,
 				2C365EC3207610C500F42184 /* TelemetryViewController.swift in Sources */,
 				2CE6B6D420AEECE10086958C /* CameraViewController.swift in Sources */,
-				2C0A6A5F208F77E500B3E12F /* TelemetryEntries.swift in Sources */,
 				2CA1F0D520CE625D00C913D6 /* DroneView.swift in Sources */,
 				2CE6B6D120AED1CA0086958C /* empty.cpp in Sources */,
 				2CDBF021207652340064C8A5 /* MapViewController.swift in Sources */,

@@ -1,96 +1,52 @@
-//
-//  ExampleMission.swift
-//  DronecodeSDKSwiftDemo
-//
-//  Created by Marjory Silvestre on 26.04.18.
-//  Copyright © 2018 Marjory Silvestre. All rights reserved.
-//
-
 import Foundation
 import Dronecode_SDK_Swift
 import MapKit
 
-
 class ExampleMission {
-    
+
     var missionItems = [MissionItem]()
 
-    init(){
-        
+    init() {
         if missionItems.isEmpty {
             missionItems = [MissionItem]()
-            
-            do {
-                let entry = MissionItem(latitudeDeg: 47.398039859999997, longitudeDeg: 8.5455725400000002, relativeAltitudeM: 10.0, speedMPS: 2.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-                missionItems.append(entry)
-            }
-            do {
-                let entry = MissionItem(latitudeDeg: 47.398039859999997, longitudeDeg: 8.5455725400000002, relativeAltitudeM: 10.0, speedMPS: 2.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-                missionItems.append(entry)
-            }
-            do {
-                let entry = MissionItem(latitudeDeg: 47.398039859999997, longitudeDeg: 8.5455725400000002, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-                missionItems.append(entry)
-            }
-            do {
-                let entry = MissionItem(latitudeDeg: 47.398036222362471, longitudeDeg: 8.5450146439425509, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: -30.0, gimbalYawDeg: 0, cameraAction: CameraAction.stopPhotoInterval)
-                missionItems.append(entry)
-            }
-            do {
-                let entry = MissionItem(latitudeDeg: 47.397825620791885, longitudeDeg: 8.5450092830163271, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -60.0, cameraAction: CameraAction.startVideo)
-                missionItems.append(entry)
-            }
-            do {
-                let entry = MissionItem(latitudeDeg: 47.397832880000003, longitudeDeg: 8.5455939999999995, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: 0.0, gimbalYawDeg: 0.0, cameraAction: CameraAction.stopVideo)
-                missionItems.append(entry)
-            }
-        }
-        
-    }
-    
-    func  generateSampleMissionForLocation(location:CLLocation){
-        missionItems = [MissionItem]()
-        
-        //width and height for a single U mission : in meters
-        let width: Double = 40
-        let height: Double = 20 
-        
-        // first location of the mission is equal to location in param at 10 meters of altitude
-        let location1: CLLocation = location
-        do {
-            let entry = MissionItem(latitudeDeg: location1.coordinate.latitude, longitudeDeg:  location1.coordinate.longitude, relativeAltitudeM: 10.0, speedMPS: 2.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-            missionItems.append(entry)
-        }
-        // second location : first location at "width" meters in west direction
-        let location2 = self.computeLocation(locationInit: location1, withRadius: width, withBearing: 270)
-        do {
-            let entry = MissionItem(latitudeDeg: (location2?.coordinate.latitude)!, longitudeDeg:(location2?.coordinate.longitude)!, relativeAltitudeM: 10.0, speedMPS: 2.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-            missionItems.append(entry)
-        }
-        // third location : second location at "height" meters in south direction
-        let location3 = self.computeLocation(locationInit: location2!, withRadius: height, withBearing: 180)
-        do {
-            let entry = MissionItem(latitudeDeg:(location3?.coordinate.latitude)!, longitudeDeg: (location3?.coordinate.longitude)!, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: -60.0, gimbalYawDeg: -90.0, cameraAction: CameraAction.startPhotoInterval)
-            missionItems.append(entry)
-        }
-        // fourth location : third location at "width" meters in east direction
-        let location4 = self.computeLocation(locationInit: location3!, withRadius: width, withBearing: 90)
-        do {
-            let entry = MissionItem(latitudeDeg: (location4?.coordinate.latitude)!, longitudeDeg: (location4?.coordinate.longitude)!, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: -30.0, gimbalYawDeg: 0, cameraAction: CameraAction.stopPhotoInterval)
-            missionItems.append(entry)
+
+            missionItems.append(createWaypoint(47.398039859999997, 8.5455725400000002))
+            missionItems.append(createWaypoint(47.398036222362471, 8.5450146439425509))
+            missionItems.append(createWaypoint(47.397825620791885, 8.5450092830163271))
+            missionItems.append(createWaypoint(47.397832880000003, 8.5455939999999995))
         }
     }
-    
-    // calculate new location from one location with distance in meters and bearing
-    func computeLocation(locationInit: CLLocation, withRadius radius: Double, withBearing bearing: Double) -> CLLocation? {
+
+    func createWaypoint(_ latitudeDeg: Double, _ longitudeDeg: Double) -> MissionItem {
+        return MissionItem(latitudeDeg: latitudeDeg, longitudeDeg: longitudeDeg, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: Float.nan, gimbalYawDeg: Float.nan, loiterTimeS: Float.nan, cameraAction: CameraAction.none)
+    }
+
+    func generateSampleMissionForLocation(location: CLLocation) {
+        missionItems.removeAll()
+
+        missionItems.append(createWaypoint(location.coordinate.latitude, location.coordinate.longitude))
+
+        let location2 = self.computeLocation(location, 40, 270)
+        missionItems.append(createWaypoint(location2.coordinate.latitude, location2.coordinate.longitude))
+
+        let location3 = self.computeLocation(location2, 20, 180)
+        missionItems.append(createWaypoint(location3.coordinate.latitude, location3.coordinate.longitude))
+
+        let location4 = self.computeLocation(location3, 40, 90)
+        missionItems.append(createWaypoint(location4.coordinate.latitude, location4.coordinate.longitude))
+    }
+
+    func computeLocation(_ locationInit: CLLocation, _ radius: Double, _ bearing: Double) -> CLLocation {
         let earthRadius: Double = 6371000
         let bearingRadius: Double = ((.pi * bearing) / 180)
         let latitudeRadius: Double = ((.pi * (locationInit.coordinate.latitude)) / 180)
         let longitudeRadius: Double = ((.pi * (locationInit.coordinate.longitude)) / 180)
+
         let computedLatitude: Double = asin(sin(latitudeRadius) * cos(radius / earthRadius) + cos(latitudeRadius) * sin(radius / earthRadius) * cos(bearingRadius))
         let computedLongitude: Double = longitudeRadius + atan2(sin(bearingRadius) * sin(radius / earthRadius) * cos(latitudeRadius), cos(radius / earthRadius) - sin(latitudeRadius) * sin(computedLatitude))
+
         let computedLoc = CLLocation(latitude: ((computedLatitude) * (180.0 / .pi)), longitude: ((computedLongitude) * (180.0 / .pi)))
+
         return computedLoc
     }
-
 }
