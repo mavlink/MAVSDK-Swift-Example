@@ -1,11 +1,3 @@
-//
-//  DroneState.swift
-//  DronecodeSDKSwiftDemo
-//
-//  Created by Marjory Silvestre on 26.04.18.
-//  Copyright © 2018 Marjory Silvestre. All rights reserved.
-//
-
 import Foundation
 import MapKit
 
