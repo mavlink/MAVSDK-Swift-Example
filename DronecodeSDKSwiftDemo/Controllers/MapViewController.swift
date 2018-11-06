@@ -25,29 +25,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     private var currentLocation: CLLocation?
     let regionRadius: CLLocationDistance = 100
 
-    private var droneAnnotation: DroneAnnotation!
-    private var timer: Timer?
+    private var droneAnnotation = NamedAnnotation(title: "Drone")
 
     private let mission = ExampleMission()
     private var missionTrace = MKPolyline()
-    private var startPin = CustomPointAnnotation(title: "START")
-    private var stopPin = CustomPointAnnotation(title: "STOP")
+    private var startPin = NamedAnnotation(title: "START")
+    private var stopPin = NamedAnnotation(title: "STOP")
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // set initial location of drone and center map on it
-        let initialLocation = CLLocation(latitude: CoreManager.shared.droneState.location2D.latitude , longitude: CoreManager.shared.droneState.location2D.longitude)
-        centerMapOnLocation(location: initialLocation)
 
         initFeedbackCaption()
         initButtonStyle()
         initLocationManager()
         initMapView()
-        initDroneAnnotation(location: initialLocation)
-
-        // timer to get drone state
-        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector:  #selector(updateDroneInfosDisplayed), userInfo: nil, repeats: true)
+        initDroneAnnotation()
 
         drawMissionTrace()
         observeMissionProgress()
@@ -93,10 +85,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         mapView.addAnnotation(stopPin)
     }
 
-    private func initDroneAnnotation(location: CLLocation) {
-        mapView.register(DroneView.self, forAnnotationViewWithReuseIdentifier: NSStringFromClass(DroneView.self))
-        droneAnnotation = DroneAnnotation(title: "Drone", coordinate: location.coordinate)
+    private func initDroneAnnotation() {
         mapView.addAnnotation(droneAnnotation)
+
+        _ = CoreManager.shared.telemetry.positionObservable
+            .map({ position -> CLLocation in
+                CLLocation(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
+            })
+            .do(onNext: { position in self.droneAnnotation.coordinate = position.coordinate },
+                onError: { error in print("Error initializing map location: \(error)")})
+            .subscribe()
     }
 
     private func observeMissionProgress() {
@@ -107,6 +105,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 onError: { error in print("Error mission progress") })
             .subscribe()
             .disposed(by: disposeBag)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        centerOnDroneLocation()
+    }
+
+    private func centerOnDroneLocation() {
+        _ = CoreManager.shared.telemetry.positionObservable
+            .take(1)
+            .map({ position -> CLLocation in
+                CLLocation(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
+            })
+            .asSingle()
+            .do(onSuccess: { position in self.centerMapOnLocation(location: position) },
+                onError: { error in print("Error initializing map location: \(error)")})
+            .subscribe()
+    }
+
+    private func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius, regionRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
     }
 
     @IBAction func uploadMissionPressed(_ sender: Any) {
@@ -249,8 +269,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBAction func centerOnUserPressed(_ sender: Any) {
         if let currentLocationLat = currentLocation?.coordinate.latitude, let currentLocationLong = currentLocation?.coordinate.longitude {
-            let latitude:String = String(format: "%.4f", currentLocationLat)
-            let longitude:String = String(format: "%.4f", currentLocationLong)
+            let latitude: String = String(format: "%.4f", currentLocationLat)
+            let longitude: String = String(format: "%.4f", currentLocationLong)
 
             self.displayFeedback(message: "User coordinates: (\(latitude),\(longitude))")
 
@@ -258,18 +278,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
 
-    func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius, regionRadius)
-        mapView.setRegion(coordinateRegion, animated: true)
-    }
-
     @IBAction func createFlightPathPressed(_ sender: Any) {
         let latitude:String = String(format: "%.4f",
                                      mapView.centerCoordinate.latitude)
         let longitude:String = String(format: "%.4f",
                                       mapView.centerCoordinate.longitude)
-        self.displayFeedback(message:"Create flight path at  (\(latitude), \(longitude))")
+        self.displayFeedback(message: "Create flight path at  (\(latitude), \(longitude))")
 
         let centerMapLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
         mission.generateSampleMissionForLocation(location: centerMapLocation)
@@ -294,13 +308,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         stopPin.coordinate = CLLocationCoordinate2DMake(stopMissionItem.latitudeDeg, stopMissionItem.longitudeDeg)
     }
 
-    @objc func updateDroneInfosDisplayed(_ _timer: Timer?) {
-        DispatchQueue.main.async {
-            // Update the UI
-            self.droneAnnotation.coordinate = CoreManager.shared.droneState.location2D
-        }
-    }
-
     func displayFeedback(message: String) {
         print(message)
         feedbackLabel.text = message
@@ -312,24 +319,15 @@ extension MapViewController: MKMapViewDelegate {
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
-        if (annotation is CustomPointAnnotation) {
-            _ = NSStringFromClass(CustomPinAnnotationView.self)
-            let  view :CustomPinAnnotationView = CustomPinAnnotationView(annotation: annotation)
-            return view
-        } else {
-            guard let annotation = annotation as? DroneAnnotation else { return nil }
+        guard let annotation = annotation as? NamedAnnotation else { return nil }
 
-            let identifier = NSStringFromClass(DroneView.self)
-            var view: DroneView
-
-            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-                as? DroneView {
-                dequeuedView.annotation = annotation
-                view = dequeuedView
-            } else {
-                view = DroneView(annotation: annotation, reuseIdentifier: identifier)
-            }
-            return view
+        switch (annotation) {
+        case startPin, stopPin:
+            return CustomPinAnnotationView(annotation: annotation)
+        case droneAnnotation:
+            return DroneView(annotation: annotation)
+        default:
+            return nil
         }
     }
 

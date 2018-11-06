@@ -102,8 +102,6 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
 
         entries[EntryType.latitude_longitude.rawValue].value = "\(position.latitudeDeg) Deg, \(position.longitudeDeg) Deg"
 
-        CoreManager.shared.droneState.location2D = CLLocationCoordinate2DMake(position.latitudeDeg,position.longitudeDeg)
-
         telemetryTableView.reloadData()
     }
     

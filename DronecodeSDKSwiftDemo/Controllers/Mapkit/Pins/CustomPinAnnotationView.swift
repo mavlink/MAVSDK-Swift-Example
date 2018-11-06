@@ -1,21 +1,15 @@
-//
-//  CustomPinAnnotationView.swift
-//  DronecodeSDKSwiftDemo
-//
-//
-
 import UIKit
 import MapKit
 
 class CustomPinAnnotationView: MKAnnotationView {
 
     var labelTitle: String?
-
     
     init(annotation: MKAnnotation?) {
         super.init(annotation: annotation, reuseIdentifier: "pin")
+
         // get text to display from Annotation
-        let myCustomPointAnnotation = annotation as? CustomPointAnnotation
+        let myCustomPointAnnotation = annotation as? NamedAnnotation
         labelTitle = (myCustomPointAnnotation?.labelTitle)!
        
         // specific pin image
@@ -35,8 +29,5 @@ class CustomPinAnnotationView: MKAnnotationView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    
+    }    
 }

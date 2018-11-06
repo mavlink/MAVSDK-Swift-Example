@@ -6,7 +6,6 @@ class CoreManager {
 
     static let shared = CoreManager()
 
-    let droneState = DroneState()
     let disposeBag = DisposeBag()
 
     let core = Core()
