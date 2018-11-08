@@ -602,7 +602,7 @@
         <!--Map-->
         <scene sceneID="2XY-3E-S7H">
             <objects>
-                <viewController id="AZc-kT-pmw" customClass="MapViewController" customModule="YuneecMFiExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AZc-kT-pmw" customClass="MapViewController" customModule="DronecodeSDKSwiftDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IOJ-YT-awc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -657,9 +657,9 @@
                                         <color key="backgroundColor" red="0.4406479895" green="0.51737356189999995" blue="0.52941578629999997" alpha="0.69571382709999996" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                         <color key="tintColor" red="0.1647058824" green="0.23137254900000001" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="Center map on user"/>
+                                        <state key="normal" title="Center map on drone"/>
                                         <connections>
-                                            <action selector="centerOnUserPressed:" destination="AZc-kT-pmw" eventType="touchUpInside" id="gnt-tt-5Rd"/>
+                                            <action selector="centerOnDronePressed:" destination="AZc-kT-pmw" eventType="touchUpInside" id="UnX-RG-eZy"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -801,7 +801,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="icon-tab-placeholder-location" id="ADZ-jr-s9X"/>
                     <connections>
-                        <outlet property="centerMapOnUsernButton" destination="CkN-aV-Veh" id="HWK-fr-omd"/>
+                        <outlet property="centerMapOnDroneButton" destination="CkN-aV-Veh" id="kQA-8f-Xal"/>
                         <outlet property="createFlightPathButton" destination="034-NE-NZm" id="8tO-3a-t63"/>
                         <outlet property="downloadMissionButton" destination="rUw-nb-6Gz" id="hy9-ob-bnj"/>
                         <outlet property="feedbackLabel" destination="2mC-hW-B1j" id="53c-sZ-jdY"/>

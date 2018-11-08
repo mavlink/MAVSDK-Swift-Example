@@ -92,7 +92,7 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
     }
 
     private func observePosition() {
-        _ = CoreManager.shared.telemetry.positionObservable
+        _ = CoreManager.shared.position
                 .subscribe(onNext: { position in self.onPositionUpdate(position: position)},
                            onError: { error in print(error) })
     }

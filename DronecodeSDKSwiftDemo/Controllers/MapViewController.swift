@@ -19,7 +19,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var isMissionFinishedButton: UIButton!
 
     @IBOutlet weak var createFlightPathButton: UIButton!
-    @IBOutlet weak var centerMapOnUsernButton: UIButton!
+    @IBOutlet weak var centerMapOnDroneButton: UIButton!
 
     private var locationManager: CLLocationManager!
     private var currentLocation: CLLocation?
@@ -49,7 +49,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         uploadMissionButton.layer.cornerRadius   = UI_CORNER_RADIUS_BUTTONS
         startMissionButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
         createFlightPathButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        centerMapOnUsernButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
+        centerMapOnDroneButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
         pauseMissionButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
         getCurrentIndexButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
         setCurrentIndexButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
@@ -88,7 +88,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     private func initDroneAnnotation() {
         mapView.addAnnotation(droneAnnotation)
 
-        _ = CoreManager.shared.telemetry.positionObservable
+        _ = CoreManager.shared.position
             .map({ position -> CLLocation in
                 CLLocation(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
             })
@@ -108,11 +108,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         centerOnDroneLocation()
     }
 
     private func centerOnDroneLocation() {
-        _ = CoreManager.shared.telemetry.positionObservable
+        _ = CoreManager.shared.position
             .take(1)
             .map({ position -> CLLocation in
                 CLLocation(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
@@ -267,15 +268,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             .disposed(by: disposeBag)
     }
 
-    @IBAction func centerOnUserPressed(_ sender: Any) {
-        if let currentLocationLat = currentLocation?.coordinate.latitude, let currentLocationLong = currentLocation?.coordinate.longitude {
-            let latitude: String = String(format: "%.4f", currentLocationLat)
-            let longitude: String = String(format: "%.4f", currentLocationLong)
-
-            self.displayFeedback(message: "User coordinates: (\(latitude),\(longitude))")
-
-            centerMapOnLocation(location: currentLocation!)
-        }
+    @IBAction func centerOnDronePressed(_ sender: Any) {
+        centerOnDroneLocation()
     }
 
     @IBAction func createFlightPathPressed(_ sender: Any) {

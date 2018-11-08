@@ -1,2 +1,2 @@
-github "Dronecode/DronecodeSDK-Swift" "0.1.5"
+github "Dronecode/DronecodeSDK-Swift" "0.1.6"
 binary "https://code.videolan.org/videolan/VLCKit/raw/master/Packaging/MobileVLCKit.json" == 3.1.1
