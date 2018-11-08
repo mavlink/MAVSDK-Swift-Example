@@ -95,12 +95,16 @@ class ActionsViewController: UIViewController {
     
     @IBAction func getTakeoffAltitudePressed(_ sender: Any) {
         _ = CoreManager.shared.action.getTakeoffAltitude()
-            .subscribe(onSuccess: { altitude in self.feedbackLabel.text = "Takeoff altitude : \(altitude)" }, onError: { error in self.feedbackLabel.text = "failure: getTakeoffAltitude() \(error)" })
+            .do(onSuccess: { altitude in self.feedbackLabel.text = "Takeoff altitude : \(altitude)" },
+                onError: { error in self.feedbackLabel.text = "failure: getTakeoffAltitude() \(error)" })
+            .subscribe()
     }
 
     @IBAction func getMaximumSpeedPressed(_ sender: Any) {
         _ = CoreManager.shared.action.getMaximumSpeed()
-            .subscribe(onSuccess: { speed in self.feedbackLabel.text = "Maximum speed : \(speed)" }, onError: { error in self.feedbackLabel.text = "failure: getMaximumSpeed() \(error)" })
+            .do(onSuccess: { speed in self.feedbackLabel.text = "Maximum speed : \(speed)" },
+                onError: { error in self.feedbackLabel.text = "failure: getMaximumSpeed() \(error)" })
+            .subscribe()
     }
 
     class func showAlert(_ message: String?, viewController: UIViewController?) {

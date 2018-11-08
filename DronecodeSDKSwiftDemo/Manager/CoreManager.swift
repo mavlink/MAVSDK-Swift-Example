@@ -6,7 +6,6 @@ class CoreManager {
 
     static let shared = CoreManager()
 
-    let droneState = DroneState()
     let disposeBag = DisposeBag()
 
     let core = Core()
@@ -16,6 +15,17 @@ class CoreManager {
     let camera = Camera(address: "localhost", port: 50051)
 
     private init() {}
+
+    // NOTE: that's a workaround for now, but this should really be done in the
+    // SDK, and one would use `telemetry.positionObservable.subscribe()` directly.
+    lazy var position = createPositionObservable()
+
+    private func createPositionObservable() -> Observable<Position> {
+        let positionConnectable = self.telemetry.positionObservable.replay(1)
+        positionConnectable.connect().disposed(by: disposeBag)
+
+        return positionConnectable.asObservable()
+    }
 
     lazy var startCompletable = createStartCompletable()
 

@@ -17,7 +17,7 @@ class ExampleMission {
         }
     }
 
-    func createWaypoint(_ latitudeDeg: Double, _ longitudeDeg: Double) -> MissionItem {
+    private func createWaypoint(_ latitudeDeg: Double, _ longitudeDeg: Double) -> MissionItem {
         return MissionItem(latitudeDeg: latitudeDeg, longitudeDeg: longitudeDeg, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: Float.nan, gimbalYawDeg: Float.nan, loiterTimeS: Float.nan, cameraAction: CameraAction.none)
     }
 
@@ -36,7 +36,7 @@ class ExampleMission {
         missionItems.append(createWaypoint(location4.coordinate.latitude, location4.coordinate.longitude))
     }
 
-    func computeLocation(_ locationInit: CLLocation, _ radius: Double, _ bearing: Double) -> CLLocation {
+    private func computeLocation(_ locationInit: CLLocation, _ radius: Double, _ bearing: Double) -> CLLocation {
         let earthRadius: Double = 6371000
         let bearingRadius: Double = ((.pi * bearing) / 180)
         let latitudeRadius: Double = ((.pi * (locationInit.coordinate.latitude)) / 180)

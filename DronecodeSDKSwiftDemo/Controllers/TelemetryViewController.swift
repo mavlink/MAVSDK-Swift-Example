@@ -92,7 +92,7 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
     }
 
     private func observePosition() {
-        _ = CoreManager.shared.telemetry.positionObservable
+        _ = CoreManager.shared.position
                 .subscribe(onNext: { position in self.onPositionUpdate(position: position)},
                            onError: { error in print(error) })
     }
@@ -101,8 +101,6 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
         entries[EntryType.altitude.rawValue].value = "\(position.relativeAltitudeM) m, \(position.absoluteAltitudeM) m"
 
         entries[EntryType.latitude_longitude.rawValue].value = "\(position.latitudeDeg) Deg, \(position.longitudeDeg) Deg"
-
-        CoreManager.shared.droneState.location2D = CLLocationCoordinate2DMake(position.latitudeDeg,position.longitudeDeg)
 
         telemetryTableView.reloadData()
     }

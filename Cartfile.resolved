@@ -1,5 +1,5 @@
 binary "https://code.videolan.org/videolan/VLCKit/raw/master/Packaging/MobileVLCKit.json" "3.1.1"
 binary "https://s3.eu-central-1.amazonaws.com/dronecode-sdk/backend.json" "0.7.3"
-github "Dronecode/DronecodeSDK-Swift" "0.1.5"
-github "ReactiveX/RxSwift" "4.3.1"
+github "Dronecode/DronecodeSDK-Swift" "0.1.6"
+github "ReactiveX/RxSwift" "4.4.0"
 github "grpc/grpc-swift" "23a0ebdee9613f615f2f2469ed3e700df5856417"
