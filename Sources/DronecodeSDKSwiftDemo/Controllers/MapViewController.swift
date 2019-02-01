@@ -125,8 +125,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius, regionRadius)
+        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
+                                                  latitudinalMeters: regionRadius,
+                                                  longitudinalMeters: regionRadius)
         mapView.setRegion(coordinateRegion, animated: true)
     }
 
@@ -286,14 +287,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     func drawMissionTrace() {
-        mapView.remove(missionTrace)
+        mapView.removeOverlay(missionTrace)
 
         let points = mission.missionItems.map { missionItem -> CLLocationCoordinate2D in
             CLLocationCoordinate2DMake(missionItem.latitudeDeg, missionItem.longitudeDeg)
         }
 
         missionTrace = MKPolyline(coordinates: points, count: points.count)
-        mapView.add(missionTrace)
+        mapView.addOverlay(missionTrace)
 
         let startMissionItem = mission.missionItems.first!
         startPin.coordinate = CLLocationCoordinate2DMake(startMissionItem.latitudeDeg, startMissionItem.longitudeDeg)

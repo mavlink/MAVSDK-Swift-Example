@@ -3,6 +3,7 @@ build
 !*.xcodeproj/project.pbxproj
 !*.xcworkspace/contents.xcworkspacedata
 *.xcworkspace
+Info.plist
 
 ### Various settings ###
 *.pbxuser

@@ -1,0 +1,41 @@
+name: DronecodeSDK-Swift-Example
+options:
+  deploymentTarget:
+    iOS: "11.2"
+  bundleIdPrefix: org.dronecode.sdk
+settings:
+  ENABLE_BITCODE: NO
+targets:
+  DronecodeSDK_Swift_Example:
+    info:
+      path: Sources/DronecodeSDKSwiftDemo/Info.plist
+      properties:
+        UILaunchStoryboardName: LaunchScreen
+        UIMainStoryboardFile: Main
+    type: application
+    platform: iOS
+    settings:
+      configs:
+        debug:
+          SWIFT_OBJC_BRIDGING_HEADER: "Sources/DronecodeSDKSwiftDemo/DronecodeSDKSwiftDemo-Bridging-Header.h"
+        release:
+          SWIFT_OBJC_BRIDGING_HEADER: "Sources/DronecodeSDKSwiftDemo/DronecodeSDKSwiftDemo-Bridging-Header.h"
+    sources: [Sources/DronecodeSDKSwiftDemo]
+    dependencies:
+      - carthage: backend
+      - carthage: BoringSSL
+      - carthage: CgRPC
+      - carthage: Dronecode_SDK_Swift
+      - carthage: MobileVLCKit
+        embed: false
+      - carthage: RxBlocking
+      - carthage: RxSwift
+      - carthage: SwiftGRPC
+      - carthage: SwiftProtobuf
+      - sdk: AVFoundation.framework
+      - sdk: AudioToolbox.framework
+      - sdk: CoreMedia.framework
+      - sdk: libbz2.tbd
+      - sdk: libiconv.tbd
+      - sdk: VideoToolbox.framework
+    directlyEmbedCarthageDependencies: true

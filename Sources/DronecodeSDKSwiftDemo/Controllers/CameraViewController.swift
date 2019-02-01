@@ -1,3 +1,5 @@
+import UIKit
+
 class CameraViewController: UIViewController, VLCMediaPlayerDelegate {
     
     @IBOutlet weak var cameraView: UIView!
