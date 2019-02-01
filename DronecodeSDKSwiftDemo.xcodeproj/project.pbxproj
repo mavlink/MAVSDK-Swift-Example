@@ -45,7 +45,6 @@
 		DF0AF2D5212B801D00B15E67 /* SwiftProtobuf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2C7212B801D00B15E67 /* SwiftProtobuf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DF0AF2D7212B80E400B15E67 /* BoringSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */; };
 		DF0AF2D8212B80E400B15E67 /* BoringSSL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF0AF2D6212B80E400B15E67 /* BoringSSL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DFBB1C5C20FF8ADE0080B093 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +70,6 @@
 				DF0AF2CB212B801D00B15E67 /* backend.framework in Embed Frameworks */,
 				DF0AF2D5212B801D00B15E67 /* SwiftProtobuf.framework in Embed Frameworks */,
 				DF0AF2D3212B801D00B15E67 /* RxSwift.framework in Embed Frameworks */,
-				DFBB1C5C20FF8ADE0080B093 /* (null) in Embed Frameworks */,
 				DF0AF2C0212B7FD500B15E67 /* Dronecode_SDK_Swift.framework in Embed Frameworks */,
 				DF0AF2CD212B801D00B15E67 /* SwiftGRPC.framework in Embed Frameworks */,
 			);
@@ -293,7 +291,6 @@
 				2C365EBA207610C500F42184 /* Frameworks */,
 				2C365EBB207610C500F42184 /* Resources */,
 				DFBB1C5D20FF8ADE0080B093 /* Embed Frameworks */,
-				DF5B5688212C721200923C8F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -381,36 +378,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		DF5B5688212C721200923C8F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/BoringSSL.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftProtobuf.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CgRPC.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftGRPC.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Dronecode_SDK_Swift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxBlocking.framework",
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BoringSSL.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftProtobuf.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CgRPC.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftGRPC.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Dronecode_SDK_Swift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxBlocking.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2C365EB9207610C500F42184 /* Sources */ = {
@@ -624,7 +591,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HBV2V5DL5C;
+				DEVELOPMENT_TEAM = Y4U8WX82HX;
 				INFOPLIST_FILE = DronecodeSDKSwiftDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.dronecode.DronecodeSDKSwiftDemoTests;
@@ -641,7 +608,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HBV2V5DL5C;
+				DEVELOPMENT_TEAM = Y4U8WX82HX;
 				INFOPLIST_FILE = DronecodeSDKSwiftDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.dronecode.DronecodeSDKSwiftDemoTests;
