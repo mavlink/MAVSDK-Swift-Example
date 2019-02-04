@@ -9,7 +9,6 @@ class ActionsViewController: UIViewController {
     @IBOutlet weak var takeoffButton: UIButton!
     @IBOutlet weak var landButton: UIButton!
     @IBOutlet weak var disarmButton: UIButton!
-    @IBOutlet weak var killButton: UIButton!
     @IBOutlet weak var returnToLaunchButton: UIButton!
     @IBOutlet weak var transitionToFixedWingButton: UIButton!
     @IBOutlet weak var transitionToMulticopterButton: UIButton!
@@ -33,7 +32,6 @@ class ActionsViewController: UIViewController {
         takeoffButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
         landButton.layer.cornerRadius       = UI_CORNER_RADIUS_BUTTONS
         disarmButton.layer.cornerRadius     = UI_CORNER_RADIUS_BUTTONS
-        killButton.layer.cornerRadius       = UI_CORNER_RADIUS_BUTTONS
         returnToLaunchButton.layer.cornerRadius             = UI_CORNER_RADIUS_BUTTONS
         transitionToFixedWingButton.layer.cornerRadius      = UI_CORNER_RADIUS_BUTTONS
         transitionToMulticopterButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
@@ -42,66 +40,59 @@ class ActionsViewController: UIViewController {
     }
     
     @IBAction func armPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.arm()
+        _ = drone.action.arm()
             .do(onError: { error in  self.feedbackLabel.text = "Arming failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Arming succeeded"})
             .subscribe()
     }
     
     @IBAction func disarmPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.disarm()
+        _ = drone.action.disarm()
             .do(onError: { error in self.feedbackLabel.text = "Disarming failed : \(error.localizedDescription)"  }, onCompleted: { self.feedbackLabel.text = "Disarming succeeded" })
             .subscribe()
     }
     
     @IBAction func takeoffPressed(_ sender: Any) {
-         _ = CoreManager.shared.action.takeoff()
+         _ = drone.action.takeoff()
             .do(onError: { error in self.feedbackLabel.text = "Takeoff failed" }, onCompleted: { self.feedbackLabel.text = "Takeoff succeeded" })
             .subscribe()
     }
     
     @IBAction func landPressed(_ sender: Any) {
-         _ = CoreManager.shared.action.land()
+         _ = drone.action.land()
             .do(onError: { error in self.feedbackLabel.text = "Land failed" }, onCompleted: { self.feedbackLabel.text = "Land succeeded" })
             .subscribe()
     }
     
-    @IBAction func killPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.kill()
-            .do(onError: { error in self.feedbackLabel.text = "Kill failed"},
-                onCompleted: { self.feedbackLabel.text = "Kill succeeded" })
-            .subscribe()
-    }
-    
     @IBAction func returnToLaunchPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.returnToLaunch()
+        _ = drone.action.returnToLaunch()
             .do(onError: { error in self.feedbackLabel.text = "Return to launch failed" }, onCompleted: { self.feedbackLabel.text = "Return to launch succeeded"})
             .subscribe()
     }
     
     @IBAction func transitionToFixedWingPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.transitionToFixedWing()
+        _ = drone.action.transitionToFixedWing()
             .do(onError: { error in self.feedbackLabel.text = "transitionToFixedWing failed"},
                 onCompleted: { self.feedbackLabel.text = "transitionToFixedWing succeeded"})
             .subscribe()
     }
     
     @IBAction func transitionToMulticopterPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.transitionToMulticopter()
+        _ = drone.action.transitionToMulticopter()
             .do(onError: { error in self.feedbackLabel.text = "transitionToMulticopter failed"},
                 onCompleted: { self.feedbackLabel.text = "transitionToMulticopter succeeded"})
             .subscribe()
     }
     
     @IBAction func getTakeoffAltitudePressed(_ sender: Any) {
-        _ = CoreManager.shared.action.getTakeoffAltitude()
+        _ = drone.action.getTakeoffAltitude()
             .do(onSuccess: { altitude in self.feedbackLabel.text = "Takeoff altitude : \(altitude)" },
                 onError: { error in self.feedbackLabel.text = "failure: getTakeoffAltitude() \(error)" })
             .subscribe()
     }
 
     @IBAction func getMaximumSpeedPressed(_ sender: Any) {
-        _ = CoreManager.shared.action.getMaximumSpeed()
+        _ = drone.action.getMaximumSpeed()
             .do(onSuccess: { speed in self.feedbackLabel.text = "Maximum speed : \(speed)" },
                 onError: { error in self.feedbackLabel.text = "failure: getMaximumSpeed() \(error)" })
             .subscribe()

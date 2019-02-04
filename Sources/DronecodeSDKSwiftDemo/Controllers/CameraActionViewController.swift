@@ -19,13 +19,8 @@ class CameraActionViewController: UIViewController {
         feedbackLabel?.layer.borderWidth = 1.0
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func capturePicture(_ sender: UIButton) {
-        let myRoutine = CoreManager.shared.camera.takePhoto()
+        let myRoutine = drone.camera.takePhoto()
             .do(onError: { error in self.feedbackLabel.text = "Photo Capture Failed : \(error.localizedDescription)" },
                 onCompleted: { self.feedbackLabel.text = "Photo Capture Success" })
         _ = myRoutine.subscribe()
@@ -33,7 +28,7 @@ class CameraActionViewController: UIViewController {
     
     @IBAction func videoAction(_ sender: UIButton) {
         if(videoLabel.titleLabel?.text == "Start Video") {
-            let myRoutine = CoreManager.shared.camera.startVideo()
+            let myRoutine = drone.camera.startVideo()
                 .do(onError: { error in self.feedbackLabel.text = "Start Video Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Start Video Success"
@@ -43,7 +38,7 @@ class CameraActionViewController: UIViewController {
         }
             
         else {
-            let myRoutine = CoreManager.shared.camera.stopVideo()
+            let myRoutine = drone.camera.stopVideo()
                 .do(onError: { error in self.feedbackLabel.text = "Stop Video Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Stop Video Success"
@@ -57,7 +52,7 @@ class CameraActionViewController: UIViewController {
     @IBAction func photoIntervalAction(_ sender: UIButton) {
         let intervalTimeS = 3
         if(photoIntervalLabel.titleLabel?.text == "Start Photo Interval") {
-            let myRoutine = CoreManager.shared.camera.startPhotoInteval(interval: Float(intervalTimeS))
+            let myRoutine = drone.camera.startPhotoInterval(intervalS: Float(intervalTimeS))
                 .do(onError: { error in self.feedbackLabel.text = "Start Photo Interval Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Start Photo Interval Success"
@@ -66,7 +61,7 @@ class CameraActionViewController: UIViewController {
             _ = myRoutine.subscribe()
         }
         else {
-            let myRoutine = CoreManager.shared.camera.stopPhotoInterval()
+            let myRoutine = drone.camera.stopPhotoInterval()
                 .do(onError: { error in self.feedbackLabel.text = "Stop Photo Interval Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Stop Photo Interval Success"
@@ -78,14 +73,14 @@ class CameraActionViewController: UIViewController {
     }
     
     @IBAction func setPhotoMode(_ sender: UIButton) {
-        let myRoutine = CoreManager.shared.camera.setMode(mode: CameraMode.photo)
+        let myRoutine = drone.camera.setMode(cameraMode: Camera.CameraMode.photo)
             .do(onError: { error in self.feedbackLabel.text = "Set Photo Mode Failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Set Photo Mode Success" })
         _ = myRoutine.subscribe()
     }
     
     @IBAction func setVideoMode(_ sender: UIButton) {
-        let myRoutine = CoreManager.shared.camera.setMode(mode: CameraMode.video)
+        let myRoutine = drone.camera.setMode(cameraMode: Camera.CameraMode.video)
             .do(onError: { error in self.feedbackLabel.text = "Set Video Mode Failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Set Video Mode Success" })
         _ = myRoutine.subscribe()
@@ -96,5 +91,4 @@ class CameraActionViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         viewController?.present(alert, animated: true) {() -> Void in }
     }
-    
 }
