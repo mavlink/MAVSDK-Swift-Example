@@ -37,7 +37,7 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         connectionLabel.text = "Starting system ..."
         
         self.telemetryTableView.delegate = self
@@ -45,7 +45,8 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
 
         entries = generateEntries()
 
-        _ = CoreManager.shared.startCompletable.subscribe(onCompleted: { self.startObserving() })
+        _ = drone.startMavlink
+            .subscribe(onCompleted: { self.startObserving() })
     }
 
     private func generateEntries() -> [TelemetryEntry] {
@@ -66,25 +67,43 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
     }
 
     private func observeConnection() {
-        _ = CoreManager.shared.core.discoverObservable.subscribe(onNext: { uuid in self.onConnected(uuid: uuid)})
+        _ = drone.core.connectionState
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { connectionState in
+                    if (connectionState.isConnected) {
+                        self.onConnected(uuid: connectionState.uuid)
+                    } else {
+                        self.onDisconnected()
+                    }
+                })
     }
 
     private func onConnected(uuid: UInt64) {
-        print("Drone Connected with UUID : \(uuid)")
+        print("Drone connected with UUID : \(uuid)")
 
         connectionLabel.text = "Connected"
-        entries[EntryType.connection.rawValue].value = "Drone Connected with UUID : \(uuid)"
+        entries[EntryType.connection.rawValue].value = "Drone connected with UUID : \(uuid)"
+
+        telemetryTableView.reloadData()
+    }
+
+    private func onDisconnected() {
+        print("Drone disconnected")
+
+        connectionLabel.text = "Disconnected"
+        entries[EntryType.connection.rawValue].value = "Drone disconnected"
 
         telemetryTableView.reloadData()
     }
 
     private func observeHealth() {
-        _ = CoreManager.shared.telemetry.healthObservable
+        _ = drone.telemetry.health
+                .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { health in self.onHealthUpdate(health: health) },
                            onError: { error in print(error) })
     }
 
-    private func onHealthUpdate(health: Health)
+    private func onHealthUpdate(health: Telemetry.Health)
     {
         entries[EntryType.health.rawValue].value = "Calibration \(health.isAccelerometerCalibrationOk ? "Ready" : "Not OK"), GPS \(health.isLocalPositionOk ? "Ready" : "Acquiring")"
 
@@ -92,12 +111,13 @@ class TelemetryViewController: UIViewController, UITableViewDataSource, UITableV
     }
 
     private func observePosition() {
-        _ = CoreManager.shared.position
+        _ = drone.telemetry.position
+                .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { position in self.onPositionUpdate(position: position)},
                            onError: { error in print(error) })
     }
 
-    private func onPositionUpdate(position: Position) {
+    private func onPositionUpdate(position: Telemetry.Position) {
         entries[EntryType.altitude.rawValue].value = "\(position.relativeAltitudeM) m, \(position.absoluteAltitudeM) m"
 
         entries[EntryType.latitude_longitude.rawValue].value = "\(position.latitudeDeg) Deg, \(position.longitudeDeg) Deg"

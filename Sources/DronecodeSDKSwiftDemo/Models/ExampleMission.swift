@@ -4,11 +4,11 @@ import MapKit
 
 class ExampleMission {
 
-    var missionItems = [MissionItem]()
+    var missionItems = [Mission.MissionItem]()
 
     init() {
         if missionItems.isEmpty {
-            missionItems = [MissionItem]()
+            missionItems = [Mission.MissionItem]()
 
             missionItems.append(createWaypoint(47.398039859999997, 8.5455725400000002))
             missionItems.append(createWaypoint(47.398036222362471, 8.5450146439425509))
@@ -17,8 +17,8 @@ class ExampleMission {
         }
     }
 
-    private func createWaypoint(_ latitudeDeg: Double, _ longitudeDeg: Double) -> MissionItem {
-        return MissionItem(latitudeDeg: latitudeDeg, longitudeDeg: longitudeDeg, relativeAltitudeM: 10.0, speedMPS: 10.0, isFlyThrough: true, gimbalPitchDeg: Float.nan, gimbalYawDeg: Float.nan, loiterTimeS: Float.nan, cameraAction: CameraAction.none)
+    private func createWaypoint(_ latitudeDeg: Double, _ longitudeDeg: Double) -> Mission.MissionItem {
+        return Mission.MissionItem(latitudeDeg: latitudeDeg, longitudeDeg: longitudeDeg, relativeAltitudeM: 10.0, speedMS: 10.0, isFlyThrough: true, gimbalPitchDeg: Float.nan, gimbalYawDeg: Float.nan, cameraAction: Mission.MissionItem.CameraAction.none, loiterTimeS: Float.nan, cameraPhotoIntervalS: 1)
     }
 
     func generateSampleMissionForLocation(location: CLLocation) {

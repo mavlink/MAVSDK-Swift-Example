@@ -7,13 +7,14 @@ settings:
   ENABLE_BITCODE: NO
 targets:
   DronecodeSDK_Swift_Example:
+    type: application
+    platform: iOS
     info:
       path: Sources/DronecodeSDKSwiftDemo/Info.plist
       properties:
         UILaunchStoryboardName: LaunchScreen
         UIMainStoryboardFile: Main
-    type: application
-    platform: iOS
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight, UIInterfaceOrientationPortraitUpsideDown]
     settings:
       configs:
         debug:
