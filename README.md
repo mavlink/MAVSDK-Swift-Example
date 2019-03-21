@@ -8,11 +8,17 @@
 xcodegen
 ```
 
-2. Get the dependencies with Carthage:
+2. Make sure you have [RubyGems](https://rubygems.org/pages/download) installed, then install the xcodeproj gem:
+
+```
+gem install --user xcodeproj
+```
+
+3. Get the dependencies with Carthage:
 
 ```
 carthage bootstrap --platform ios
 ```
 
-3. Open `DronecodeSDK-Swift-Example.xcodeproj` with Xcode.
-4. Set the signing team in the "General" tab of target `DronecodeSDK_Swift_Example`
+4. Open `DronecodeSDK-Swift-Example.xcodeproj` with Xcode.
+5. Set the signing team in the "General" tab of target `DronecodeSDK_Swift_Example`
