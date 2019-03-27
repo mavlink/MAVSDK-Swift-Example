@@ -10,6 +10,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var feedbackLabel: UILabel!
     @IBOutlet weak var uploadMissionButton: UIButton!
+    @IBOutlet weak var cancelUploadMissionButton: UIButton!
     @IBOutlet weak var startMissionButton: UIButton!
     @IBOutlet weak var pauseMissionButton: UIButton!
     @IBOutlet weak var setCurrentIndexButton: UIButton!
@@ -143,6 +144,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
 
             }, onCompleted: {
                 self.displayFeedback(message:"Mission uploaded with success")
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
+    
+    @IBAction func cancelUploadMissionButton(_ sender: Any) {
+        displayFeedback(message:"Cancel Upload Mission Pressed")
+        cancelUploadMission()
+    }
+    
+    private func cancelUploadMission() {
+        drone.mission.cancelMissionUpload()
+            .do(onError: { error in
+                self.displayFeedback(message:"Mission upload cancel failed \(error)")
+                
+            }, onCompleted: {
+                self.displayFeedback(message:"Mission upload cancel with success")
             })
             .subscribe()
             .disposed(by: disposeBag)
