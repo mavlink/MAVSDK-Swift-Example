@@ -145,6 +145,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             }, onCompleted: {
                 self.displayFeedback(message:"Mission uploaded with success")
             })
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .subscribe()
             .disposed(by: disposeBag)
     }
