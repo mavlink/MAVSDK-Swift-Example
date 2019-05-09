@@ -10,6 +10,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var feedbackLabel: UILabel!
     @IBOutlet weak var uploadMissionButton: UIButton!
+	@IBOutlet var cancelMissionUploadButton: UIButton!
     @IBOutlet weak var startMissionButton: UIButton!
     @IBOutlet weak var pauseMissionButton: UIButton!
     @IBOutlet weak var setCurrentIndexButton: UIButton!
@@ -44,22 +45,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func initButtonStyle() {
-        uploadMissionButton.layer.cornerRadius   = UI_CORNER_RADIUS_BUTTONS
-        startMissionButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        createFlightPathButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        centerMapOnDroneButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        pauseMissionButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        setCurrentIndexButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        downloadMissionButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
-        isMissionFinishedButton.layer.cornerRadius    = UI_CORNER_RADIUS_BUTTONS
+        uploadMissionButton.layer.cornerRadius   		= UI_CORNER_RADIUS_BUTTONS
+        startMissionButton.layer.cornerRadius    		= UI_CORNER_RADIUS_BUTTONS
+		cancelMissionUploadButton.layer.cornerRadius 	= UI_CORNER_RADIUS_BUTTONS
+        createFlightPathButton.layer.cornerRadius    	= UI_CORNER_RADIUS_BUTTONS
+        centerMapOnDroneButton.layer.cornerRadius    	= UI_CORNER_RADIUS_BUTTONS
+        pauseMissionButton.layer.cornerRadius    		= UI_CORNER_RADIUS_BUTTONS
+        setCurrentIndexButton.layer.cornerRadius    	= UI_CORNER_RADIUS_BUTTONS
+        downloadMissionButton.layer.cornerRadius    	= UI_CORNER_RADIUS_BUTTONS
+        isMissionFinishedButton.layer.cornerRadius    	= UI_CORNER_RADIUS_BUTTONS
     }
 
     private func initFeedbackCaption() {
         feedbackLabel.text = "Welcome"
-        feedbackLabel.layer.cornerRadius   = UI_CORNER_RADIUS_BUTTONS
-        feedbackLabel?.layer.masksToBounds = true
-        feedbackLabel?.layer.borderColor = UIColor.lightGray.cgColor
-        feedbackLabel?.layer.borderWidth = 1.0
+        feedbackLabel.layer.cornerRadius   				= UI_CORNER_RADIUS_BUTTONS
+        feedbackLabel?.layer.masksToBounds 				= true
+        feedbackLabel?.layer.borderColor 				= UIColor.lightGray.cgColor
+        feedbackLabel?.layer.borderWidth 				= 1.0
     }
 
     private func initLocationManager() {
@@ -147,6 +149,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             .subscribe()
             .disposed(by: disposeBag)
     }
+	
+	@IBAction func cancelMissionUploadPressed(_ sender: Any) {
+		displayFeedback(message: "Cancel Upload Pressed")
+		
+		let ac = UIAlertController(title: "Cancel Upload", message: "Are you sure?", preferredStyle: .alert)
+		ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+		ac.addAction(UIAlertAction(title: "Okay", style: .default, handler: cancelUploadMission))
+		present(ac, animated: true)
+	}
+	
+	private func cancelUploadMission(action: UIAlertAction) {
+		drone.mission.cancelMissionUpload()
+			.do(onError: { error in
+					self.displayFeedback(message: "Mission upload cancel failed \(error)")
+				}, onCompleted: {
+					self.displayFeedback(message: "Mission upload cancel was successful")
+				})
+			.subscribe()
+			.disposed(by: disposeBag)
+	}
 
     @IBAction func startMissionPressed(_ sender: Any) {
         displayFeedback(message:"Start Mission Pressed")
