@@ -5,8 +5,8 @@ import Dronecode_SDK_Swift
 
 class CameraActionViewController: UIViewController {
     
-    @IBOutlet weak var feedbackLabel: UILabel!
-    @IBOutlet weak var videoLabel: UIButton!
+	@IBOutlet var feedbackLabel: UILabel!
+	@IBOutlet weak var videoLabel: UIButton!
     @IBOutlet weak var photoIntervalLabel: UIButton!
     
     override func viewDidLoad() {
