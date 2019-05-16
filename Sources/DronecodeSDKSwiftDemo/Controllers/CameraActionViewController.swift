@@ -1,19 +1,17 @@
-import Foundation
-
 import UIKit
 import Dronecode_SDK_Swift
+import RxSwift
 
 class CameraActionViewController: UIViewController {
     
-    @IBOutlet weak var feedbackLabel: UILabel!
-    @IBOutlet weak var videoLabel: UIButton!
+	@IBOutlet weak var feedbackLabel: UILabel!
+	@IBOutlet weak var videoLabel: UIButton!
     @IBOutlet weak var photoIntervalLabel: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         feedbackLabel.text = "Welcome"
-        feedbackLabel.layer.cornerRadius   = UI_CORNER_RADIUS_BUTTONS
         feedbackLabel?.layer.masksToBounds = true
         feedbackLabel?.layer.borderColor = UIColor.lightGray.cgColor
         feedbackLabel?.layer.borderWidth = 1.0
