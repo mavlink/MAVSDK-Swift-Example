@@ -1,5 +1,5 @@
 import UIKit
-import Dronecode_SDK_Swift
+import MAVSDK_Swift
 
 let UI_CORNER_RADIUS_BUTTONS = CGFloat(8.0)
 

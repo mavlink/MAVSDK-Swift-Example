@@ -1,5 +1,5 @@
 import Foundation
-import Dronecode_SDK_Swift
+import MAVSDK_Swift
 import MapKit
 
 class ExampleMission {
