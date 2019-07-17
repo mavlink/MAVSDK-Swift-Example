@@ -1,16 +1,16 @@
-name: DronecodeSDK-Swift-Example
+name: MAVSDK-Swift-Example
 options:
   deploymentTarget:
     iOS: "11.2"
-  bundleIdPrefix: org.dronecode.sdk
+  bundleIdPrefix: io.mavlink.mavsdk
 settings:
   ENABLE_BITCODE: NO
 targets:
-  DronecodeSDK_Swift_Example:
+  MAVSDK_Swift_Example:
     type: application
     platform: iOS
     info:
-      path: Sources/DronecodeSDKSwiftDemo/Info.plist
+      path: Sources/MAVSDK-Swift-Example/Info.plist
       properties:
         UILaunchStoryboardName: LaunchScreen
         UIMainStoryboardFile: Main
@@ -18,15 +18,15 @@ targets:
     settings:
       configs:
         debug:
-          SWIFT_OBJC_BRIDGING_HEADER: "Sources/DronecodeSDKSwiftDemo/DronecodeSDKSwiftDemo-Bridging-Header.h"
+          SWIFT_OBJC_BRIDGING_HEADER: "Sources/MAVSDK-Swift-Example/MAVSDK-Swift-Example-Bridging-Header.h"
         release:
-          SWIFT_OBJC_BRIDGING_HEADER: "Sources/DronecodeSDKSwiftDemo/DronecodeSDKSwiftDemo-Bridging-Header.h"
-    sources: [Sources/DronecodeSDKSwiftDemo]
+          SWIFT_OBJC_BRIDGING_HEADER: "Sources/MAVSDK-Swift-Example/MAVSDK-Swift-Example-Bridging-Header.h"
+    sources: [Sources/MAVSDK-Swift-Example]
     dependencies:
-      - carthage: backend
+      - carthage: mavsdk_server
       - carthage: BoringSSL
       - carthage: CgRPC
-      - carthage: Dronecode_SDK_Swift
+      - carthage: MAVSDK_Swift
       - carthage: MobileVLCKit
         embed: false
       - carthage: RxBlocking
