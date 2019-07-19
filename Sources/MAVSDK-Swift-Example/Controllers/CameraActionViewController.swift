@@ -15,6 +15,14 @@ class CameraActionViewController: UIViewController {
         feedbackLabel?.layer.masksToBounds = true
         feedbackLabel?.layer.borderColor = UIColor.lightGray.cgColor
         feedbackLabel?.layer.borderWidth = 1.0
+        
+        _ = drone.camera.cameraStatus
+            .subscribe(onNext: { status in
+                NSLog("Camera Status: \(status)")
+                
+            }, onError: { error in
+                NSLog("Error cameraStatusSubscription: \(error.localizedDescription)")
+            })
     }
     
     @IBAction func capturePicture(_ sender: UIButton) {
@@ -48,33 +56,15 @@ class CameraActionViewController: UIViewController {
     }
     
     @IBAction func photoIntervalAction(_ sender: UIButton) {
-        let intervalTimeS = 3
-        if(photoIntervalLabel.titleLabel?.text == "Start Photo Interval") {
-            let myRoutine = drone.camera.startPhotoInterval(intervalS: Float(intervalTimeS))
-                .do(onError: { error in self.feedbackLabel.text = "Start Photo Interval Failed : \(error.localizedDescription)" },
-                    onCompleted: {
-                        self.feedbackLabel.text = "Start Photo Interval Success"
-                        self.photoIntervalLabel.setTitle("Stop Photo Interval", for: .normal)
-                })
-            _ = myRoutine.subscribe()
-        }
-        else {
-            let myRoutine = drone.camera.stopPhotoInterval()
-                .do(onError: { error in self.feedbackLabel.text = "Stop Photo Interval Failed : \(error.localizedDescription)" },
-                    onCompleted: {
-                        self.feedbackLabel.text = "Stop Photo Interval Success"
-                        self.photoIntervalLabel.setTitle("Start Photo Interval", for: .normal)
-                })
-            _ = myRoutine.subscribe()
-        }
-        
-    }
-    
-    @IBAction func setPhotoMode(_ sender: UIButton) {
-        let myRoutine = drone.camera.setMode(cameraMode: Camera.CameraMode.photo)
-            .do(onError: { error in self.feedbackLabel.text = "Set Photo Mode Failed : \(error.localizedDescription)" },
-                onCompleted: {  self.feedbackLabel.text = "Set Photo Mode Success" })
-        _ = myRoutine.subscribe()
+        let option = Camera.Option(optionID: "1", optionDescription: "")
+        let setting = Camera.Setting(settingID: "CAM_COLORMODE", settingDescription: "", option: option)
+        _ = drone.camera.setSetting(setting: setting)
+            .do(onError: { error in
+                NSLog("failure: setSetting() \(error)")
+            }, onCompleted: {
+                NSLog("Completed")
+            })
+            .subscribe()
     }
     
     @IBAction func setVideoMode(_ sender: UIButton) {
