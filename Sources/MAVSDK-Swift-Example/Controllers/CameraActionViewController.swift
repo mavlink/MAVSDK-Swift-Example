@@ -5,7 +5,10 @@ import RxSwift
 class CameraActionViewController: UIViewController {
     
 	@IBOutlet weak var feedbackLabel: UILabel!
-	@IBOutlet weak var videoLabel: UIButton!
+    @IBOutlet weak var capturePicture: UIButton!
+    @IBOutlet weak var setPhotoMode: UIButton!
+    @IBOutlet weak var videoLabel: UIButton!
+    @IBOutlet weak var setVideoMode: UIButton!
     @IBOutlet weak var photoIntervalLabel: UIButton!
     
     override func viewDidLoad() {
@@ -15,6 +18,13 @@ class CameraActionViewController: UIViewController {
         feedbackLabel?.layer.masksToBounds = true
         feedbackLabel?.layer.borderColor = UIColor.lightGray.cgColor
         feedbackLabel?.layer.borderWidth = 1.0
+        feedbackLabel?.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
+        
+        capturePicture.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
+        setPhotoMode.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
+        videoLabel.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
+        setVideoMode.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
+        photoIntervalLabel.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
     }
     
     @IBAction func capturePicture(_ sender: UIButton) {
