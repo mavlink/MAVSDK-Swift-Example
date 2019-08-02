@@ -100,7 +100,7 @@ extension TelemetryViewController {
         print("Drone connected with UUID : \(uuid)")
 
         connectionLabel.text = "Connected"
-        entries[EntryType.connection.rawValue].value = "Drone connected with UUID : \(uuid)"
+        entries[EntryType.connection.rawValue].value = "Drone UUID : \(uuid)"
 
         telemetryTableView.reloadData()
     }
@@ -193,7 +193,9 @@ extension TelemetryViewController {
     }
     
     private func onArmedUpdate(armed: Bool) {
-        self.entries[EntryType.armed.rawValue].value = "\(armed)"
+        let isArmed = armed ? "Yes" : "No"
+        
+        self.entries[EntryType.armed.rawValue].value = "\(isArmed)"
         self.telemetryTableView.reloadData()
     }
     
@@ -284,7 +286,9 @@ extension TelemetryViewController {
     }
     
     private func onInAirUpdate(inAir: Bool) {
-        self.entries[EntryType.in_air.rawValue].value = "\(inAir)"
+        let isInAir = inAir ? "Yes" : "No"
+        
+        self.entries[EntryType.in_air.rawValue].value = "\(isInAir)"
         self.telemetryTableView.reloadData()
     }
 }
