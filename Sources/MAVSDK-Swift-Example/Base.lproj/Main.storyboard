@@ -10,68 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Camera-->
-        <scene sceneID="G6E-Ob-T08">
-            <objects>
-                <viewController id="xK4-XX-Ten" userLabel="Camera" customClass="CameraViewController" customModule="MAVSDK_Swift_Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jAb-yh-EU0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A83-em-mWq" userLabel="Title View">
-                                <rect key="frame" x="0.0" y="44" width="414" height="68"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVu-60-2xB">
-                                        <rect key="frame" x="146" y="12.666666666666664" width="122" height="43"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-DroneCore-thumb" translatesAutoresizingMaskIntoConstraints="NO" id="DTu-Cw-OqI">
-                                        <rect key="frame" x="8" y="25" width="80" height="18"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="FLe-Gp-vgH"/>
-                                            <constraint firstAttribute="width" constant="80" id="NwV-kD-AYe"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.4406479895" green="0.51737356189999995" blue="0.52941578629999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstItem="zVu-60-2xB" firstAttribute="centerY" secondItem="A83-em-mWq" secondAttribute="centerY" id="2dg-5l-sFI"/>
-                                    <constraint firstItem="zVu-60-2xB" firstAttribute="centerX" secondItem="A83-em-mWq" secondAttribute="centerX" id="3hH-Gz-tc6"/>
-                                    <constraint firstItem="DTu-Cw-OqI" firstAttribute="leading" secondItem="A83-em-mWq" secondAttribute="leading" constant="8" id="C1l-8D-At6"/>
-                                    <constraint firstAttribute="height" constant="68" id="Ph3-ij-ERT"/>
-                                    <constraint firstItem="DTu-Cw-OqI" firstAttribute="top" secondItem="A83-em-mWq" secondAttribute="top" constant="25" id="fHr-gG-Wjn"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wuh-gc-pYC">
-                                <rect key="frame" x="0.0" y="112" width="414" height="701"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Wuh-gc-pYC" firstAttribute="top" secondItem="A83-em-mWq" secondAttribute="bottom" id="2L2-Ac-uQN"/>
-                            <constraint firstItem="Wuh-gc-pYC" firstAttribute="bottom" secondItem="bo3-tY-8lP" secondAttribute="bottom" id="5F7-kG-mnR"/>
-                            <constraint firstItem="A83-em-mWq" firstAttribute="trailing" secondItem="bo3-tY-8lP" secondAttribute="trailing" id="LY9-gy-VCj"/>
-                            <constraint firstItem="A83-em-mWq" firstAttribute="top" secondItem="bo3-tY-8lP" secondAttribute="top" id="Nio-DI-obW"/>
-                            <constraint firstItem="Wuh-gc-pYC" firstAttribute="trailing" secondItem="bo3-tY-8lP" secondAttribute="trailing" id="NwT-Ja-eHO"/>
-                            <constraint firstItem="A83-em-mWq" firstAttribute="leading" secondItem="bo3-tY-8lP" secondAttribute="leading" id="k39-I3-8Li"/>
-                            <constraint firstItem="Wuh-gc-pYC" firstAttribute="leading" secondItem="bo3-tY-8lP" secondAttribute="leading" id="x5r-i7-rbS"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="bo3-tY-8lP"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Camera" image="icon-tab-camera" id="Mmk-XQ-OlW"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="cameraView" destination="Wuh-gc-pYC" id="26w-me-t5f"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="N7N-Ag-6l0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1405.5999999999999" y="1021.4392803598201"/>
-        </scene>
         <!--Camera Action-->
         <scene sceneID="cGW-b1-bJo">
             <objects>
@@ -80,8 +18,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-1i-W2S">
+                                <rect key="frame" x="0.0" y="190" width="414" height="400"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gHQ-P4-F7P">
-                                <rect key="frame" x="22" y="285" width="370" height="504"/>
+                                <rect key="frame" x="22" y="600" width="370" height="200"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bwv-em-Xmi">
                                         <rect key="frame" x="8" y="33" width="150" height="36"/>
@@ -170,7 +112,7 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-DroneCore-thumb" translatesAutoresizingMaskIntoConstraints="NO" id="ujJ-Gg-VoU">
                                         <rect key="frame" x="8" y="25" width="80" height="18"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera Action" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9r-AC-RW7">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9r-AC-RW7">
                                         <rect key="frame" x="82" y="13" width="250" height="42"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="36"/>
@@ -203,15 +145,19 @@
                         <constraints>
                             <constraint firstItem="gHQ-P4-F7P" firstAttribute="centerX" secondItem="p1k-PT-sRk" secondAttribute="centerX" id="2WR-zb-mf5"/>
                             <constraint firstItem="gHQ-P4-F7P" firstAttribute="centerX" secondItem="NSM-f9-Mls" secondAttribute="centerX" id="4lJ-Kk-ThO"/>
+                            <constraint firstItem="Rci-1i-W2S" firstAttribute="leading" secondItem="WP7-gM-6qD" secondAttribute="leading" id="HB1-gt-ALX"/>
+                            <constraint firstItem="Rci-1i-W2S" firstAttribute="trailing" secondItem="WP7-gM-6qD" secondAttribute="trailing" id="IRw-Z5-ZKM"/>
                             <constraint firstItem="i9X-0v-reu" firstAttribute="top" secondItem="p1k-PT-sRk" secondAttribute="top" constant="117" id="KSf-0S-du3"/>
                             <constraint firstItem="gHQ-P4-F7P" firstAttribute="leading" secondItem="WP7-gM-6qD" secondAttribute="leading" constant="22" id="LJl-Fv-PNY"/>
                             <constraint firstItem="i9X-0v-reu" firstAttribute="top" secondItem="NSM-f9-Mls" secondAttribute="bottom" constant="5" id="MeC-fu-Wdh"/>
-                            <constraint firstItem="gHQ-P4-F7P" firstAttribute="top" secondItem="p1k-PT-sRk" secondAttribute="top" constant="285" id="Xuc-Oh-jjc"/>
+                            <constraint firstItem="WP7-gM-6qD" firstAttribute="bottom" secondItem="gHQ-P4-F7P" secondAttribute="bottom" constant="13" id="gEN-d1-PoW"/>
+                            <constraint firstItem="WP7-gM-6qD" firstAttribute="bottom" secondItem="Rci-1i-W2S" secondAttribute="bottom" constant="223" id="gg3-so-glp"/>
                             <constraint firstItem="i9X-0v-reu" firstAttribute="centerX" secondItem="NSM-f9-Mls" secondAttribute="centerX" id="iXU-44-VzH"/>
-                            <constraint firstItem="WP7-gM-6qD" firstAttribute="bottom" secondItem="gHQ-P4-F7P" secondAttribute="bottom" constant="24" id="k2Z-tM-248"/>
                             <constraint firstItem="NSM-f9-Mls" firstAttribute="leading" secondItem="p1k-PT-sRk" secondAttribute="leading" id="kAL-KX-cNX"/>
+                            <constraint firstItem="Rci-1i-W2S" firstAttribute="top" secondItem="i9X-0v-reu" secondAttribute="bottom" constant="13" id="oED-rC-fW2"/>
                             <constraint firstItem="gHQ-P4-F7P" firstAttribute="centerX" secondItem="i9X-0v-reu" secondAttribute="centerX" id="qvf-I2-nmt"/>
                             <constraint firstItem="i9X-0v-reu" firstAttribute="leading" secondItem="p1k-PT-sRk" secondAttribute="leadingMargin" id="sN1-Qh-xeD"/>
+                            <constraint firstItem="gHQ-P4-F7P" firstAttribute="top" secondItem="Rci-1i-W2S" secondAttribute="bottom" constant="10" id="tc2-Va-wrh"/>
                             <constraint firstItem="NSM-f9-Mls" firstAttribute="top" secondItem="WP7-gM-6qD" secondAttribute="top" id="u1V-W3-NBi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WP7-gM-6qD"/>
@@ -219,6 +165,7 @@
                     <tabBarItem key="tabBarItem" title="Camera Action" image="icon-tab-camera" id="SEB-I4-8AW"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cameraView" destination="Rci-1i-W2S" id="IVi-pr-Alg"/>
                         <outlet property="capturePicture" destination="Bwv-em-Xmi" id="yuI-Pq-2z4"/>
                         <outlet property="feedbackLabel" destination="i9X-0v-reu" id="oHz-SJ-0HO"/>
                         <outlet property="photoIntervalLabel" destination="GFN-eT-J1K" id="4ue-Vd-3fC"/>
@@ -229,7 +176,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XDn-UL-evc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2073.913043478261" y="1021.875"/>
+            <point key="canvasLocation" x="1365" y="1021"/>
         </scene>
         <!--Telemetry-->
         <scene sceneID="RNB-95-TvJ">
@@ -355,7 +302,6 @@
                         <segue destination="GQQ-gj-UNt" kind="relationship" relationship="viewControllers" id="M2h-Rm-Yfg"/>
                         <segue destination="sxF-oW-WnJ" kind="relationship" relationship="viewControllers" id="47r-4T-bSm"/>
                         <segue destination="AZc-kT-pmw" kind="relationship" relationship="viewControllers" id="xIZ-3G-0UO"/>
-                        <segue destination="xK4-XX-Ten" kind="relationship" relationship="viewControllers" id="ENB-Z6-o5U"/>
                         <segue destination="UWF-2t-WUx" kind="relationship" relationship="viewControllers" id="vKe-yr-WK0"/>
                     </connections>
                 </tabBarController>
