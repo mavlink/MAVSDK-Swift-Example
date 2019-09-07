@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-DroneCore" translatesAutoresizingMaskIntoConstraints="NO" id="8AQ-fS-AsA">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sdk_logo_full" translatesAutoresizingMaskIntoConstraints="NO" id="8AQ-fS-AsA">
                                 <rect key="frame" x="64" y="296" width="243" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="243" id="PtU-As-8NN"/>
@@ -42,6 +42,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo-DroneCore" width="2587" height="578"/>
+        <image name="sdk_logo_full" width="1154" height="177"/>
     </resources>
 </document>
