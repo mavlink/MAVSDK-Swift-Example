@@ -1,2 +1,0 @@
-github "mavlink/MAVSDK-Swift" ~> 0.7.0
-binary "https://code.videolan.org/videolan/VLCKit/raw/master/Packaging/MobileVLCKit.json" == 3.1.4
