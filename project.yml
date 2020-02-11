@@ -1,7 +1,7 @@
 name: MAVSDK-Swift-Example
 options:
   deploymentTarget:
-    iOS: "11.2"
+    iOS: "11.4"
   bundleIdPrefix: io.mavlink.mavsdk
 settings:
   ENABLE_BITCODE: NO
