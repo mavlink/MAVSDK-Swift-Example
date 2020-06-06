@@ -35,20 +35,23 @@ class CameraActionViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Play example rtsp stream
-        let url = URL(string: "rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov")
-        
+        // Play example rtsp stream (this works with the Yuneec Mantis Q)
+        let url = URL(string: "rtsp://192.168.42.1:554/live")
+
         let media = VLCMedia(url: url!)
+        media.addOptions([
+            "network-caching": 1000,
+            "rtp-caching": 0,
+        ])
         mediaPlayer.media = media
         mediaPlayer.delegate = self as? VLCMediaPlayerDelegate
         mediaPlayer.drawable = self.cameraView
         
-        //TODO modify this
         mediaPlayer.play()
     }
     
     @IBAction func capturePicture(_ sender: UIButton) {
-        let myRoutine = drone.camera.takePhoto()
+        let myRoutine = drone!.camera.takePhoto()
             .do(onError: { error in self.feedbackLabel.text = "Photo Capture Failed : \(error.localizedDescription)" },
                 onCompleted: { self.feedbackLabel.text = "Photo Capture Success" })
         _ = myRoutine.subscribe()
@@ -56,7 +59,7 @@ class CameraActionViewController: UIViewController {
     
     @IBAction func videoAction(_ sender: UIButton) {
         if(videoLabel.titleLabel?.text == "Start Video") {
-            let myRoutine = drone.camera.startVideo()
+            let myRoutine = drone!.camera.startVideo()
                 .do(onError: { error in self.feedbackLabel.text = "Start Video Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Start Video Success"
@@ -66,7 +69,7 @@ class CameraActionViewController: UIViewController {
         }
             
         else {
-            let myRoutine = drone.camera.stopVideo()
+            let myRoutine = drone!.camera.stopVideo()
                 .do(onError: { error in self.feedbackLabel.text = "Stop Video Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Stop Video Success"
@@ -80,7 +83,7 @@ class CameraActionViewController: UIViewController {
     @IBAction func photoIntervalAction(_ sender: UIButton) {
         let intervalTimeS = 3
         if(photoIntervalLabel.titleLabel?.text == "Start Photo Interval") {
-            let myRoutine = drone.camera.startPhotoInterval(intervalS: Float(intervalTimeS))
+            let myRoutine = drone!.camera.startPhotoInterval(intervalS: Float(intervalTimeS))
                 .do(onError: { error in self.feedbackLabel.text = "Start Photo Interval Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Start Photo Interval Success"
@@ -89,7 +92,7 @@ class CameraActionViewController: UIViewController {
             _ = myRoutine.subscribe()
         }
         else {
-            let myRoutine = drone.camera.stopPhotoInterval()
+            let myRoutine = drone!.camera.stopPhotoInterval()
                 .do(onError: { error in self.feedbackLabel.text = "Stop Photo Interval Failed : \(error.localizedDescription)" },
                     onCompleted: {
                         self.feedbackLabel.text = "Stop Photo Interval Success"
@@ -101,14 +104,14 @@ class CameraActionViewController: UIViewController {
     }
     
     @IBAction func setPhotoMode(_ sender: UIButton) {
-        let myRoutine = drone.camera.setMode(cameraMode: Camera.CameraMode.photo)
+        let myRoutine = drone!.camera.setMode(mode: Camera.Mode.photo)
             .do(onError: { error in self.feedbackLabel.text = "Set Photo Mode Failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Set Photo Mode Success" })
         _ = myRoutine.subscribe()
     }
     
     @IBAction func setVideoMode(_ sender: UIButton) {
-        let myRoutine = drone.camera.setMode(cameraMode: Camera.CameraMode.video)
+        let myRoutine = drone!.camera.setMode(mode: Camera.Mode.video)
             .do(onError: { error in self.feedbackLabel.text = "Set Video Mode Failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Set Video Mode Success" })
         _ = myRoutine.subscribe()

@@ -40,59 +40,59 @@ class ActionsViewController: UIViewController {
     }
     
     @IBAction func armPressed(_ sender: Any) {
-        _ = drone.action.arm()
+        _ = drone!.action.arm()
             .do(onError: { error in  self.feedbackLabel.text = "Arming Failed : \(error.localizedDescription)" },
                 onCompleted: {  self.feedbackLabel.text = "Arming Succeeded"})
             .subscribe()
     }
     
     @IBAction func disarmPressed(_ sender: Any) {
-        _ = drone.action.disarm()
+        _ = drone!.action.disarm()
             .do(onError: { error in self.feedbackLabel.text = "Disarming Failed: \(error.localizedDescription)"  }, onCompleted: { self.feedbackLabel.text = "Disarming succeeded" })
             .subscribe()
     }
     
     @IBAction func takeoffPressed(_ sender: Any) {
-         _ = drone.action.takeoff()
+         _ = drone!.action.takeoff()
             .do(onError: { error in self.feedbackLabel.text = "Takeoff Failed" }, onCompleted: { self.feedbackLabel.text = "Takeoff Succeeded" })
             .subscribe()
     }
     
     @IBAction func landPressed(_ sender: Any) {
-         _ = drone.action.land()
+         _ = drone!.action.land()
             .do(onError: { error in self.feedbackLabel.text = "Land Failed" }, onCompleted: { self.feedbackLabel.text = "Land Succeeded" })
             .subscribe()
     }
     
     @IBAction func returnToLaunchPressed(_ sender: Any) {
-        _ = drone.action.returnToLaunch()
+        _ = drone!.action.returnToLaunch()
             .do(onError: { error in self.feedbackLabel.text = "Return To Launch Failed" }, onCompleted: { self.feedbackLabel.text = "Return To Launch Succeeded"})
             .subscribe()
     }
     
     @IBAction func transitionToFixedWingPressed(_ sender: Any) {
-        _ = drone.action.transitionToFixedWing()
+        _ = drone!.action.transitionToFixedwing()
             .do(onError: { error in self.feedbackLabel.text = "Transition To Fixed Wing Failed"},
                 onCompleted: { self.feedbackLabel.text = "Transition To Fixed Wing Succeeded"})
             .subscribe()
     }
     
     @IBAction func transitionToMulticopterPressed(_ sender: Any) {
-        _ = drone.action.transitionToMulticopter()
+        _ = drone!.action.transitionToMulticopter()
             .do(onError: { error in self.feedbackLabel.text = "Transition To Multicopter Failed"},
                 onCompleted: { self.feedbackLabel.text = "Transition To Multicopter Succeeded"})
             .subscribe()
     }
     
     @IBAction func getTakeoffAltitudePressed(_ sender: Any) {
-        _ = drone.action.getTakeoffAltitude()
+        _ = drone!.action.getTakeoffAltitude()
             .do(onSuccess: { altitude in self.feedbackLabel.text = "Takeoff Altitude: \(altitude)" },
                 onError: { error in self.feedbackLabel.text = "Get Takeoff Altitude Failure: \(error)" })
             .subscribe()
     }
 
     @IBAction func getMaximumSpeedPressed(_ sender: Any) {
-        _ = drone.action.getMaximumSpeed()
+        _ = drone!.action.getMaximumSpeed()
             .do(onSuccess: { speed in self.feedbackLabel.text = "Maximum speed: \(speed)" },
                 onError: { error in self.feedbackLabel.text = "Get Maximum Speed Failure: \(error)" })
             .subscribe()

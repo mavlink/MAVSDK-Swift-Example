@@ -86,7 +86,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     private func initDroneAnnotation() {
         mapView.addAnnotation(droneAnnotation)
 
-        _ = drone.telemetry.position
+        _ = drone!.telemetry.position
             .observeOn(MainScheduler.instance)
             .map({ position -> CLLocation in
                 CLLocation(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
@@ -97,11 +97,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func observeMissionProgress() {
-        drone.mission.missionProgress
+        drone!.mission.missionProgress
             .observeOn(MainScheduler.instance)
             .do(onNext: { missionProgress in
                     print("Got mission progress update")
-                    self.displayFeedback(message:"Mission progress: \(missionProgress.currentItemIndex) / \(missionProgress.missionCount)") },
+                self.displayFeedback(message:"Mission progress: \(missionProgress.current) / \(missionProgress.total)") },
                 onError: { error in print("Error mission progress") })
             .subscribe()
             .disposed(by: disposeBag)
@@ -113,7 +113,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func centerOnDroneLocation() {
-        _ = drone.telemetry.position
+        _ = drone!.telemetry.position
             .observeOn(MainScheduler.instance)
             .take(1)
             .map({ position -> CLLocation in
@@ -138,8 +138,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func uploadMission() {
-        _ = drone.mission.setReturnToLaunchAfterMission(enable: true).subscribe()
-        drone.mission.uploadMission(missionItems: mission.missionItems)
+        _ = drone!.mission.setReturnToLaunchAfterMission(enable: true).subscribe()
+        let missionPlan = Mission.MissionPlan(missionItems: mission.missionItems)
+        drone!.mission.uploadMission(missionPlan: missionPlan)
             .do(onError: { error in
                 self.displayFeedback(message:"Mission uploaded failed \(error)")
 
@@ -160,7 +161,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
 	}
 	
 	private func cancelUploadMission(action: UIAlertAction) {
-		drone.mission.cancelMissionUpload()
+		drone!.mission.cancelMissionUpload()
 			.do(onError: { error in
 					self.displayFeedback(message: "Mission upload cancel failed \(error)")
 				}, onCompleted: {
@@ -176,7 +177,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func startMission() {
-        drone.action.arm()
+        drone!.action.arm()
             .catchError({ error -> PrimitiveSequence<CompletableTrait, Never> in
                 guard let actionError = error as? Action.ActionError, actionError.code == Action.ActionResult.Result.commandDeniedNotLanded else {
                     throw error
@@ -184,7 +185,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 return Completable.empty()
             })
             .do(onError: { error in self.displayFeedback(message: "Arming failed") })
-            .andThen(drone.mission.startMission())
+            .andThen(drone!.mission.startMission())
             .do(onError: { error in self.displayFeedback(message: "Mission start failed: \(error)") }, onCompleted: { self.displayFeedback(message:"Mission started") })
             .subscribe()
             .disposed(by: disposeBag)
@@ -201,7 +202,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func resumeMission() {
-        drone.mission.startMission()
+        drone!.mission.startMission()
             .do(onError: { error in
                 self.displayFeedback(message: "Resume mission failed \(error)")
             }, onCompleted: {
@@ -213,7 +214,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func pauseMission() {
-        drone.mission.pauseMission()
+        drone!.mission.pauseMission()
             .do(onError: { error in
                 self.displayFeedback(message:"Pausing Mission failed")
             }, onCompleted: {
@@ -230,7 +231,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func setCurrentMissionItem(index: Int32) {
-        drone.mission.setCurrentMissionItemIndex(index: index)
+        drone!.mission.setCurrentMissionItem(index: index)
             .do(onError: { error in self.displayFeedback(message: "Set current mission index failed \(error)") },
                 onCompleted: { self.displayFeedback(message:"Set current mission index to \(index).") })
             .subscribe()
@@ -243,7 +244,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func downloadMission() {
-        drone.mission.downloadMission()
+        drone!.mission.downloadMission()
             .subscribe(onSuccess: { (mission) in
                 self.displayFeedback(message:"Downloaded mission")
                 print("Mission downloaded: \(mission)")
@@ -259,7 +260,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     private func isMissionFinished() {
-        drone.mission.isMissionFinished()
+        drone!.mission.isMissionFinished()
             .subscribe(onSuccess: { (finished) in
                 self.displayFeedback(message:"Is mission finished: \(finished)")
             }, onError: { (error) in
