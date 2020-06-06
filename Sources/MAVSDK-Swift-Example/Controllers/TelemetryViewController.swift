@@ -10,7 +10,7 @@ private enum EntryType : Int {
     case latitude_longitude
     case flight_mode
     case armed
-    case groundspeed
+    case velocity
     case battery
     case attitude
     case gps
@@ -46,8 +46,7 @@ class TelemetryViewController: UIViewController {
 
         entries = generateEntries()
 
-        _ = drone.startMavlink
-            .subscribe(onCompleted: { self.startObserving() })
+        self.startObserving()
     }
 
     private func generateEntries() -> [TelemetryEntry] {
@@ -85,7 +84,7 @@ class TelemetryViewController: UIViewController {
 // MARK: - DroneCode Observations
 extension TelemetryViewController {
     private func observeConnection() {
-        _ = drone.core.connectionState
+        _ = drone!.core.connectionState
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { connectionState in
                     if (connectionState.isConnected) {
@@ -115,7 +114,7 @@ extension TelemetryViewController {
     }
 
     private func observeHealth() {
-        _ = drone.telemetry.health
+        _ = drone!.telemetry.health
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { health in self.onHealthUpdate(health: health) },
                            onError: { error in print(error) })
@@ -129,7 +128,7 @@ extension TelemetryViewController {
     }
 
     private func observePosition() {
-        _ = drone.telemetry.position
+        _ = drone!.telemetry.position
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { position in self.onPositionUpdate(position: position)},
                            onError: { error in print(error) })
@@ -150,7 +149,7 @@ extension TelemetryViewController {
     }
     
     private func observeFlightMode() {
-        _ = drone.telemetry.flightMode
+        _ = drone!.telemetry.flightMode
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { mode in self.onFlightModeUpdate(mode: mode)},
                        onError: { error in print(error) })
@@ -179,6 +178,18 @@ extension TelemetryViewController {
             modeString = "Follow Me"
         case .UNRECOGNIZED(_):
             modeString = "Unrecognized"
+        case .manual:
+            modeString = "Manual"
+        case .altctl:
+            modeString = "Altitude Control"
+        case .posctl:
+            modeString = "Position Control"
+        case .acro:
+            modeString = "Acro"
+        case .stabilized:
+            modeString = "Stabilized"
+        case .rattitude:
+            modeString = "Rattitude"
         }
         
         self.entries[EntryType.flight_mode.rawValue].value = modeString
@@ -186,7 +197,7 @@ extension TelemetryViewController {
     }
     
     private func observeArmed() {
-        _ = drone.telemetry.armed
+        _ = drone!.telemetry.armed
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { armed in self.onArmedUpdate(armed: armed) },
                        onError: { error in print(error) })
@@ -200,23 +211,23 @@ extension TelemetryViewController {
     }
     
     private func observeGroundSpeed() {
-        _ = drone.telemetry.groundSpeedNed
+        _ = drone!.telemetry.velocityNed
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { groundSpeed in self.onGroundSpeedUpdate(groundSpeed: groundSpeed) },
+            .subscribe(onNext: { velocity in self.onVelocityUpdate(velocity: velocity) },
                        onError: { error in print(error) })
     }
     
-    private func onGroundSpeedUpdate(groundSpeed: Telemetry.SpeedNed) {
-        let northFormattedString = String(format: "%.3f", groundSpeed.velocityNorthMS)
-        let eastFormattedString = String(format: "%.3f", groundSpeed.velocityEastMS)
-        let downFormattedString = String(format: "%.3f", groundSpeed.velocityDownMS)
+    private func onVelocityUpdate(velocity: Telemetry.VelocityNed) {
+        let northFormattedString = String(format: "%.3f", velocity.northMS)
+        let eastFormattedString = String(format: "%.3f", velocity.eastMS)
+        let downFormattedString = String(format: "%.3f", velocity.downMS)
 
-        self.entries[EntryType.groundspeed.rawValue].value = "N: \(northFormattedString) m/s | E: \(eastFormattedString) m/s | D: \(downFormattedString) m/s"
+        self.entries[EntryType.velocity.rawValue].value = "N: \(northFormattedString) m/s | E: \(eastFormattedString) m/s | D: \(downFormattedString) m/s"
         self.telemetryTableView.reloadData()
     }
     
     private func observeBattery() {
-        _ = drone.telemetry.battery
+        _ = drone!.telemetry.battery
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { battery in self.onBatteryUpdate(battery: battery) },
                        onError: { error in print(error) })
@@ -230,7 +241,7 @@ extension TelemetryViewController {
     }
     
     private func observeAttitude() {
-        _ = drone.telemetry.attitudeEuler
+        _ = drone!.telemetry.attitudeEuler
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { attitude in self.onAttitudeUpdate(attitude: attitude) },
                        onError: { error in print(error) })
@@ -246,7 +257,7 @@ extension TelemetryViewController {
     }
     
     private func observeGPS() {
-        _ = drone.telemetry.gpsInfo
+        _ = drone!.telemetry.gpsInfo
             .observeOn(MainScheduler.instance)
             .subscribe(onNext:{ gps in self.onGPSUpdate(gps: gps) },
                        onError: { error in print(error) })
@@ -279,7 +290,7 @@ extension TelemetryViewController {
     }
     
     private func observeInAir() {
-        _ = drone.telemetry.inAir
+        _ = drone!.telemetry.inAir
             .observeOn(MainScheduler.instance)
             .subscribe(onNext:{ inAir in self.onInAirUpdate(inAir: inAir) },
                        onError: { error in print(error) })
