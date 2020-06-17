@@ -1,5 +1,7 @@
 # Example app using the Dronecode SDK on iOS
 
+![](mavsdk-swift-example.gif)
+
 ### Getting started
 
 1. Create the Xcode project file from `project.yml` with [xcodegen](https://github.com/yonaskolb/XcodeGen) (that can be installed with Homebrew: `$ brew install xcodegen`):
