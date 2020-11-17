@@ -12,8 +12,6 @@ class CameraActionViewController: UIViewController {
     @IBOutlet weak var photoIntervalLabel: UIButton!
     @IBOutlet weak var cameraView: UIView!
     
-    var mediaPlayer = VLCMediaPlayer()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,24 +28,6 @@ class CameraActionViewController: UIViewController {
         photoIntervalLabel.layer.cornerRadius = UI_CORNER_RADIUS_BUTTONS
         
         self.cameraView.backgroundColor = UIColor.lightGray
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Play example rtsp stream (this works with the Yuneec Mantis Q)
-        let url = URL(string: "rtsp://192.168.42.1:554/live")
-
-        let media = VLCMedia(url: url!)
-        media.addOptions([
-            "network-caching": 1000,
-            "rtp-caching": 0,
-        ])
-        mediaPlayer.media = media
-        mediaPlayer.delegate = self as? VLCMediaPlayerDelegate
-        mediaPlayer.drawable = self.cameraView
-        
-        mediaPlayer.play()
     }
     
     @IBAction func capturePicture(_ sender: UIButton) {
