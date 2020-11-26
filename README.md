@@ -1,4 +1,4 @@
-# Example app using the Dronecode SDK on iOS
+# Example app using MAVSDK on iOS
 
 ![](mavsdk-swift-example.gif)
 
@@ -10,17 +10,5 @@
 xcodegen
 ```
 
-2. Make sure you have [RubyGems](https://rubygems.org/pages/download) installed, then install the xcodeproj gem:
-
-```
-gem install --user xcodeproj
-```
-
-3. Get the dependencies with Carthage:
-
-```
-carthage bootstrap --platform ios
-```
-
-4. Open `DronecodeSDK-Swift-Example.xcodeproj` with Xcode.
-5. Set the signing team in the "General" tab of target `DronecodeSDK_Swift_Example`
+2. Open `MAVSDK-Swift-Example.xcodeproj` with Xcode.
+3. Set the signing team in the "General" tab of target `MAVSDK-Swift-Example`
