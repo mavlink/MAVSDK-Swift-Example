@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - 'master'
+    tags:
+    - '*'
+  pull_request:
+    branches:
+    - '*'
+
+jobs:
+  build:
+    name: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: install tools
+        run: brew install xcodegen
+      - name: generate xcodeproj
+        run: xcodegen
+      - name: build
+        run: xcodebuild -scheme MAVSDK_Swift_Example CODE_SIGNING_ALLOWED=NO build
