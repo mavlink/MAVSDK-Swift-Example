@@ -1,4 +1,4 @@
-import MAVSDK_Swift
+import Mavsdk
 import MapKit
 import RxSwift
 import UIKit

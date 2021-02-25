@@ -1,6 +1,5 @@
 import UIKit
-import MAVSDK_Swift
-import MavsdkServer
+import Mavsdk
 
 var drone: Drone? = Optional.none
 

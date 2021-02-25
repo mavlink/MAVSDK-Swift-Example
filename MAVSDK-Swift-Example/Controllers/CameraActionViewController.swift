@@ -1,5 +1,5 @@
 import UIKit
-import MAVSDK_Swift
+import Mavsdk
 import RxSwift
 
 class CameraActionViewController: UIViewController {

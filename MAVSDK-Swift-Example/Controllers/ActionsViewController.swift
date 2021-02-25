@@ -1,5 +1,5 @@
 import UIKit
-import MAVSDK_Swift
+import Mavsdk
 
 let UI_CORNER_RADIUS_BUTTONS = CGFloat(8.0)
 
