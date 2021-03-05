@@ -29,6 +29,6 @@ targets:
     sources: [MAVSDK-Swift-Example]
     dependencies:
       - package: MAVSDK-Swift
-        product: MAVSDK_Swift
+        product: Mavsdk
       - package: MAVSDK-Swift
         product: MavsdkServer
