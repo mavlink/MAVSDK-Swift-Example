@@ -1,5 +1,5 @@
 import Foundation
-import MAVSDK_Swift
+import Mavsdk
 import MapKit
 
 class ExampleMission {
