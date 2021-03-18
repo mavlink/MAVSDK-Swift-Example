@@ -1,9 +1,9 @@
 import UIKit
-import MAVSDK_Swift
+import Mavsdk
 import MavsdkServer
 
 var drone: Drone? = Optional.none
-let cloudSimIP: String = "3.238.238.12"
+let cloudSimIP: String = "3.236.108.82"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
