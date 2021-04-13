@@ -5,10 +5,14 @@ options:
   bundleIdPrefix: io.mavlink.mavsdk
 settings:
   ENABLE_BITCODE: NO
+  SWIFT_OBJC_BRIDGING_HEADER: "$(PROJECT_DIR)/MAVSDK-Swift-Example/VideoFeed/RtspClient-Bridging-Header.h"
 packages:
   Mavsdk:
     url: https://github.com/mavlink/MAVSDK-Swift
     minorVersion: 0.11.0
+  FFmpeg-iOS:
+    url: https://github.com/kewlbear/FFmpeg-iOS
+    minorVersion: 0.0.3
 targets:
   MAVSDK_Swift_Example:
     type: application
@@ -32,3 +36,5 @@ targets:
         product: Mavsdk
       - package: Mavsdk
         product: MavsdkServer
+      - package: FFmpeg-iOS
+        product: FFmpeg-iOS
