@@ -36,7 +36,7 @@ class CameraActionViewController: UIViewController {
         self.cameraView.backgroundColor = UIColor.lightGray
 
         startSubscriptions()
-        addVideoFeed()
+        fetchUriAndStartStream()
     }
     
     @IBAction func capturePicture(_ sender: UIButton) {
@@ -66,12 +66,12 @@ class CameraActionViewController: UIViewController {
                 })
             _ = myRoutine.subscribe()
         }
-        
     }
     
     @IBAction func photoIntervalAction(_ sender: UIButton) {
         let intervalTimeS = 3
-        if(photoIntervalLabel.titleLabel?.text == "Start Photo Interval") {
+
+        if (photoIntervalLabel.titleLabel?.text == "Start Photo Interval") {
             let myRoutine = drone!.camera.startPhotoInterval(intervalS: Float(intervalTimeS))
                 .do(onError: { error in self.feedbackLabel.text = "Start Photo Interval Failed : \(error.localizedDescription)" },
                     onCompleted: {
@@ -105,14 +105,20 @@ class CameraActionViewController: UIViewController {
                 onCompleted: {  self.feedbackLabel.text = "Set Video Mode Success" })
         _ = myRoutine.subscribe()
     }
-    
-    class func showAlert(_ message: String?, viewController: UIViewController?) {
-        let alert = UIAlertController(title: message, message: "", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        viewController?.present(alert, animated: true) {() -> Void in }
+
+    func fetchUriAndStartStream() {
+        _ = drone!.camera.videoStreamInfo
+            .observeOn(MainScheduler.instance)
+            .take(1)
+            .asSingle()
+            .subscribe(onSuccess: { videoStreamInfo in self.addVideoFeed(videoStreamInfo: videoStreamInfo) })
     }
-    
-    func addVideoFeed() {
+
+    func addVideoFeed(videoStreamInfo: Mavsdk.Camera.VideoStreamInfo) {
+        let videoStreamUri = videoStreamInfo.settings.uri
+        let usesTcp = videoStreamUri.contains("rtspt")
+        let videoPath = videoStreamUri.replacingOccurrences(of: "rtspt", with: "rtsp")
+
         rtspView = RTSPView(frame: cameraView.frame)
         
         cameraView.addSubview(rtspView)
@@ -121,8 +127,9 @@ class CameraActionViewController: UIViewController {
         rtspView.bottomAnchor.constraint(equalTo: cameraView.bottomAnchor, constant: 0).isActive = true
         rtspView.leftAnchor.constraint(equalTo: cameraView.leftAnchor, constant: 0).isActive = true
         rtspView.rightAnchor.constraint(equalTo: cameraView.rightAnchor, constant: 0).isActive = true
-        
-        rtspView.startPlaying(videoPath: "rtsp://\(cloudSimIP):8553/stream1", usesTcp: false)
+
+        print("Starting video stream with path \(videoPath), using TCP: \(usesTcp)")
+        rtspView.startPlaying(videoPath: videoPath, usesTcp: usesTcp)
     }
     
     func startSubscriptions() {
@@ -136,25 +143,10 @@ class CameraActionViewController: UIViewController {
                 self.additionalFeedbackLabel.text = "Capture info error: \(error)"
                 print("Capture info error: \(error)")
             })
-
-        _ = drone!.camera.currentSettings
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (settings) in
-                print("Current camera settings: \(settings)")
-            }, onError: { (error) in
-                print("Current camera settings error: \(error)")
-            })
-
-        _ = drone!.camera.possibleSettingOptions
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (options) in
-                print("Camera settings options: \(options)")
-            }, onError: { (error) in
-                print("Camera settings options error: \(error)")
-            })
         
         _ = drone!.camera.videoStreamInfo
             .observeOn(MainScheduler.instance)
+            .take(1)
             .subscribe(onNext: { streamInfo in
                 print("streamInfo settings:\(streamInfo.settings) status:\(streamInfo.status)")
             }, onError: { error in

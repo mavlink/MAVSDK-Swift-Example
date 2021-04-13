@@ -38,7 +38,6 @@ class RTSPView: UIImageView {
     }
     
     @objc func update(timer: Timer) {
-        
         guard let player = player, player.stepFrame() else {
             stopPlaying()
             return

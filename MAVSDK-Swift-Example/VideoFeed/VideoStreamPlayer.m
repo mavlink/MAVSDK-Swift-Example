@@ -51,7 +51,7 @@
  
     AVCodec *codec;
     outFrame = av_frame_alloc();
-//    av_log_set_level(AV_LOG_TRACE); // Uncomment for the most verbose logs
+    av_log_set_level(AV_LOG_ERROR);
     avformat_network_init();
     
     // Set the RTSP Options
@@ -82,6 +82,7 @@
               &codec,          // Gets the codec associated with the stream, can be NULL
               0                     // Flags - not used currently
               );
+
     if (videoStreamIndex == AVERROR_STREAM_NOT_FOUND || !codec) {
         NSLog(@"Did not find video stream");
         goto initError;
@@ -89,7 +90,7 @@
 
     // Get the codec context
     codecCtx = avcodec_alloc_context3(codec);
-    if (!codecCtx){
+    if (!codecCtx) {
         // Out of memory
         avformat_close_input(&formatCtx);
     }
@@ -99,7 +100,7 @@
                                                codecCtx,
                                                formatCtx->streams[videoStreamIndex]->codecpar
                                                );
-    if(result < 0){
+    if (result < 0) {
         // Failed to set parameters
         avformat_close_input(&formatCtx);
         avcodec_free_context(&codecCtx);
@@ -108,7 +109,7 @@
 
     // Ready to open stream based on previous parameters
     // Third parameter (NULL) is optional dictionary settings
-    if (avcodec_open2(codecCtx, codec, NULL) < 0){
+    if (avcodec_open2(codecCtx, codec, NULL) < 0) {
         // Cannot open the video codec
         av_log(NULL, AV_LOG_ERROR, "Cannot open video decoder\n");
         codecCtx = NULL;
@@ -161,20 +162,19 @@ initError:
 - (BOOL)stepFrame
 {
     AVPacket packet;
-    int frameFinished=0;
+    bool isFrameFinished = false;
     av_init_packet(&packet); // set fields of packet to default.
     packet.data = NULL;
     packet.size = 0;
 
-
-    while (!frameFinished && formatCtx != NULL && av_read_frame(formatCtx, &packet) >=0) {
-        if (packet.stream_index==videoStreamIndex) {
+    while (!isFrameFinished && formatCtx != NULL && av_read_frame(formatCtx, &packet) >= 0) {
+        if (packet.stream_index == videoStreamIndex) {
             // Send the data packet to the decoder
             int sendPacketResult = avcodec_send_packet(codecCtx, &packet);
-            if (sendPacketResult == AVERROR(EAGAIN)){
+            if (sendPacketResult == AVERROR(EAGAIN)) {
                 NSLog(@"Decoder can't take packets right now. Make sure you are draining it.");
                 // Decoder can't take packets right now. Make sure you are draining it.
-            } else if (sendPacketResult < 0){
+            } else if (sendPacketResult < 0) {
                 // Failed to send the packet to the decoder
                 NSLog(@"Failed to send the packet to the decoder");
             }
@@ -184,27 +184,26 @@ initError:
             frame = av_frame_alloc();
             int decodeFrame = avcodec_receive_frame(codecCtx, frame);
 
-
-            if (decodeFrame == AVERROR(EAGAIN)){
+            if (decodeFrame == AVERROR(EAGAIN)) {
                 // The decoder doesn't have enough data to produce a frame
                 // Not an error unless we reached the end of the stream
                 // Just pass more packets until it has enough to produce a frame
                 NSLog(@"The decoder doesn't have enough data to produce a frame");
                 av_frame_unref(frame);
                 av_freep(frame);
-            } else if (decodeFrame < 0){
+            } else if (decodeFrame < 0) {
                 // Failed to get a frame from the decoder
                 NSLog(@"Failed to get a frame from the decoder");
                 av_frame_unref(frame);
                 av_freep(frame);
             } else {
-                frameFinished = 1;
+                isFrameFinished = true;
             }
         }
     }
     av_packet_unref(&packet);
 
-    return frameFinished!=0;
+    return isFrameFinished;
 }
 
 - (UIImage *)imageFromAVFrame:(AVFrame*)oFrame width:(int)width height:(int)height
@@ -237,7 +236,6 @@ initError:
     
     return image;
 }
-
 
 - (void)convertFrameToRGB
 {

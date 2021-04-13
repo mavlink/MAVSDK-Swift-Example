@@ -3,7 +3,6 @@ import Mavsdk
 import MavsdkServer
 
 var drone: Drone? = Optional.none
-let cloudSimIP: String = "3.236.108.82"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -12,8 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mavsdkServer = MavsdkServer()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let port = mavsdkServer.run(systemAddress: "tcp://\(cloudSimIP):5790")
-//        let port = mavsdkServer.run()
+        let port = mavsdkServer.run()
         drone = Drone(port: Int32(port))
 
         return true
