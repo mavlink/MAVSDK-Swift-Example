@@ -88,20 +88,24 @@ extension TelemetryViewController {
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { connectionState in
                     if (connectionState.isConnected) {
-                        self.onConnected(uuid: connectionState.uuid)
+                        self.onConnected()
                     } else {
                         self.onDisconnected()
                     }
                 })
     }
 
-    private func onConnected(uuid: UInt64) {
-        print("Drone connected with UUID : \(uuid)")
+    private func onConnected() {
+        _ = drone!.info.getIdentification()
+                .observeOn(MainScheduler.instance)
+                .subscribe(onSuccess: { identification in
+                    print("Drone connected with UUID : \(identification.hardwareUid)")
 
-        connectionLabel.text = "Connected"
-        entries[EntryType.connection.rawValue].value = "Drone UUID : \(uuid)"
+                    self.connectionLabel.text = "Connected"
+                    self.entries[EntryType.connection.rawValue].value = "Drone UUID : \(identification.hardwareUid)"
 
-        telemetryTableView.reloadData()
+                    self.telemetryTableView.reloadData()
+                })
     }
 
     private func onDisconnected() {
