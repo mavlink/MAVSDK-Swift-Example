@@ -27,7 +27,7 @@ class RTSPView: UIImageView {
         player = VideoStreamPlayer(videoPath: videoPath, usesTcp: usesTcp)
         player?.outputWidth = Int32(frame.width)
         player?.outputHeight = Int32(frame.height)
-        timer = Timer.scheduledTimer(timeInterval: 1.0/30, target: self, selector: #selector(RTSPView.update), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0/40, target: self, selector: #selector(RTSPView.update), userInfo: nil, repeats: true)
     }
     
     func stopPlaying() {
