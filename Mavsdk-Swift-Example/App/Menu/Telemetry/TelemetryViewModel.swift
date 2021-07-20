@@ -42,7 +42,7 @@ final class TelemetryViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (armed) in
-                self.armed = armed ? "Armed" : "Not armed"
+                self.armed = armed ? "Armed" : "Disarmed"
             })
             .disposed(by: disposeBag)
         

@@ -58,7 +58,7 @@ class PlayerUIView: UIView {
         rtspView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         rtspView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
 
-        self.rtspView.startPlaying(videoPath: newPath, usesTcp: false)
+        self.rtspView.startPlaying(videoPath: newPath, usesTcp: MavsdkDrone.isSimulator)
     }
     
     required init?(coder: NSCoder) {

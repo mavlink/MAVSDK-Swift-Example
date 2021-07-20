@@ -12,7 +12,8 @@ import RxSwift
 
 let MavScheduler = ConcurrentDispatchQueueScheduler(qos: .default)
 
-class MavsdkDrone: ObservableObject {    
+class MavsdkDrone: ObservableObject {
+    static var isSimulator = false
     @Published var drone: Drone?
     @Published var systemAddress: String?
     @Published var serverStarted: Bool = false
@@ -22,6 +23,7 @@ class MavsdkDrone: ObservableObject {
     private var mavsdkServer: MavsdkServer?
     
     func startServer(systemAddress: String) {
+        MavsdkDrone.isSimulator = systemAddress.contains("tcp") ? true : false
         self.systemAddress = systemAddress
         mavsdkServer = MavsdkServer()
         let port = mavsdkServer!.run(systemAddress: systemAddress)

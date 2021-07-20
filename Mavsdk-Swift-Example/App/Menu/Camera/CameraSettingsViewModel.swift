@@ -51,7 +51,7 @@ final class CameraSettingsViewModel: ObservableObject {
         
         drone?.camera.setSetting(setting: newSetting)
             .subscribe {
-                self.messageViewModel.message = "Set Camera Setting \(setting.settingDescription) to \(setting.option.optionDescription)"
+                self.messageViewModel.message = "Set Camera Setting \(newSetting.settingDescription) to \(newSetting.option.optionDescription)"
             } onError: { (error) in
                 self.messageViewModel.message = "Error Setting Camera Setting: \(error)"
             }
