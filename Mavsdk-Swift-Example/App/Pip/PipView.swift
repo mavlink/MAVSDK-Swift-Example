@@ -26,16 +26,16 @@ struct PipView: View {
                 VStack {
                     HStack {
                         Spacer()
-                        Button(action: {
-                            isVideo.toggle()
-                        }, label: {
-                            Image(systemName: "arrow.up.backward.and.arrow.down.forward")
-                                .font(.system(size: 16.0, weight: .semibold, design: .monospaced))
-                                .rotationEffect(.init(degrees: 90))
-                                .foregroundColor(.white)
-                                .padding(.all, 10)
-                                .shadow(color: Color.black.opacity(0.3), radius: 3, x: 3, y: 3)
-                        })
+                        Image(systemName: "arrow.up.backward.and.arrow.down.forward")
+                            .font(.system(size: 16.0, weight: .semibold, design: .monospaced))
+                            .rotationEffect(.init(degrees: 90))
+                            .foregroundColor(.white)
+                            .padding(.all, 10)
+                            .shadow(color: Color.black.opacity(0.3), radius: 3, x: 3, y: 3)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                isVideo.toggle()
+                            }
                     }
                     Spacer()
                 }
@@ -50,9 +50,6 @@ struct PipView: View {
                 Spacer()
             }
             .padding(.all, 12)
-            .onTapGesture {
-                isVideo.toggle()
-            }
         }
         .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.1298420429, green: 0.1298461258, blue: 0.1298439503, alpha: 0.9501284247)) : Color(#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.95)))
         .cornerRadius(10.0)

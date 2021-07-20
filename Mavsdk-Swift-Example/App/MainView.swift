@@ -33,6 +33,7 @@ struct MainView: View {
                         .padding()
                 }
             }
+            .navigationBarHidden(true)
             .ignoresSafeArea(.all)
         }
     }
