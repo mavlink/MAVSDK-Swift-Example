@@ -1,5 +1,5 @@
 //
-//  VideoPlayerView.swift
+//  VideoPlayerUIView.swift
 //  Mavsdk-Swift-Example
 //
 //  Created by Douglas on 21/05/21.
@@ -12,8 +12,8 @@ import MavsdkServer
 import RxSwift
 import Combine
 
-class PlayerUIView: UIView {
-    static let shared = PlayerUIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+final class VideoPlayerUIView: UIView {
+    static let shared = VideoPlayerUIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     
     var rtspView: RTSPView!
     let disposeBag = DisposeBag()
@@ -74,3 +74,12 @@ class PlayerUIView: UIView {
     }
 }
 
+extension VideoPlayerUIView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        VideoPlayerUIView.shared.frame = frame
+        return VideoPlayerUIView.shared
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {}
+}

@@ -1,5 +1,5 @@
 //
-//  ActionList.swift
+//  ActionsView.swift
 //  Mavsdk-Swift-Example
 //
 //  Created by Douglas on 13/05/21.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ActionList: View {
-    var action = ActionViewModel()
+struct ActionsView: View {
+    var action = ActionsViewModel()
     
     var body: some View {
         List(action.actions, id: \.text) { action in
@@ -20,7 +20,7 @@ struct ActionList: View {
 
 struct ActionList_Previews: PreviewProvider {
     static var previews: some View {
-        ActionList()
+        ActionsView()
     }
 }
 

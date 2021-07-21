@@ -1,5 +1,5 @@
 //
-//  ActionViewModel.swift
+//  ActionsViewModel.swift
 //  Mavsdk-Swift-Example
 //
 //  Created by Douglas on 14/05/21.
@@ -9,7 +9,7 @@ import Foundation
 import Mavsdk
 import RxSwift
 
-final class ActionViewModel: ObservableObject {
+final class ActionsViewModel: ObservableObject {
     lazy var drone = mavsdkDrone.drone
     let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()

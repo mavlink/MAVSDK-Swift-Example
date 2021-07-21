@@ -34,10 +34,10 @@ struct MenuView: View {
                 TelemetryView()
                     .navigationBarTitle("Telemetry")
             case 2:
-                ActionList()
+                ActionsView()
                     .navigationBarTitle("Actions")
             case 3:
-                MissionView()
+                MissionsView()
                     .navigationBarTitle("Mission")
             case 4:
                 CameraView()
