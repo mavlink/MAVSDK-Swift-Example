@@ -12,7 +12,8 @@ import SwiftUI
 struct VideoPlayerView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        return PlayerUIView(frame: frame)
+        PlayerUIView.shared.frame = frame
+        return PlayerUIView.shared
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {}

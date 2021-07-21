@@ -8,8 +8,16 @@
 import SwiftUI
 
 struct VideoView: View {
+    @ObservedObject var mavsdk = mavsdkDrone
+    
     var body: some View {
-        VideoPlayerView()
+        ZStack {
+            Color.gray
+            if mavsdk.isConnected {
+                ProgressView()
+            }
+            VideoPlayerView()
+        }
     }
 }
 

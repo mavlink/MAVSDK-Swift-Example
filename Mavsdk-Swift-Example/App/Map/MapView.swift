@@ -10,7 +10,7 @@ import MapKit
 
 struct MapView: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var mapViewModel = MapViewModel()
+    @StateObject var mapViewModel = MapViewModel()
     
     let places = [
         Location(latitude: 37.413416, longitude: -121.998232, angle: 0.0)

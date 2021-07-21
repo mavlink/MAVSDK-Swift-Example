@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 
 class RTSPView: UIImageView {
-
-    var isPlaying: Bool = false
+    private let queue = DispatchQueue(label: "VideoQueue")
+    private var isPlaying: Bool = false
     private var player: VideoStreamPlayer? = nil
+    private var isBusy: Bool = false
     private var timer: Timer?
     
     override init(frame: CGRect) {
@@ -22,27 +23,42 @@ class RTSPView: UIImageView {
     
     func startPlaying(videoPath: String, usesTcp: Bool) {
         isPlaying = true
+        timer = Timer.scheduledTimer(timeInterval: 1.0/30, target: self, selector: #selector(RTSPView.update), userInfo: nil, repeats: true)
         
-        player = VideoStreamPlayer(videoPath: videoPath, usesTcp: usesTcp)
-        player?.outputWidth = Int32(frame.width)
-        player?.outputHeight = Int32(frame.height)
-        timer = Timer.scheduledTimer(timeInterval: 1.0/40, target: self, selector: #selector(RTSPView.update), userInfo: nil, repeats: true)
+        queue.async {
+            self.player = VideoStreamPlayer(videoPath: videoPath, usesTcp: usesTcp)
+        }
     }
     
     func stopPlaying() {
         timer?.invalidate()
-        player = nil
         image = nil
         isPlaying = false
+        
+        queue.async {
+            self.player = nil
+        }
     }
     
     @objc func update(timer: Timer) {
-        guard let player = player, player.stepFrame() else {
-            stopPlaying()
+        guard !isBusy else {
             return
         }
         
-        image = player.currentImage
+        isBusy = true
+        
+        queue.async {
+            guard let player = self.player, player.stepFrame() else {
+                return
+            }
+            
+            let currentImage = player.currentImage
+            
+            DispatchQueue.main.async {
+                self.image = self.isPlaying ? currentImage : nil
+                self.isBusy = false
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -13,21 +13,24 @@ import RxSwift
 import Combine
 
 class PlayerUIView: UIView {
-    var rtspView: RTSPView!
+    static let shared = PlayerUIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     
+    var rtspView: RTSPView!
     let disposeBag = DisposeBag()
     var droneCancellable = AnyCancellable {}
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .clear
+        self.isOpaque = false
        
         self.droneCancellable = mavsdkDrone.$isConnected
             .sink {
                 if $0 {
                     self.fetchVideoStream()
-                } else if self.rtspView != nil && self.rtspView.isPlaying {
+                } else if self.rtspView != nil {
                     self.rtspView.stopPlaying()
+                    self.rtspView = nil
                 }
             }
     }
