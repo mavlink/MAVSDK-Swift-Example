@@ -18,7 +18,9 @@ final class PipViewModel: ObservableObject {
     
     init() {
         self.droneCancellable = mavsdkDrone.$drone.compactMap{$0}
-            .sink{ self.observeDroneConnectionState(drone: $0) }
+            .sink{ [weak self] drone in
+                self?.observeDroneConnectionState(drone: drone)
+            }
     }
     
     func observeDroneConnectionState(drone: Drone) {

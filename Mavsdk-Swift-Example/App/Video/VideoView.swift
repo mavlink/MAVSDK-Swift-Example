@@ -16,7 +16,7 @@ struct VideoView: View {
             if mavsdk.isConnected {
                 ProgressView()
             }
-            VideoPlayerUIView()
+            VideoPlayerUIView.shared
         }
     }
 }

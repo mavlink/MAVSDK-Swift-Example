@@ -25,12 +25,12 @@ final class VideoPlayerUIView: UIView {
         self.isOpaque = false
        
         self.droneCancellable = mavsdkDrone.$isConnected
-            .sink {
-                if $0 {
-                    self.fetchVideoStream()
-                } else if self.rtspView != nil {
-                    self.rtspView.stopPlaying()
-                    self.rtspView = nil
+            .sink { [weak self] isConnected in
+                if isConnected {
+                    self?.fetchVideoStream()
+                } else if self?.rtspView != nil {
+                    self?.rtspView.stopPlaying()
+                    self?.rtspView = nil
                 }
             }
     }
@@ -39,10 +39,9 @@ final class VideoPlayerUIView: UIView {
         mavsdkDrone.drone?.camera.videoStreamInfo
             .take(1)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { value in
-                print("+DC+ videoStreamInfo \(value)")
-                if self.rtspView == nil {
-                    self.addVideoFeed(value.settings.uri)
+            .subscribe(onNext: { [weak self] value in
+                if self?.rtspView == nil {
+                    self?.addVideoFeed(value.settings.uri)
                 }
             }, onError: { error in
                 print("+DC+ camera videoStreamInfo error: \(String(describing: error))")
@@ -52,14 +51,14 @@ final class VideoPlayerUIView: UIView {
     
     func addVideoFeed(_ videoPath: String) {
         let newPath = videoPath.replacingOccurrences(of: "rtspt", with: "rtsp")
-        rtspView = RTSPView(frame: self.frame)
+        rtspView = RTSPView(frame: frame)
         
         self.addSubview(rtspView)
         rtspView.translatesAutoresizingMaskIntoConstraints = false
-        rtspView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        rtspView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-        rtspView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        rtspView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
+        rtspView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        rtspView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        rtspView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
+        rtspView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
 
         self.rtspView.startPlaying(videoPath: newPath, usesTcp: MavsdkDrone.isSimulator)
     }

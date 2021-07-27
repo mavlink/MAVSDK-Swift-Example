@@ -21,12 +21,17 @@ class RTSPView: UIImageView {
         contentMode = .scaleAspectFit
     }
     
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     func startPlaying(videoPath: String, usesTcp: Bool) {
         isPlaying = true
         timer = Timer.scheduledTimer(timeInterval: 1.0/30, target: self, selector: #selector(RTSPView.update), userInfo: nil, repeats: true)
         
-        queue.async {
-            self.player = VideoStreamPlayer(videoPath: videoPath, usesTcp: usesTcp)
+        queue.async { [weak self] in
+            self?.player = VideoStreamPlayer(videoPath: videoPath, usesTcp: usesTcp)
         }
     }
     
@@ -34,9 +39,10 @@ class RTSPView: UIImageView {
         timer?.invalidate()
         image = nil
         isPlaying = false
+        timer = nil
         
-        queue.async {
-            self.player = nil
+        queue.async { [weak self] in
+            self?.player = nil
         }
     }
     
@@ -47,16 +53,17 @@ class RTSPView: UIImageView {
         
         isBusy = true
         
-        queue.async {
-            guard let player = self.player, player.stepFrame() else {
+        queue.async { [weak self] in
+            guard let player = self?.player, player.stepFrame() else {
                 return
             }
             
             let currentImage = player.currentImage
             
-            DispatchQueue.main.async {
-                self.image = self.isPlaying ? currentImage : nil
-                self.isBusy = false
+            DispatchQueue.main.async { [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.image = strongSelf.isPlaying ? currentImage : nil
+                strongSelf.isBusy = false
             }
         }
     }

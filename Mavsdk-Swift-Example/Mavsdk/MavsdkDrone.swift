@@ -27,10 +27,14 @@ class MavsdkDrone: ObservableObject {
         self.systemAddress = systemAddress
         mavsdkServer = MavsdkServer()
         let port = mavsdkServer!.run(systemAddress: systemAddress)
-        drone = Drone(port: Int32(port))
-        _ = drone!.core.setMavlinkTimeout(timeoutS: 2.0).subscribe()
+        let newDrone = Drone(port: Int32(port))
+        _ = newDrone.core.setMavlinkTimeout(timeoutS: 2.0).subscribe()
         serverStarted = true
-        subscribeOnConnectionState(drone: drone!)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.drone = newDrone // JONAS: as soon as we assign newDrone all subscribers will start listen for telemetry updates. If we wont't wait we may never receive position update.
+            self.subscribeOnConnectionState(drone: newDrone)
+        }
     }
 
     func stopServer() {
@@ -48,8 +52,8 @@ class MavsdkDrone: ObservableObject {
             .core.connectionState
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (state) in
-                self.isConnected = state.isConnected
+            .subscribe(onNext: { [weak self] (state) in
+                self?.isConnected = state.isConnected
             })
             .disposed(by: disposeBag)
     }
