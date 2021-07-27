@@ -22,6 +22,8 @@ struct TelemetryView: View {
             InfoRowView(title: "Camera Attitude", value: telemetryViewModel.cameraAttitudeEuler)
             InfoRowView(title: "GPS Info", value: telemetryViewModel.gpsInfo)
             InfoRowView(title: "Landed State", value: telemetryViewModel.landedState)
+            InfoRowView(title: "Health ALL OK State", value: telemetryViewModel.healthAllOk)
+            InfoRowView(title: "Health", value: telemetryViewModel.health)
         }
         .font(.system(size: 14, weight: .medium, design: .default))
         .listStyle(PlainListStyle())

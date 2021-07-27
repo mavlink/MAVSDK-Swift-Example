@@ -515,7 +515,7 @@ extension SiteScanMavsdk {
             .disposed(by: disposeBag)
     }
     
-    func uploadMission(_ missionPlan: Mission.MissionPlan) {
+    func uploadMission(_ missionPlan: Mavsdk.Mission.MissionPlan) {
         drone.mission.uploadMission(missionPlan: missionPlan)
             .subscribe(onCompleted: {
                 print("+DC+ mission uploadMission completed.")

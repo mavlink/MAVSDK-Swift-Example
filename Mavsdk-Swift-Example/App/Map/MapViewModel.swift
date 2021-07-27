@@ -9,27 +9,28 @@ import Foundation
 import RxSwift
 import Mavsdk
 import Combine
+import MapKit
+
 
 final class MapViewModel: ObservableObject {
-    @Published private(set) var droneLocation = Location(latitude: 37.4135427, longitude: -121.99655, angle: 0.0)
-    
+    static let shared = MapViewModel()
     let disposeBag = DisposeBag()
     var droneCancellable = AnyCancellable {}
+    var missionPlanCancellable = AnyCancellable {}
+    var droneAnnotation = DroneAnnotation(coordinate: CLLocationCoordinate2D())
     
     init() {
         self.droneCancellable = mavsdkDrone.$drone.compactMap{$0}
-            .sink{ self.observeDroneLocation(drone: $0) }
+            .sink{ [weak self] drone in
+                self?.observeDroneLocation(drone: drone)
+            }
     }
     
     func observeDroneLocation(drone: Drone) {
-        Observable.combineLatest(drone.telemetry.attitudeEuler, drone.telemetry.position)
+        drone.telemetry.position
             .observeOn(MainScheduler.instance)
-            .distinctUntilChanged({ (angle, position) in
-                Location(latitude: position.latitudeDeg, longitude: position.longitudeDeg, angle: Double(angle.yawDeg))
-            })
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { (angle, position) in
-                self.droneLocation = Location(latitude: position.latitudeDeg, longitude: position.longitudeDeg, angle: Double(angle.yawDeg))
+            .subscribe(onNext: { [weak self] (position) in
+                self?.droneAnnotation.coordinate = CLLocationCoordinate2D(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
             }, onError: { (error) in
                 print("Error in observeDroneLocation: \(error)")
             })

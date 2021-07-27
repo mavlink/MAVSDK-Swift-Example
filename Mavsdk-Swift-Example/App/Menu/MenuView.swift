@@ -20,7 +20,7 @@ struct MenuView: View {
                     Image(systemName: "play").tag(2)
                     Image(systemName: "point.topleft.down.curvedto.point.bottomright.up").tag(3)
                     Image(systemName: "camera").tag(4)
-                    Image(systemName: "chevron.up").tag(5)
+                    //Image(systemName: "chevron.up").tag(5)
                 })
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
@@ -37,7 +37,7 @@ struct MenuView: View {
                 ActionsView()
                     .navigationBarTitle("Actions")
             case 3:
-                MissionsView()
+                MissionMenuView()
                     .navigationBarTitle("Mission")
             case 4:
                 CameraView()

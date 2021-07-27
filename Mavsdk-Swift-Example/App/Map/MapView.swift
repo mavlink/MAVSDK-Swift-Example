@@ -7,28 +7,73 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
-struct MapView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @StateObject var mapViewModel = MapViewModel()
+
+struct MapView: UIViewRepresentable {
+    @ObservedObject var missionOperator = MissionOperator.shared
+    @ObservedObject var mapViewModel = MapViewModel.shared
+    private let mapZoomEdgeInsets = UIEdgeInsets(top: 30.0, left: 30.0, bottom: 30.0, right: 30.0)
     
-    let places = [
-        Location(latitude: 37.413416, longitude: -121.998232, angle: 0.0)
-    ]
     
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.413416, longitude: -121.998232), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    func makeCoordinator() -> MapViewCoordinator {
+        return MapViewCoordinator(self)
+    }
     
-    var body: some View {
-        ZStack {
-            Map(coordinateRegion: $region, annotationItems: [mapViewModel.droneLocation]) { item in
-                MapAnnotation(coordinate: item.coordinate) {
-                    Image(systemName: "location.circle.fill")
-                        .resizable()
-                        .frame(width: 26.0, height: 26.0)
-                        .foregroundColor(colorScheme == .dark ? Color(#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)) : Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
-                        .rotationEffect(.degrees(item.angle))
-                }
-            }
+    func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
+        mapView.showsUserLocation = true
+        mapView.delegate = context.coordinator
+        
+        setMapZoomArea(map: mapView,
+                       polyline: MKPolyline(coordinates: &missionOperator.mapCenterCoordinate, count: 1),
+                       edgeInsets: mapZoomEdgeInsets,
+                       animated: true)
+        
+        return mapView
+    }
+    
+    func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
+        updateOverlays(from: uiView)
+        updateAnnotations(from: uiView)
+    }
+    
+    func updateOverlays(from mapView: MKMapView) {
+        mapView.removeOverlays(mapView.overlays)
+        
+        let locations = missionOperator.missionPlanCoordinates
+        
+        guard !locations.isEmpty else {
+            return
         }
+        
+        let polyline = MKPolyline(coordinates: locations, count: locations.count)
+        mapView.addOverlay(polyline)
+        
+        for location in locations {
+            let point = MKCircle(center: location, radius: 0.5)
+            mapView.addOverlay(point)
+        }
+        
+        setMapZoomArea(map: mapView, polyline: polyline, edgeInsets: mapZoomEdgeInsets, animated: true)
+    }
+    
+    func updateAnnotations(from mapView: MKMapView) {
+        mapView.removeAnnotations(mapView.annotations)
+        let droneAnnotation = mapViewModel.droneAnnotation
+        mapView.addAnnotation(droneAnnotation)
+        
+        let missionTitleAnnotation = MissionMapTitleAnnotation(coordinate: missionOperator.startCoordinate)
+        mapView.addAnnotation(missionTitleAnnotation)
+    }
+    
+    func setMapZoomArea(map: MKMapView, polyline: MKPolyline, edgeInsets: UIEdgeInsets, animated: Bool = false) {
+        map.setVisibleMapRect(polyline.boundingMapRect, edgePadding: edgeInsets, animated: animated)
+    }
+}
+
+struct MapView_Previews: PreviewProvider {
+    static var previews: some View {
+        MapView()
     }
 }

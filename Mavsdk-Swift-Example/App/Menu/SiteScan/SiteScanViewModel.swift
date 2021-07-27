@@ -35,9 +35,14 @@ final class SiteScanViewModel: ObservableObject {
     }
     
     func preflightCheckListQueue() {
+        guard let currentMissionPlan = MissionOperator.shared.currentMissionPlan else {
+            print("PreFli: no mission plan selected")
+            return
+        }
+        
         let routine = Completable.concat([
             cameraCheck().do(onSubscribe: { print("PreFli: -- Camera Check -- ") }),
-            missionCheck(SurveyMission.mission).do(onSubscribe: { print("PreFli: -- Mission Check -- ") }),
+            missionCheck(currentMissionPlan).do(onSubscribe: { print("PreFli: -- Mission Check -- ") }),
             swipeToTakeOff().do(onSubscribe: { print("PreFli: -- Swipe Takeoff -- ") })
         ])
         
@@ -76,7 +81,7 @@ final class SiteScanViewModel: ObservableObject {
         // TODO
     }
     
-    func missionCheck(_ missionPlan: Mission.MissionPlan) -> Completable {
+    func missionCheck(_ missionPlan: Mavsdk.Mission.MissionPlan) -> Completable {
         return Completable.concat([
             continueWithoutLinkCheck(),
             setRTLAfterMissionCheck(),
@@ -118,7 +123,7 @@ extension SiteScanViewModel {
         return drone!.mission.setReturnToLaunchAfterMission(enable: true).do(onSubscribed: { print("PreFli: setReturnToLaunchAfterMission") })
     }
     
-    func uploadMissionCheck(_ missionPlan: Mission.MissionPlan) -> Completable {
+    func uploadMissionCheck(_ missionPlan: Mavsdk.Mission.MissionPlan) -> Completable {
         let cancelMissionDownload = drone!.mission.cancelMissionDownload().do(onSubscribed: { print("PreFli: cancelMissionDownload") })
         let cancelMissionUpload = drone!.mission.cancelMissionUpload().do(onSubscribed: { print("PreFli: cancelMissionUpload") })
         let uploadMission = drone!.mission.uploadMission(missionPlan: missionPlan)

@@ -14,6 +14,16 @@ struct TelemetryDetailView: View {
     
     var body: some View {
         VStack {
+            if telemetry.missionProgressTotal > 0 {
+                ProgressView(value: telemetry.missionProgressCurrent, total: telemetry.missionProgressTotal, label: {
+                    HStack {
+                        Spacer()
+                        Text("Mission progress")
+                        Spacer()
+                    }
+                })
+                .frame(minWidth: 200, maxWidth: 300, alignment: .center)
+            }
             HStack {
                 TelemetryInfo(value: "\(telemetry.altitude)m", title: "current altitude")
                 TelemetryInfo(value: "\(telemetry.battery)%", title: "battery level")
