@@ -12,7 +12,7 @@ struct SiteScanView: View {
     
     var body: some View {
         List {
-            ButtonContent(text: "Subscribe to StScn Observers", action: siteScan.subscribeToAllSiteScan)
+            ButtonContent(text: "Subscribe to SiteScan Observers", action: siteScan.subscribeToAllSiteScan)
             ButtonContent(text: "Upload mission test", action: siteScan.uploadMission)
         }
         .listStyle(PlainListStyle())
