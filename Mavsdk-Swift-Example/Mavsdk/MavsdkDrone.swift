@@ -31,7 +31,7 @@ class MavsdkDrone: ObservableObject {
         _ = newDrone.core.setMavlinkTimeout(timeoutS: 2.0).subscribe()
         serverStarted = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { // Delay
             self.drone = newDrone // JONAS: as soon as we assign newDrone all subscribers will start listen for telemetry updates. If we wont't wait we may never receive position update.
             self.subscribeOnConnectionState(drone: newDrone)
         }
