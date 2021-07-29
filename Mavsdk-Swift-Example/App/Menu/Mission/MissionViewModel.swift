@@ -19,6 +19,7 @@ final class MissionViewModel: ObservableObject {
     
     var actions: [Action] {
         return [
+            Action(text: "Mission Upload Timeout test", action: timeoutTest),
             Action(text: "Upload Mission", action: uploadMission),
             Action(text: "Cancel Mission Upload", action: cancelUpload),
             Action(text: "Start Mission", action: startMission),
@@ -37,6 +38,25 @@ final class MissionViewModel: ObservableObject {
     
     init(missionOperator: MissionOperator) {
         self.missionOperator = missionOperator
+    }
+    
+    func timeoutTest() {
+        guard let missionPlan = missionOperator.currentMissionPlan else {
+            messageViewModel.message = "No mission selected to upload"
+            return
+        }
+        
+        drone.mission.cancelMissionDownload()
+            .andThen(drone.mission.cancelMissionUpload())
+            .andThen(drone.mission.uploadMission(missionPlan: missionPlan))
+            .subscribeOn(MavScheduler)
+            .observeOn(MainScheduler.instance)
+            .subscribe {
+                self.messageViewModel.message = "TimeoutTest finished"
+            } onError: { (error) in
+                self.messageViewModel.message = "TimeoutTest Error \(error)"
+            }
+            .disposed(by: disposeBag)
     }
     
     func uploadMission() {
