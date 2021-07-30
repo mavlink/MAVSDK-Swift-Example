@@ -1,5 +1,6 @@
 ### Xcode ###
 build
+!*.xcodeproj/project.pbxproj
 !*.xcworkspace/contents.xcworkspacedata
 *.xcworkspace
 Info.plist
@@ -20,6 +21,7 @@ xcuserdata
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+*.xcodeproj/*
 
 
 ### Objective-C ###
