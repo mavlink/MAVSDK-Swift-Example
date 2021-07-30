@@ -7,9 +7,11 @@
 
 import RxSwift
 import Mavsdk
+import CoreLocation
 
 final class SiteScanViewModel: ObservableObject {
-    lazy var drone = mavsdkDrone.drone
+    var drone: Drone? { mavsdkDrone.drone }
+    let messageViewModel = MessageViewModel.shared
     
     var siteScan: SiteScanMavsdk?
     let disposeBag = DisposeBag()
@@ -32,6 +34,36 @@ final class SiteScanViewModel: ObservableObject {
     
     func subscribeToAllSiteScan() {
         siteScan = SiteScanMavsdk()
+    }
+    
+    func uploadMission() {
+        
+        guard let position = siteScan?.dronePosition else {
+            messageViewModel.message = "No drone position"
+            return
+        }
+        
+        let droneCoord = CLLocationCoordinate2D(latitude: position.latitudeDeg, longitude: position.longitudeDeg)
+        MissionOperator.shared.startCoordinate = droneCoord
+        MissionOperator.shared.currentMission = Mission.perimeter
+        
+        guard let missionPlan = MissionOperator.shared.currentMissionPlan else {
+            messageViewModel.message = "No mission selected to upload"
+            return
+        }
+        
+        drone!.mission.uploadMission(missionPlan: missionPlan)
+            .subscribeOn(MavScheduler)
+            .observeOn(MainScheduler.instance)
+            .do(onError: { (error) in
+                self.messageViewModel.message = "Error Uploading Mission \(error)"
+            }, onCompleted: {
+                self.messageViewModel.message = "Mission Uploaded"
+            }, onSubscribe: {
+                self.messageViewModel.message = "Uploading Mission"
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
     }
     
     func preflightCheckListQueue() {
