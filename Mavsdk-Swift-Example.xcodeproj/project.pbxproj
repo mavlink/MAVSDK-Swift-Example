@@ -672,7 +672,7 @@
 			repositoryURL = "https://github.com/esri/MAVSDK-Swift.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.41.0;
+				version = 0.41.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
