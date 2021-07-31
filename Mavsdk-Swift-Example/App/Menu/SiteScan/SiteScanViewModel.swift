@@ -10,7 +10,7 @@ import Mavsdk
 import CoreLocation
 
 final class SiteScanViewModel: ObservableObject {
-    var drone: Drone? { mavsdkDrone.drone }
+    let drone = mavsdkDrone.drone!
     let messageViewModel = MessageViewModel.shared
     
     var siteScan: SiteScanMavsdk?
@@ -52,7 +52,7 @@ final class SiteScanViewModel: ObservableObject {
             return
         }
         
-        drone!.mission.uploadMission(missionPlan: missionPlan)
+        drone.mission.uploadMission(missionPlan: missionPlan)
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .do(onError: { (error) in
@@ -96,10 +96,10 @@ final class SiteScanViewModel: ObservableObject {
     }
     
     func cameraCheck() -> Completable {
-        let stopPhotoInterval = drone!.camera.stopPhotoInterval().do(onSubscribed: { print("PreFli: stopPhotoInterval") })
-        let setPhotoMode = drone!.camera.setMode(mode: .photo).do(onSubscribed: { print("PreFli: setPhotoMode") })
-        let takePhoto = drone!.camera.takePhoto().do(onSubscribed: { print("PreFli: takePhoto") })
-        let listPhotos = drone!.camera.listPhotos(photosRange: .sinceConnection).asCompletable().do(onSubscribed: { print("PreFli: listPhotos") })
+        let stopPhotoInterval = drone.camera.stopPhotoInterval().do(onSubscribed: { print("PreFli: stopPhotoInterval") })
+        let setPhotoMode = drone.camera.setMode(mode: .photo).do(onSubscribed: { print("PreFli: setPhotoMode") })
+        let takePhoto = drone.camera.takePhoto().do(onSubscribed: { print("PreFli: takePhoto") })
+        let listPhotos = drone.camera.listPhotos(photosRange: .sinceConnection).asCompletable().do(onSubscribed: { print("PreFli: listPhotos") })
         
         return Completable.concat([
             stopPhotoInterval,
@@ -123,9 +123,9 @@ final class SiteScanViewModel: ObservableObject {
     }
     
     func swipeToTakeOff() -> Completable {
-        let setCurrentMissionItem = drone!.mission.setCurrentMissionItem(index: Int32(0)).do(onSubscribed: { print("PreFli: setCurrentMissionItem") })
-        let arm = drone!.action.arm().do(onSubscribed: { print("PreFli: arm") })
-        let startMission = drone!.mission.startMission()
+        let setCurrentMissionItem = drone.mission.setCurrentMissionItem(index: Int32(0)).do(onSubscribed: { print("PreFli: setCurrentMissionItem") })
+        let arm = drone.action.arm().do(onSubscribed: { print("PreFli: arm") })
+        let startMission = drone.mission.startMission()
             .do(onError: { (error) in
                 print("PreFli: Error \(error)")
             }, onCompleted: {
@@ -146,19 +146,19 @@ final class SiteScanViewModel: ObservableObject {
 extension SiteScanViewModel {
     func continueWithoutLinkCheck() -> Completable {
         return Completable.concat([
-            drone!.param.setParamInt(name: "NAV_DLL_ACT", value: 0).do(onSubscribed: { print("PreFli: NAV_DLL_ACT") }),
-            drone!.param.setParamInt(name: "NAV_RCL_ACT", value: 0).do(onSubscribed: { print("PreFli: NAV_RCL_ACT") })
+            drone.param.setParamInt(name: "NAV_DLL_ACT", value: 0).do(onSubscribed: { print("PreFli: NAV_DLL_ACT") }),
+            drone.param.setParamInt(name: "NAV_RCL_ACT", value: 0).do(onSubscribed: { print("PreFli: NAV_RCL_ACT") })
         ])
     }
     
     func setRTLAfterMissionCheck() -> Completable {
-        return drone!.mission.setReturnToLaunchAfterMission(enable: true).do(onSubscribed: { print("PreFli: setReturnToLaunchAfterMission") })
+        return drone.mission.setReturnToLaunchAfterMission(enable: true).do(onSubscribed: { print("PreFli: setReturnToLaunchAfterMission") })
     }
     
     func uploadMissionCheck(_ missionPlan: Mavsdk.Mission.MissionPlan) -> Completable {
-        let cancelMissionDownload = drone!.mission.cancelMissionDownload().do(onSubscribed: { print("PreFli: cancelMissionDownload") })
-        let cancelMissionUpload = drone!.mission.cancelMissionUpload().do(onSubscribed: { print("PreFli: cancelMissionUpload") })
-        let uploadMission = drone!.mission.uploadMission(missionPlan: missionPlan)
+        let cancelMissionDownload = drone.mission.cancelMissionDownload().do(onSubscribed: { print("PreFli: cancelMissionDownload") })
+        let cancelMissionUpload = drone.mission.cancelMissionUpload().do(onSubscribed: { print("PreFli: cancelMissionUpload") })
+        let uploadMission = drone.mission.uploadMission(missionPlan: missionPlan)
             .do(onError: { (error) in
                 print("PreFli: error uploadMission")
             }, onCompleted: {
@@ -175,6 +175,6 @@ extension SiteScanViewModel {
     }
     
     func setRTLAltitudeCheck() -> Completable {
-        return drone!.action.setReturnToLaunchAltitude(relativeAltitudeM: 60.0).do(onSubscribed: { print("PreFli: setReturnToLaunchAltitude") })
+        return drone.action.setReturnToLaunchAltitude(relativeAltitudeM: 60.0).do(onSubscribed: { print("PreFli: setReturnToLaunchAltitude") })
     }
 }

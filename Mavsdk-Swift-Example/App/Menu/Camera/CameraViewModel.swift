@@ -14,7 +14,7 @@ final class CameraViewModel: ObservableObject {
     @Published private(set) var information = "N/A"
     @Published private(set) var status = "N/A"
     
-    lazy var drone = mavsdkDrone.drone
+    let drone = mavsdkDrone.drone!
     let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     
@@ -39,7 +39,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func observeCamera() {
-        drone!.camera.captureInfo
+        drone.camera.captureInfo
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (captureInfo) in
@@ -49,7 +49,7 @@ final class CameraViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        drone!.camera.mode
+        drone.camera.mode
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (mode) in
@@ -57,7 +57,7 @@ final class CameraViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        drone!.camera.information
+        drone.camera.information
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (information) in
@@ -65,7 +65,7 @@ final class CameraViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        drone!.camera.status
+        drone.camera.status
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (status) in
@@ -75,7 +75,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func setPhotoMode() {
-        drone!.camera.setMode(mode: .photo)
+        drone.camera.setMode(mode: .photo)
             .subscribe {
                 self.messageViewModel.message = "Set to Photo Mode"
             } onError: { (error) in
@@ -85,7 +85,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func setVideoMode() {
-        drone!.camera.setMode(mode: .video)
+        drone.camera.setMode(mode: .video)
             .subscribe {
                 self.messageViewModel.message = "Set to Video Mode"
             } onError: { (error) in
@@ -95,7 +95,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func takePhoto() {
-        drone!.camera.takePhoto()
+        drone.camera.takePhoto()
             .subscribe {
                 self.messageViewModel.message = "Photo Taken"
             } onError: { (error) in
@@ -105,7 +105,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func starTakingPhotos() {
-        drone!.camera.startPhotoInterval(intervalS: 2.0)
+        drone.camera.startPhotoInterval(intervalS: 2.0)
             .subscribe {
                 self.messageViewModel.message = "Start Taking Photos with 2 sec interval"
             } onError: { (error) in
@@ -115,7 +115,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func stopTakingPhotos() {
-        drone!.camera.stopPhotoInterval()
+        drone.camera.stopPhotoInterval()
             .subscribe {
                 self.messageViewModel.message = "Stop Taking Photos"
             } onError: { (error) in
@@ -125,7 +125,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func startVideo() {
-        drone!.camera.startVideo()
+        drone.camera.startVideo()
             .subscribe {
                 self.messageViewModel.message = "Start Video Recording"
             } onError: { (error) in
@@ -135,7 +135,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func stopVideo() {
-        drone!.camera.stopVideo()
+        drone.camera.stopVideo()
             .subscribe {
                 self.messageViewModel.message = "Stop Video Recording"
             } onError: { (error) in
@@ -145,7 +145,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func getListOfPhotos() {
-        drone!.camera.listPhotos(photosRange: .all)
+        drone.camera.listPhotos(photosRange: .all)
             .do(onSuccess: { (captureInfo) in
                 self.messageViewModel.message = "List Count \(captureInfo.count)"
             }, onError: { (error) in
@@ -158,7 +158,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func formatStorage() {
-        drone!.camera.formatStorage()
+        drone.camera.formatStorage()
             .subscribe {
                 self.messageViewModel.message = "Format Storage"
             } onError: { (error) in
@@ -168,7 +168,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func startVideoStreaming() {
-        drone!.camera.startVideoStreaming()
+        drone.camera.startVideoStreaming()
             .subscribe {
                 self.messageViewModel.message = "Start Video Streaming"
             } onError: { (error) in
@@ -178,7 +178,7 @@ final class CameraViewModel: ObservableObject {
     }
     
     func stopVideoStreaming() {
-        drone!.camera.stopVideoStreaming()
+        drone.camera.stopVideoStreaming()
             .subscribe {
                 self.messageViewModel.message = "Stop Video Streaming"
             } onError: { (error) in

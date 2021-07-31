@@ -11,9 +11,7 @@ import Mavsdk
 
 final class MissionViewModel: ObservableObject {
     let missionOperator: MissionOperator
-    var drone: Drone! {
-        mavsdkDrone.drone
-    }
+    let drone = mavsdkDrone.drone!
     let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     

@@ -20,7 +20,8 @@ struct MenuView: View {
                     Image(systemName: "play").tag(2)
                     Image(systemName: "point.topleft.down.curvedto.point.bottomright.up").tag(3)
                     Image(systemName: "camera").tag(4)
-                    Image(systemName: "gear").tag(5)
+                    Image(systemName: "photo.on.rectangle").tag(5)
+                    Image(systemName: "gear").tag(6)
                 })
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
@@ -42,6 +43,9 @@ struct MenuView: View {
             case 4:
                 CameraView()
                     .navigationBarTitle("Camera")
+            case 5:
+                MediaLibraryView()
+                    .navigationBarTitle("Media")
             default:
                 SiteScanView()
                     .navigationBarTitle("Site Scan")
