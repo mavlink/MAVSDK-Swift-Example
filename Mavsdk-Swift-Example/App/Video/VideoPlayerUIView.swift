@@ -38,6 +38,7 @@ final class VideoPlayerUIView: UIView {
     func fetchVideoStream() {
         mavsdkDrone.drone?.camera.videoStreamInfo
             .take(1)
+            .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] value in
                 if self?.rtspView == nil {

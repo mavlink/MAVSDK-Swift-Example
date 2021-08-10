@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     
     @State var isVideo: Bool = true
+    @ObservedObject var mapViewCoordinator = MapViewCoordinator.shared
     
     var body: some View {
         NavigationView {
@@ -27,10 +28,21 @@ struct MainView: View {
                     .padding(.top, 32)
                     .padding(.trailing, 16)
                 
-                VStack {
+                VStack(alignment: .trailing) {
                     Spacer()
+                    if !mapViewCoordinator.captureInfoCoordinates.isEmpty {
+                        Image(systemName: "square.slash.fill")
+                            .resizable()
+                            .frame(width: 35, height: 35)
+                            .contentShape(Rectangle())
+                            .padding(.trailing, 15)
+                            .foregroundColor(Color.orange.opacity(0.7))
+                            .onTapGesture {
+                                mapViewCoordinator.clearPhotoLocations()
+                            }
+                    }
                     TelemetryDetailView()
-                        .padding()
+                        .padding([.trailing,.bottom], 15)
                 }
             }
             .navigationBarHidden(true)

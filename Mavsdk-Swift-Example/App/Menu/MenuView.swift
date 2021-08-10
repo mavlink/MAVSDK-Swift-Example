@@ -13,7 +13,7 @@ struct MenuView: View {
     
     var body: some View {
         VStack {
-            if mavsdk.serverStarted {
+            if mavsdk.drone != nil {
                 Picker("Item", selection: $selectedTabIndex, content: {
                     Image(systemName: "arrow.up.arrow.down").tag(0)
                     Image(systemName: "antenna.radiowaves.left.and.right").tag(1)

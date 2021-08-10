@@ -25,7 +25,7 @@ final class PipViewModel: ObservableObject {
     
     func observeDroneConnectionState(drone: Drone) {
         drone.core.connectionState
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
+            .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (state) in
                 self.isConnected = state.isConnected

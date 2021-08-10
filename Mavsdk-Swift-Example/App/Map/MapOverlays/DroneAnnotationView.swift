@@ -18,15 +18,16 @@ class DroneAnnotationView: MKAnnotationView {
     init(annotation: MKAnnotation?) {
         super.init(annotation: annotation, reuseIdentifier: "drone")
 
-        image = UIImage(named: "droneIcon")
+        image = UIImage(named: "drone")
         frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         
         mavsdkDrone.drone!.telemetry.attitudeEuler
+            .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (angle) in
                 self?.transform = CGAffineTransform(rotationAngle: CGFloat(angle.yawDeg) * .pi / 180)
             }, onError: { (error) in
-                print("Error in observeDroneLocation: \(error)")
+                print("Error in attitudeEuler: \(error)")
             })
             .disposed(by: disposeBag)
     }

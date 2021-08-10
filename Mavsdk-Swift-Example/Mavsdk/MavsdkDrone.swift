@@ -28,7 +28,7 @@ class MavsdkDrone: ObservableObject {
         mavsdkServer = MavsdkServer()
         let port = mavsdkServer!.run(systemAddress: systemAddress)
         let newDrone = Drone(port: Int32(port))
-        _ = newDrone.core.setMavlinkTimeout(timeoutS: 2.0).subscribe()
+        _ = newDrone.core.setMavlinkTimeout(timeoutS: 0.5).subscribe()
         serverStarted = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { // Delay

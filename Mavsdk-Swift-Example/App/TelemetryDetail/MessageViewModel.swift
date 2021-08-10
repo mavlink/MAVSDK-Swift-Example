@@ -11,10 +11,12 @@ class MessageViewModel: ObservableObject {
     static let shared = MessageViewModel()
     private static let placeholder = "-"
     private var timer: Timer?
+    @Published var allMessages: [LogRecord] = []
     
     @Published var message = MessageViewModel.placeholder {
         willSet {
             if newValue != MessageViewModel.placeholder {
+                allMessages.append(LogRecord(newValue))
                 print("message: \(newValue)")
             }
             
@@ -23,6 +25,16 @@ class MessageViewModel: ObservableObject {
                 self.message = MessageViewModel.placeholder
             }
         }
+    }
+}
+
+struct LogRecord: Identifiable {
+    let id = UUID()
+    let date = Date()
+    let message: String
+    
+    init(_ message: String) {
+        self.message = message.replacingOccurrences(of: "\n", with: "")
     }
 }
 

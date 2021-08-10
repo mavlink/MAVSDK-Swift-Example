@@ -21,7 +21,7 @@ struct ConnectionView: View {
             } else {
                 Section(header: Text("Select comm link to connect")) {
                     CommLinkView(name: "Drone", uri: "udp://:14540")
-                    CommLinkView(name: "Cloud Sim", uri: "tcp://100.24.122.67:5790")
+                    CommLinkView(name: "Cloud Sim", uri: "tcp://3.83.192.52:5790")
                 }
             }
         }
