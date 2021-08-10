@@ -19,7 +19,9 @@ final class ConnectionViewModel: ObservableObject {
     
     init() {
         self.droneCancellable = mavsdkDrone.$drone.compactMap{$0}
-            .sink{ [weak self] in self?.observeDroneConnectionState(drone: $0) }
+            .sink{ [weak self] in
+                self?.observeDroneConnectionState(drone: $0)
+            }
     }
     
     func observeDroneConnectionState(drone: Drone) {

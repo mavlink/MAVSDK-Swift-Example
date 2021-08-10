@@ -49,7 +49,9 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate, ObservableObject {
         setMapZoomArea(polyline: MKPolyline(coordinates: &missionOperator.mapCenterCoordinate, count: 1))
         
         mavsdkDrone.$drone.compactMap{$0}
-            .sink{ [weak self] in self?.observeMavsdkUpdates(drone: $0) }
+            .sink{ [weak self] in
+                self?.observeMavsdkUpdates(drone: $0)
+            }
             .store(in: &cancelables)
     }
     

@@ -14,6 +14,7 @@ import RxSwift
 
 class DroneAnnotationView: MKAnnotationView {
     let disposeBag = DisposeBag()
+    var droneCancellable = AnyCancellable {}
 
     init(annotation: MKAnnotation?) {
         super.init(annotation: annotation, reuseIdentifier: "drone")
@@ -21,7 +22,14 @@ class DroneAnnotationView: MKAnnotationView {
         image = UIImage(named: "drone")
         frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         
-        mavsdkDrone.drone!.telemetry.attitudeEuler
+        self.droneCancellable = mavsdkDrone.$drone.compactMap{$0}
+            .sink{ [weak self] in
+                self?.observeDroneConnectionState(drone: $0)
+            }
+    }
+    
+    func observeDroneConnectionState(drone: Drone) {
+        drone.telemetry.attitudeEuler
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (angle) in

@@ -19,8 +19,6 @@ struct TelemetryDetailView: View {
                 HStack {
                     ExpandViewButton(expanded: $expanded)
                     Spacer()
-                    Text("App Logs")
-                    Spacer()
                 }
                 List(messageViewModel.allMessages) { logRecord in
                     HStack(alignment: VerticalAlignment.top) {
@@ -33,29 +31,16 @@ struct TelemetryDetailView: View {
             .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.1298420429, green: 0.1298461258, blue: 0.1298439503, alpha: 0.9501284247)) : Color(#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.95)))
             .cornerRadius(10.0)
         } else {
-            VStack(alignment: .leading) {
-                HStack {
+            VStack {
+                HStack(alignment: .top) {
                     ExpandViewButton(expanded: $expanded)
-                    if telemetry.missionProgressTotal > 0 {
-                        ProgressView(value: telemetry.missionProgressCurrent, total: telemetry.missionProgressTotal, label: {
-                            HStack {
-                                Spacer()
-                                Text("Mission progress \(Int(telemetry.missionProgressCurrent))/\(Int(telemetry.missionProgressTotal))")
-                                Spacer()
-                            }
-                        })
-                        .frame(minWidth: 200, maxWidth: 300, alignment: .center)
-                    }
+                    TelemetryInfo(value: "\(telemetry.altitude)m", title: "current altitude")
+                    TelemetryInfo(value: "\(telemetry.battery)%", title: "battery level")
+                    TelemetryInfo(value: "\(telemetry.photosTaken)", title: "images")
+                    TelemetryInfo(value: "\(Int(telemetry.missionProgressCurrent))/\(Int(telemetry.missionProgressTotal))", title: "mission progress")
                 }
-                VStack {
-                    HStack {
-                        TelemetryInfo(value: "\(telemetry.altitude)m", title: "current altitude")
-                        TelemetryInfo(value: "\(telemetry.battery)%", title: "battery level")
-                        TelemetryInfo(value: "\(telemetry.photosTaken)", title: "images")
-                    }
-                    Text(messageViewModel.message)
-                        .padding(.bottom)
-                }
+                Text(messageViewModel.message)
+                    .padding(.bottom)
             }
             .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.1298420429, green: 0.1298461258, blue: 0.1298439503, alpha: 0.9501284247)) : Color(#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.95)))
             .cornerRadius(10.0)
@@ -87,7 +72,7 @@ struct TelemetryInfo: View {
             Text(title)
                 .font(.system(size: 10.0, weight: .medium, design: .default))
         }
-        .padding([.leading, .trailing], 15)
+        .padding()
     }
 }
 
@@ -98,7 +83,7 @@ struct ExpandViewButton: View {
         Image(systemName: expanded ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward")
             .font(.system(size: 16.0, weight: .semibold, design: .monospaced))
             .foregroundColor(.white)
-            .padding(.all, 10)
+            .padding()
             .shadow(color: Color.black.opacity(0.3), radius: 3, x: 3, y: 3)
             .contentShape(Rectangle())
             .onTapGesture {

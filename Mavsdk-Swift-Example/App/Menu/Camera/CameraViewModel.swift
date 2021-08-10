@@ -7,6 +7,8 @@
 
 import Foundation
 import RxSwift
+import Combine
+import Mavsdk
 
 final class CameraViewModel: ObservableObject {
     @Published private(set) var captureInfo = "N/A"
@@ -14,9 +16,10 @@ final class CameraViewModel: ObservableObject {
     @Published private(set) var information = "N/A"
     @Published private(set) var status = "N/A"
     
-    let drone = mavsdkDrone.drone!
+    var drone: Drone!
     let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
+    var droneCancellable = AnyCancellable {}
     
     var actions: [Action] {
         return [
@@ -35,10 +38,14 @@ final class CameraViewModel: ObservableObject {
     }
     
     init() {
-        observeCamera()
+        self.droneCancellable = mavsdkDrone.$drone.compactMap{$0}
+            .sink{ [weak self] drone in
+                self?.drone = drone
+                self?.observeCamera(drone: drone)
+            }
     }
     
-    func observeCamera() {
+    func observeCamera(drone: Drone) {
         drone.camera.captureInfo
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
