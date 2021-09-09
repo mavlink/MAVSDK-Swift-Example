@@ -7,7 +7,6 @@
 
 import Foundation
 import Mavsdk
-import MavsdkServer
 import RxSwift
 
 let MavScheduler = ConcurrentDispatchQueueScheduler(qos: .default)
@@ -20,31 +19,32 @@ class MavsdkDrone: ObservableObject {
     @Published var isConnected: Bool = false
     
     private var disposeBag = DisposeBag()
-    private var mavsdkServer: MavsdkServer?
-    
+
     func startServer(systemAddress: String) {
         MavsdkDrone.isSimulator = systemAddress.contains("tcp") ? true : false
+        let newDrone = Drone()
         self.systemAddress = systemAddress
-        mavsdkServer = MavsdkServer()
-        let port = mavsdkServer!.run(systemAddress: systemAddress)
-        let newDrone = Drone(port: Int32(port))
-        _ = newDrone.core.setMavlinkTimeout(timeoutS: 0.5).subscribe()
-        serverStarted = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) { // Delay
-            self.drone = newDrone // JONAS | Julian: as soon as we assign newDrone all subscribers will start listen for telemetry updates. If we wont't wait we may never receive position update.
-            self.subscribeOnConnectionState(drone: newDrone)
-        }
+        newDrone.connect(systemAddress: systemAddress)
+            .subscribeOn(MavScheduler)
+            .observeOn(MainScheduler.instance)
+            .do(onCompleted: {
+                self.serverStarted = true
+                self.drone = newDrone
+                self.subscribeOnConnectionState(drone: newDrone)
+            })
+            .andThen(Observable<Any>.never()) // So that it does not dispose automatically onComplete
+            .subscribe(onDisposed: {
+                newDrone.disconnect()
+            })
+            .disposed(by: disposeBag)
     }
 
     func stopServer() {
-        mavsdkServer?.stop()
+        disposeBag = DisposeBag()
         serverStarted = false
         isConnected = false
-        mavsdkServer = nil
         drone = nil
         systemAddress = nil
-        disposeBag = DisposeBag()
     }
     
     func subscribeOnConnectionState(drone: Drone) {
