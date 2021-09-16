@@ -11,14 +11,17 @@ import MapKit
 
 
 enum Mission: CaseIterable {
-    case survey
+    case surveyNadir
+    case survey75
     case perimeter
     case downloaded
     
     var title: String {
         switch self {
-        case .survey:
-            return "Survey Mission"
+        case .surveyNadir:
+            return "Survey Nadir Mission"
+        case .survey75:
+            return "Survey 75° Gimbal Mission"
         case .perimeter:
             return "Perimeter Mission"
         case .downloaded:
@@ -28,8 +31,10 @@ enum Mission: CaseIterable {
     
     func missionPlan(center: CLLocationCoordinate2D) -> Mavsdk.Mission.MissionPlan? {
         switch self {
-        case .survey:
-            return surveyMissionPlan(center: center)
+        case .surveyNadir:
+            return surveyMissionPlan(center: center, gimbalPitchDeg: -90)
+        case .survey75:
+            return surveyMissionPlan(center: center, gimbalPitchDeg: -75)
         case .perimeter:
             return perimeterMissionPlan(center: center)
         case .downloaded:

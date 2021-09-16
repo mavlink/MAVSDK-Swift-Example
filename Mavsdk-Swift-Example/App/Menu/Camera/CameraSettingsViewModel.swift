@@ -50,6 +50,8 @@ final class CameraSettingsViewModel: ObservableObject {
                                         isRange: setting.isRange)
         
         drone?.camera.setSetting(setting: newSetting)
+            .subscribeOn(MavScheduler)
+            .observeOn(MainScheduler.instance)
             .subscribe {
                 self.messageViewModel.message = "Set Camera Setting \(newSetting.settingDescription) to \(newSetting.option.optionDescription)"
             } onError: { (error) in

@@ -10,12 +10,11 @@ import MapKit
 import Mavsdk
 
 
-func surveyMissionPlan(center: CLLocationCoordinate2D) -> Mavsdk.Mission.MissionPlan {
+func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) -> Mavsdk.Mission.MissionPlan {
     let relativeAltitudeM: Float = 40
     let speedMS: Float = 4
     let isFlyThrough = false
     let loiterTimeS: Float = 1
-    let gimbalPitchDeg: Float = -90
     
     var missionItems = [Mavsdk.Mission.MissionItem]()
     var currentLocation = computeLocation(center, 10, 0)

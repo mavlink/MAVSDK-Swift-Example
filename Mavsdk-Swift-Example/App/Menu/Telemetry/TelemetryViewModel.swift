@@ -71,7 +71,7 @@ final class TelemetryViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (cameraAttitudeEuler) in
-                self?.attitudeEuler = String(format: "pitchDeg:%.2f\nyawDeg:%.2f", cameraAttitudeEuler.pitchDeg, cameraAttitudeEuler.yawDeg)
+                self?.cameraAttitudeEuler = String(format: "pitchDeg:%.2f\nyawDeg:%.2f", cameraAttitudeEuler.pitchDeg, cameraAttitudeEuler.yawDeg)
             })
             .disposed(by: disposeBag)
         
