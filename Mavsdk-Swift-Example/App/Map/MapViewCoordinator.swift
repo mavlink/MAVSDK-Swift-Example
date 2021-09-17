@@ -59,6 +59,14 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate, ObservableObject {
         captureInfoCoordinates = []
     }
     
+    func centerMapOnDroneLocation() {
+        if let coordinate = droneAnnotation?.coordinate {
+            withUnsafePointer(to: coordinate) { coordinatePointer in
+                setMapZoomArea(polyline: MKPolyline(coordinates: coordinatePointer, count: 1))
+            }
+        }
+    }
+    
     func observeMavsdkUpdates(drone: Drone) {
         drone.telemetry.position
             .subscribeOn(MavScheduler)

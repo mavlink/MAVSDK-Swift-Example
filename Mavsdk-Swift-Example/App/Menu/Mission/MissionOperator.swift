@@ -45,6 +45,7 @@ final class MissionOperator: ObservableObject {
             return
         }
         
+        startCoordinate = mapCenterCoordinate
         currentMission = mission
     }
     

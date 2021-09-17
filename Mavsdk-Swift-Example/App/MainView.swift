@@ -30,15 +30,26 @@ struct MainView: View {
                 
                 VStack(alignment: .trailing) {
                     Spacer()
-                    if !mapViewCoordinator.captureInfoCoordinates.isEmpty {
-                        Image(systemName: "square.slash.fill")
+                    HStack {
+                        if !mapViewCoordinator.captureInfoCoordinates.isEmpty {
+                            Image(systemName: "square.slash.fill")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .contentShape(Rectangle())
+                                .padding(.trailing, 15)
+                                .foregroundColor(Color.orange.opacity(0.7))
+                                .onTapGesture {
+                                    mapViewCoordinator.clearPhotoLocations()
+                                }
+                        }
+                        Image(systemName: "paperplane.circle")
                             .resizable()
                             .frame(width: 35, height: 35)
                             .contentShape(Rectangle())
                             .padding(.trailing, 15)
-                            .foregroundColor(Color.orange.opacity(0.7))
+                            .foregroundColor(Color.green.opacity(0.7))
                             .onTapGesture {
-                                mapViewCoordinator.clearPhotoLocations()
+                                mapViewCoordinator.centerMapOnDroneLocation()
                             }
                     }
                     TelemetryDetailView()
