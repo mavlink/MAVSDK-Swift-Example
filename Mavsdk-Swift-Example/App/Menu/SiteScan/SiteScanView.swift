@@ -14,6 +14,8 @@ struct SiteScanView: View {
         List {
             ButtonContent(text: "Subscribe to SiteScan Observers", action: siteScan.subscribeToAllSiteScan)
             ButtonContent(text: "Upload mission test", action: siteScan.uploadMission)
+            ButtonContent(text: "Camera settings test 1", action: { siteScan.cameraSettingsCheck(1) })
+            ButtonContent(text: "Camera settings test 2", action: { siteScan.cameraSettingsCheck(2) })
         }
         .listStyle(PlainListStyle())
     }

@@ -36,6 +36,16 @@ final class SiteScanViewModel: ObservableObject {
         siteScan = SiteScanMavsdk()
     }
     
+    func printMessage(_ message: String) -> Completable {
+        Completable.create { [weak self] comlp in
+            DispatchQueue.main.async {
+                self?.messageViewModel.message = message
+            }
+            comlp(.completed)
+            return Disposables.create()
+        }
+    }
+    
     func uploadMission() {
         
         guard let position = siteScan?.dronePosition else {
@@ -107,6 +117,81 @@ final class SiteScanViewModel: ObservableObject {
             takePhoto,
             listPhotos
         ])
+    }
+    
+    /// config == 1 for day light, config == 2 for low light
+    func cameraSettingsCheck(_ config: Int) {
+        // Exposure mode
+        // ISO
+        // Shutter Speed
+        // Aperture
+        // Focus mode
+        
+        var checks = [Completable]()
+        
+        do {
+            let optionID = config == 1 ? "0" : "13"// "0" Manual/ "13" Shutter priority
+            let option = Camera.Option(optionID: optionID, optionDescription: "")
+            let setting = Camera.Setting(settingID: "CAM_EXPMODE", settingDescription: "", option: option, isRange: false)
+            let check = printMessage("CamSettingCheck: exposure mode")
+                .andThen(drone.camera.setSetting(setting: setting))
+                
+            checks.append(check)
+        }
+        
+        do {
+            let optionID = config == 1 ? "0" : "3"// "0" Auto/ "3" ISO 100
+            let option = Camera.Option(optionID: optionID, optionDescription: "")
+            let setting = Camera.Setting(settingID: "CAM_ISO", settingDescription: "", option: option, isRange: false)
+            let check = printMessage("CamSettingCheck: ISO")
+                        .andThen(drone.camera.setSetting(setting: setting))
+            checks.append(check)
+        }
+        
+        do {
+            let optionID = config == 1 ? "49" : "45"// "49" shutter 1/2500/ "45" shutter 1/1000
+            let option = Camera.Option(optionID: optionID, optionDescription: "")
+            let setting = Camera.Setting(settingID: "CAM_SHUTTER", settingDescription: "", option: option, isRange: false)
+            let check = printMessage("CamSettingCheck: Shutter speed")
+                .andThen(drone.camera.setSetting(setting: setting))
+
+            checks.append(check)
+        }
+       
+        do {
+            if config == 2 {
+                let optionID = "9"//
+                let option = Camera.Option(optionID: optionID, optionDescription: "")
+                let setting = Camera.Setting(settingID: "CAM_APERTURE", settingDescription: "", option: option, isRange: false)
+                let check = printMessage("CamSettingCheck: Aperture")
+                    .andThen(drone.camera.setSetting(setting: setting))
+
+                checks.append(check)
+            }
+        }
+        
+        do {
+            let optionID = "0" // "0" infinity
+            let option = Camera.Option(optionID: optionID, optionDescription: "")
+            let setting = Camera.Setting(settingID: "CAM_FOCUSMODE", settingDescription: "", option: option, isRange: false)
+            let check = printMessage("CamSettingCheck: Focus mode")
+                .andThen(drone.camera.setSetting(setting: setting))
+
+            checks.append(check)
+        }
+        
+        Completable.concat(checks)
+            .subscribeOn(MavScheduler)
+            .observeOn(MainScheduler.instance)
+            .do(onError: { (error) in
+                self.messageViewModel.message = "Error CameraSettingsCheck \(error)"
+            }, onCompleted: {
+                self.messageViewModel.message = "CameraSettingsCheck completed. Configuration: \(config)"
+            }, onSubscribe: {
+                self.messageViewModel.message = "CameraSettingsCheck started. Configuration: \(config)"
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
     }
     
     func batteryCheck() {
