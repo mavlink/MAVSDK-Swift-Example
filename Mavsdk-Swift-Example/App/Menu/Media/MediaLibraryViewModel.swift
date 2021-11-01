@@ -30,7 +30,7 @@ class MediaLibraryViewModel: ObservableObject {
     }
     
     func fetchListOfPhotos(photosRange: Camera.PhotosRange) {
-        drone.camera.listPhotos(photosRange: .all)
+        drone.camera.listPhotos(photosRange: photosRange)
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
