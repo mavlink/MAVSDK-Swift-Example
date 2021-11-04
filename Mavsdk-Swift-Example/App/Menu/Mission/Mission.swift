@@ -13,6 +13,7 @@ import MapKit
 enum Mission: CaseIterable {
     case surveyNadir
     case survey75
+    case surveyDistance
     case perimeter
     case downloaded
     
@@ -22,6 +23,8 @@ enum Mission: CaseIterable {
             return "Survey Nadir Mission"
         case .survey75:
             return "Survey 75° Gimbal Mission"
+        case .surveyDistance:
+            return "Survey Distance Trigger"
         case .perimeter:
             return "Perimeter Mission"
         case .downloaded:
@@ -35,6 +38,8 @@ enum Mission: CaseIterable {
             return surveyMissionPlan(center: center, gimbalPitchDeg: -90)
         case .survey75:
             return surveyMissionPlan(center: center, gimbalPitchDeg: -75)
+        case .surveyDistance:
+            return surveyMissionPlanDistanceTrigger(center: center)
         case .perimeter:
             return perimeterMissionPlan(center: center)
         case .downloaded:
