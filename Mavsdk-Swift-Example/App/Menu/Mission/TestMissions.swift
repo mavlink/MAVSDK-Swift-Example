@@ -306,6 +306,86 @@ func perimeterMissionPlan(center: CLLocationCoordinate2D) -> Mavsdk.Mission.Miss
     return Mavsdk.Mission.MissionPlan(missionItems: missionItems)
 }
 
+func orbitVideoMissionPlan(center: CLLocationCoordinate2D) -> Mavsdk.Mission.MissionPlan {
+    let relativeAltitudeM: Float = 40
+    let speedMS: Float = 4
+    let isFlyThrough = true
+    let loiterTimeS: Float = .nan
+    let gimbalPitchDeg: Float = -45
+    
+    var missionItems = [Mavsdk.Mission.MissionItem]()
+    
+    var currentLocation = computeLocation(center, 25, 0)
+    
+    missionItems.append(Mavsdk.Mission.MissionItem(latitudeDeg: currentLocation.latitude,
+                                                   longitudeDeg: currentLocation.longitude,
+                                                   relativeAltitudeM: relativeAltitudeM,
+                                                   speedMS: speedMS,
+                                                   isFlyThrough: isFlyThrough,
+                                                   gimbalPitchDeg: gimbalPitchDeg,
+                                                   gimbalYawDeg: 0,
+                                                   cameraAction: .startVideo,
+                                                   loiterTimeS: loiterTimeS,
+                                                   cameraPhotoIntervalS: .nan,
+                                                   acceptanceRadiusM: .nan,
+                                                   yawDeg: 225,
+                                                   cameraPhotoDistanceM: .nan))
+    
+    currentLocation = computeLocation(currentLocation, 25, 90)
+    currentLocation = computeLocation(currentLocation, 25, 180)
+    
+    missionItems.append(Mavsdk.Mission.MissionItem(latitudeDeg: currentLocation.latitude,
+                                                   longitudeDeg: currentLocation.longitude,
+                                                   relativeAltitudeM: relativeAltitudeM,
+                                                   speedMS: speedMS,
+                                                   isFlyThrough: isFlyThrough,
+                                                   gimbalPitchDeg: gimbalPitchDeg,
+                                                   gimbalYawDeg: 0,
+                                                   cameraAction: .none,
+                                                   loiterTimeS: loiterTimeS,
+                                                   cameraPhotoIntervalS: .nan,
+                                                   acceptanceRadiusM: .nan,
+                                                   yawDeg: 225,
+                                                   cameraPhotoDistanceM: 0))
+    
+    currentLocation = computeLocation(currentLocation, 25, 180)
+    currentLocation = computeLocation(currentLocation, 25, 270)
+    
+    missionItems.append(Mavsdk.Mission.MissionItem(latitudeDeg: currentLocation.latitude,
+                                                   longitudeDeg: currentLocation.longitude,
+                                                   relativeAltitudeM: relativeAltitudeM,
+                                                   speedMS: speedMS,
+                                                   isFlyThrough: isFlyThrough,
+                                                   gimbalPitchDeg: gimbalPitchDeg,
+                                                   gimbalYawDeg: 0,
+                                                   cameraAction: .none,
+                                                   loiterTimeS: loiterTimeS,
+                                                   cameraPhotoIntervalS: .nan,
+                                                   acceptanceRadiusM: .nan,
+                                                   yawDeg: 315,
+                                                   cameraPhotoDistanceM: 0))
+    
+    currentLocation = computeLocation(currentLocation, 25, 0)
+    currentLocation = computeLocation(currentLocation, 25, 270)
+    
+    missionItems.append(Mavsdk.Mission.MissionItem(latitudeDeg: currentLocation.latitude,
+                                                   longitudeDeg: currentLocation.longitude,
+                                                   relativeAltitudeM: relativeAltitudeM,
+                                                   speedMS: speedMS,
+                                                   isFlyThrough: isFlyThrough,
+                                                   gimbalPitchDeg: 0,
+                                                   gimbalYawDeg: 0,
+                                                   cameraAction: .stopVideo,
+                                                   loiterTimeS: loiterTimeS,
+                                                   cameraPhotoIntervalS: .nan,
+                                                   acceptanceRadiusM: .nan,
+                                                   yawDeg: 45,
+                                                   cameraPhotoDistanceM: 0))
+    
+    
+    return Mavsdk.Mission.MissionPlan(missionItems: missionItems)
+}
+
 private func computeLocation(_ coordinate: CLLocationCoordinate2D, _ radius: Double, _ bearing: Double) -> CLLocationCoordinate2D {
     let earthRadius: Double = 6371000
     let bearingRadius: Double = ((.pi * bearing) / 180)

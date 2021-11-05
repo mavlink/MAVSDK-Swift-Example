@@ -15,6 +15,7 @@ enum Mission: CaseIterable {
     case survey75
     case surveyDistance
     case perimeter
+    case orbitVideo
     case downloaded
     
     var title: String {
@@ -27,6 +28,8 @@ enum Mission: CaseIterable {
             return "Survey Distance Trigger"
         case .perimeter:
             return "Perimeter Mission"
+        case .orbitVideo:
+            return "Orbit Video Mission"
         case .downloaded:
             return "Downloaded Mission"
         }
@@ -42,6 +45,8 @@ enum Mission: CaseIterable {
             return surveyMissionPlanDistanceTrigger(center: center)
         case .perimeter:
             return perimeterMissionPlan(center: center)
+        case .orbitVideo:
+            return orbitVideoMissionPlan(center: center)
         case .downloaded:
             return MissionOperator.shared.downloadedMissionPlan
         }
