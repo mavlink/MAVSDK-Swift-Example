@@ -12,7 +12,6 @@ import Mavsdk
 final class MissionViewModel: ObservableObject {
     let missionOperator: MissionOperator
     let drone = mavsdkDrone.drone!
-    let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     
     var actions: [Action] {
@@ -39,7 +38,7 @@ final class MissionViewModel: ObservableObject {
     
     func uploadMission() {
         guard let missionPlan = missionOperator.currentMissionPlan else {
-            messageViewModel.message = "No mission selected to upload"
+            MessageViewModel.shared.message = "No mission selected to upload"
             return
         }
         
@@ -47,11 +46,11 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .do(onError: { (error) in
-                self.messageViewModel.message = "Error Uploading Mission \(error)"
+                MessageViewModel.shared.message = "Error Uploading Mission \(error)"
             }, onCompleted: {
-                self.messageViewModel.message = "Mission Uploaded"
+                MessageViewModel.shared.message = "Mission Uploaded"
             }, onSubscribe: {
-                self.messageViewModel.message = "Uploading Mission"
+                MessageViewModel.shared.message = "Uploading Mission"
             })
             .subscribe()
             .disposed(by: disposeBag)
@@ -62,9 +61,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Cancelled Mission Upload"
+                MessageViewModel.shared.message = "Cancelled Mission Upload"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Cancelling Mission Upload \(error)"
+                MessageViewModel.shared.message = "Error Cancelling Mission Upload \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -74,9 +73,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Mission Started"
+                MessageViewModel.shared.message = "Mission Started"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Starting Mission \(error)"
+                MessageViewModel.shared.message = "Error Starting Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -87,9 +86,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Mission Started"
+                MessageViewModel.shared.message = "Mission Started"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Starting Mission \(error)"
+                MessageViewModel.shared.message = "Error Starting Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -99,9 +98,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Mission Paused"
+                MessageViewModel.shared.message = "Mission Paused"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Pausing Mission \(error)"
+                MessageViewModel.shared.message = "Error Pausing Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -111,9 +110,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Current Index Set to 0"
+                MessageViewModel.shared.message = "Current Index Set to 0"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Setting Current Index \(error)"
+                MessageViewModel.shared.message = "Error Setting Current Index \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -122,13 +121,13 @@ final class MissionViewModel: ObservableObject {
         drone.mission.downloadMission()
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .do(onSuccess: { (mission) in
-                self.messageViewModel.message = "Mission Downloaded with \(mission.missionItems.count) Items"
-                self.missionOperator.addDownloadedMission(plan: mission)
+            .do(onSuccess: {  [weak self] (mission) in
+                MessageViewModel.shared.message = "Mission Downloaded with \(mission.missionItems.count) Items"
+                self?.missionOperator.addDownloadedMission(plan: mission)
             }, onError: { (error) in
-                self.messageViewModel.message = "Error Downloading Mission \(error)"
+                MessageViewModel.shared.message = "Error Downloading Mission \(error)"
             },  onSubscribe: {
-                self.messageViewModel.message = "Downloading Mission"
+                MessageViewModel.shared.message = "Downloading Mission"
             })
             .subscribe()
             .disposed(by: disposeBag)
@@ -139,9 +138,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Cancelled Mission Download"
+                MessageViewModel.shared.message = "Cancelled Mission Download"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Cancelling Mission Download \(error)"
+                MessageViewModel.shared.message = "Error Cancelling Mission Download \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -150,11 +149,11 @@ final class MissionViewModel: ObservableObject {
         drone.mission.clearMission()
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe {
-                self.messageViewModel.message = "Mission Cleared"
-                self.missionOperator.removeDownloaededMissionPlan()
+            .subscribe { [weak self] in
+                MessageViewModel.shared.message = "Mission Cleared"
+                self?.missionOperator.removeDownloaededMissionPlan()
             } onError: { (error) in
-                self.messageViewModel.message = "Error Clearing Mission \(error)"
+                MessageViewModel.shared.message = "Error Clearing Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -164,9 +163,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "RTL After Mission Enabled"
+                MessageViewModel.shared.message = "RTL After Mission Enabled"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Enabling RTL After Mission \(error)"
+                MessageViewModel.shared.message = "Error Enabling RTL After Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -176,9 +175,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "RTL After Mission Disabled"
+                MessageViewModel.shared.message = "RTL After Mission Disabled"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Disabling RTL After Mission \(error)"
+                MessageViewModel.shared.message = "Error Disabling RTL After Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -188,9 +187,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe { value in
-                self.messageViewModel.message = "RTL After Mission Set To \(value)"
+                MessageViewModel.shared.message = "RTL After Mission Set To \(value)"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Getting RTL After Mission \(error)"
+                MessageViewModel.shared.message = "Error Getting RTL After Mission \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -200,9 +199,9 @@ final class MissionViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe { value in
-                self.messageViewModel.message = value ? "Mission Finished" : "Mission Not Finished"
+                MessageViewModel.shared.message = value ? "Mission Finished" : "Mission Not Finished"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Getting Mission Finished \(error)"
+                MessageViewModel.shared.message = "Error Getting Mission Finished \(error)"
             }
             .disposed(by: disposeBag)
     }

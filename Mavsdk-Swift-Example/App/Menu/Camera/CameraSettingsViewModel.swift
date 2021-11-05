@@ -11,7 +11,6 @@ import Mavsdk
 
 final class CameraSettingsViewModel: ObservableObject {
     let drone = mavsdkDrone.drone
-    let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     
     @Published private(set) var currentSettings: [Camera.Setting] = []
@@ -29,16 +28,16 @@ final class CameraSettingsViewModel: ObservableObject {
         drone?.camera.currentSettings
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (currentSettings) in
-                self.currentSettings = currentSettings
+            .subscribe(onNext: { [weak self] (currentSettings) in
+                self?.currentSettings = currentSettings
             })
             .disposed(by: disposeBag)
 
         drone?.camera.possibleSettingOptions
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (possibleSettingOptions) in
-                self.settingOptions = possibleSettingOptions
+            .subscribe(onNext: { [weak self] (possibleSettingOptions) in
+                self?.settingOptions = possibleSettingOptions
             })
             .disposed(by: disposeBag)
     }
@@ -53,9 +52,9 @@ final class CameraSettingsViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Set Camera Setting \(newSetting.settingDescription) to \(newSetting.option.optionDescription)"
+                MessageViewModel.shared.message = "Set Camera Setting \(newSetting.settingDescription) to \(newSetting.option.optionDescription)"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Setting Camera Setting: \(error)"
+                MessageViewModel.shared.message = "Error Setting Camera Setting: \(error)"
             }
             .disposed(by: disposeBag)
     }

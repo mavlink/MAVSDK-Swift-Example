@@ -21,8 +21,8 @@ class MessageViewModel: ObservableObject {
             }
             
             timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-                self.message = MessageViewModel.placeholder
+            timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] _ in
+                self?.message = MessageViewModel.placeholder
             }
         }
     }

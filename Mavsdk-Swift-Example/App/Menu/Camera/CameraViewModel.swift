@@ -17,7 +17,6 @@ final class CameraViewModel: ObservableObject {
     @Published private(set) var status = "N/A"
     
     var drone: Drone!
-    let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     var droneCancellable = AnyCancellable {}
     
@@ -49,34 +48,34 @@ final class CameraViewModel: ObservableObject {
         drone.camera.captureInfo
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (captureInfo) in
+            .subscribe(onNext: { [weak self] (captureInfo) in
                 let message = "isSuccess:\(captureInfo.isSuccess), index:\(captureInfo.index)\nurl:\(captureInfo.fileURL)"
-                self.captureInfo = message
-                self.messageViewModel.message = message
+                self?.captureInfo = message
+                MessageViewModel.shared.message = message
             })
             .disposed(by: disposeBag)
         
         drone.camera.mode
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (mode) in
-                self.mode = String(describing: mode)
+            .subscribe(onNext: { [weak self] (mode) in
+                self?.mode = String(describing: mode)
             })
             .disposed(by: disposeBag)
         
         drone.camera.information
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (information) in
-                self.information = "\(information.vendorName),\(information.modelName)\nfocalLength:\(information.focalLengthMm), \(information.verticalResolutionPx)/\(information.horizontalResolutionPx)"
+            .subscribe(onNext: { [weak self] (information) in
+                self?.information = "\(information.vendorName),\(information.modelName)\nfocalLength:\(information.focalLengthMm), \(information.verticalResolutionPx)/\(information.horizontalResolutionPx)"
             })
             .disposed(by: disposeBag)
         
         drone.camera.status
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (status) in
-                self.status = "photoIntervalOn:\(status.photoIntervalOn), videoOn:\(status.videoOn)\nused/total Mib:\(status.usedStorageMib)/\(status.totalStorageMib)\n recordingTime:\(status.recordingTimeS)\nstorageStatus:\(String(describing: status.storageStatus))"
+            .subscribe(onNext: { [weak self] (status) in
+                self?.status = "photoIntervalOn:\(status.photoIntervalOn), videoOn:\(status.videoOn)\nused/total Mib:\(status.usedStorageMib)/\(status.totalStorageMib)\n recordingTime:\(status.recordingTimeS)\nstorageStatus:\(String(describing: status.storageStatus))"
             })
             .disposed(by: disposeBag)
     }
@@ -86,9 +85,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Set to Photo Mode"
+                MessageViewModel.shared.message = "Set to Photo Mode"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Setting Photo Mode: \(error)"
+                MessageViewModel.shared.message = "Error Setting Photo Mode: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -98,9 +97,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Set to Video Mode"
+                MessageViewModel.shared.message = "Set to Video Mode"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Setting Video Mode: \(error)"
+                MessageViewModel.shared.message = "Error Setting Video Mode: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -110,9 +109,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Photo Taken"
+                MessageViewModel.shared.message = "Photo Taken"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Taking Photo: \(error)"
+                MessageViewModel.shared.message = "Error Taking Photo: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -122,9 +121,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Start Taking Photos with 2 sec interval"
+                MessageViewModel.shared.message = "Start Taking Photos with 2 sec interval"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Starting Photo Interval: \(error)"
+                MessageViewModel.shared.message = "Error Starting Photo Interval: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -134,9 +133,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Stop Taking Photos"
+                MessageViewModel.shared.message = "Stop Taking Photos"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Stopping Photo Interval: \(error)"
+                MessageViewModel.shared.message = "Error Stopping Photo Interval: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -146,9 +145,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Start Video Recording"
+                MessageViewModel.shared.message = "Start Video Recording"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Starting Video Recording: \(error)"
+                MessageViewModel.shared.message = "Error Starting Video Recording: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -158,9 +157,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Stop Video Recording"
+                MessageViewModel.shared.message = "Stop Video Recording"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Stopping Video Recording: \(error)"
+                MessageViewModel.shared.message = "Error Stopping Video Recording: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -170,11 +169,11 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .do(onSuccess: { (captureInfo) in
-                self.messageViewModel.message = "List Count \(captureInfo.count)"
+                MessageViewModel.shared.message = "List Count \(captureInfo.count)"
             }, onError: { (error) in
-                self.messageViewModel.message = "Error Getting List: \(error)"
+                MessageViewModel.shared.message = "Error Getting List: \(error)"
             },  onSubscribe: {
-                self.messageViewModel.message = "Getting List of Photos"
+                MessageViewModel.shared.message = "Getting List of Photos"
             })
             .subscribe()
             .disposed(by: disposeBag)
@@ -185,9 +184,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Format Storage"
+                MessageViewModel.shared.message = "Format Storage"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Formatting Storage: \(error)"
+                MessageViewModel.shared.message = "Error Formatting Storage: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -197,9 +196,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Start Video Streaming"
+                MessageViewModel.shared.message = "Start Video Streaming"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Starting Video Streaming: \(error)"
+                MessageViewModel.shared.message = "Error Starting Video Streaming: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -209,9 +208,9 @@ final class CameraViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe {
-                self.messageViewModel.message = "Stop Video Streaming"
+                MessageViewModel.shared.message = "Stop Video Streaming"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Stopping Video Streaming: \(error)"
+                MessageViewModel.shared.message = "Error Stopping Video Streaming: \(error)"
             }
             .disposed(by: disposeBag)
     }

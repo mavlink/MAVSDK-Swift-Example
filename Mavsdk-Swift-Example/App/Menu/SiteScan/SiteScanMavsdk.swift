@@ -89,8 +89,8 @@ extension SiteScanMavsdk {
     func health() {
         drone.telemetry.health
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { health in
-                self.aircraftHealth = health
+            .subscribe(onNext: {  [weak self] health in
+                self?.aircraftHealth = health
                 //print("+DC+ telemetry health: \(health)")
             }, onError: { error in
                 //print("+DC+ telemetry health error: \(String(describing: error))")
@@ -101,8 +101,8 @@ extension SiteScanMavsdk {
     func position() {
         drone.telemetry.position
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { position in
-                self.dronePosition = position
+            .subscribe(onNext: {  [weak self] position in
+                self?.dronePosition = position
                 //print("+DC+ telemetry position: \(position)")
             }, onError: { error in
                 //print("+DC+ telemetry position error: \(String(describing: error))")

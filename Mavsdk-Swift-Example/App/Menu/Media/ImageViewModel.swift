@@ -11,7 +11,6 @@ import Combine
 class ImageViewModel: ObservableObject {
     @Published var image: UIImage?
     @Published var error: String?
-    let messageViewModel = MessageViewModel.shared
 
     init(urlString:String) {
         guard let url = URL(string: urlString) else {
@@ -20,13 +19,13 @@ class ImageViewModel: ObservableObject {
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             if let error = error {
                 self?.error = String(describing: error)
-                self?.messageViewModel.message = "Failed to download image: \(error).\nImageURL: \(url)"
+                MessageViewModel.shared.message = "Failed to download image: \(error).\nImageURL: \(url)"
                 return
             }
 
             DispatchQueue.main.async {
                 guard let data = data, let image = UIImage(data: data) else {
-                    self?.messageViewModel.message = "Failed to download image response code: \((response as! HTTPURLResponse).statusCode)"
+                    MessageViewModel.shared.message = "Failed to download image response code: \((response as! HTTPURLResponse).statusCode)"
                     self?.error = "Error response code: \((response as! HTTPURLResponse).statusCode)"
                     return
                 }

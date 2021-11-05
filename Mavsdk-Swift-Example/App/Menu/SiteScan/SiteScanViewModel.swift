@@ -11,7 +11,6 @@ import CoreLocation
 
 final class SiteScanViewModel: ObservableObject {
     let drone = mavsdkDrone.drone!
-    let messageViewModel = MessageViewModel.shared
     
     var siteScan: SiteScanMavsdk?
     let disposeBag = DisposeBag()
@@ -37,9 +36,9 @@ final class SiteScanViewModel: ObservableObject {
     }
     
     func printMessage(_ message: String) -> Completable {
-        Completable.create { [weak self] comlp in
+        Completable.create { comlp in
             DispatchQueue.main.async {
-                self?.messageViewModel.message = message
+                MessageViewModel.shared.message = message
             }
             comlp(.completed)
             return Disposables.create()
@@ -49,7 +48,7 @@ final class SiteScanViewModel: ObservableObject {
     func uploadMission() {
         
         guard let position = siteScan?.dronePosition else {
-            messageViewModel.message = "No drone position"
+            MessageViewModel.shared.message = "No drone position"
             return
         }
         
@@ -58,7 +57,7 @@ final class SiteScanViewModel: ObservableObject {
         MissionOperator.shared.currentMission = Mission.perimeter
         
         guard let missionPlan = MissionOperator.shared.currentMissionPlan else {
-            messageViewModel.message = "No mission selected to upload"
+            MessageViewModel.shared.message = "No mission selected to upload"
             return
         }
         
@@ -66,11 +65,11 @@ final class SiteScanViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .do(onError: { (error) in
-                self.messageViewModel.message = "Error Uploading Mission \(error)"
+                MessageViewModel.shared.message = "Error Uploading Mission \(error)"
             }, onCompleted: {
-                self.messageViewModel.message = "Mission Uploaded"
+                MessageViewModel.shared.message = "Mission Uploaded"
             }, onSubscribe: {
-                self.messageViewModel.message = "Uploading Mission"
+                MessageViewModel.shared.message = "Uploading Mission"
             })
             .subscribe()
             .disposed(by: disposeBag)
@@ -184,11 +183,11 @@ final class SiteScanViewModel: ObservableObject {
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
             .do(onError: { (error) in
-                self.messageViewModel.message = "Error CameraSettingsCheck \(error)"
+                MessageViewModel.shared.message = "Error CameraSettingsCheck \(error)"
             }, onCompleted: {
-                self.messageViewModel.message = "CameraSettingsCheck completed. Configuration: \(config)"
+                MessageViewModel.shared.message = "CameraSettingsCheck completed. Configuration: \(config)"
             }, onSubscribe: {
-                self.messageViewModel.message = "CameraSettingsCheck started. Configuration: \(config)"
+                MessageViewModel.shared.message = "CameraSettingsCheck started. Configuration: \(config)"
             })
             .subscribe()
             .disposed(by: disposeBag)

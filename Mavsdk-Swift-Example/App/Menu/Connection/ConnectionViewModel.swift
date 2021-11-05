@@ -29,8 +29,8 @@ final class ConnectionViewModel: ObservableObject {
             .core.connectionState
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (state) in
-                self.isConnected = state.isConnected
+            .subscribe(onNext: { [weak self] (state) in
+                self?.isConnected = state.isConnected
             })
             .disposed(by: disposeBag)
     }

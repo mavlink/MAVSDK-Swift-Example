@@ -27,10 +27,10 @@ class MavsdkDrone: ObservableObject {
         newDrone.connect(systemAddress: systemAddress)
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .do(onCompleted: {
-                self.serverStarted = true
-                self.drone = newDrone
-                self.subscribeOnConnectionState(drone: newDrone)
+            .do(onCompleted: {  [weak self] in
+                self?.serverStarted = true
+                self?.drone = newDrone
+                self?.subscribeOnConnectionState(drone: newDrone)
             })
             .andThen(Observable<Any>.never()) // So that it does not dispose automatically onComplete
             .subscribe(onDisposed: {

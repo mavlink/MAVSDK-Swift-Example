@@ -15,7 +15,6 @@ class MediaLibraryViewModel: ObservableObject {
     @Published var listOfImagesURLStrings = [String]()
     
     let drone = mavsdkDrone.drone!
-    let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     
     var actions: [Action] {
@@ -33,10 +32,10 @@ class MediaLibraryViewModel: ObservableObject {
         drone.camera.listPhotos(photosRange: photosRange)
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe { [weak self] (captureInfoList) in
-                self?.messageViewModel.message = "Count of photos \(photosRange): \(captureInfoList.count)"
-            } onError: { [weak self] (error) in
-                self?.messageViewModel.message = "Error get list of \(photosRange) photos: \(error)"
+            .subscribe { (captureInfoList) in
+                MessageViewModel.shared.message = "Count of photos \(photosRange): \(captureInfoList.count)"
+            } onError: { (error) in
+                MessageViewModel.shared.message = "Error get list of \(photosRange) photos: \(error)"
             }
             .disposed(by: disposeBag)
 
@@ -48,13 +47,13 @@ class MediaLibraryViewModel: ObservableObject {
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
-                    self?.messageViewModel.message = "No photos found"
+                    MessageViewModel.shared.message = "No photos found"
                     return
                 }
                 self?.listOfImagesURLStrings = [captureInfoList.last!.fileURL]
-                self?.messageViewModel.message = "Downloading \(captureInfoList.last!.fileURL)"
-            } onError: { [weak self] (error) in
-                self?.messageViewModel.message = "Error get list of all photos: \(error)"
+                MessageViewModel.shared.message = "Downloading \(captureInfoList.last!.fileURL)"
+            } onError: { (error) in
+                MessageViewModel.shared.message = "Error get list of all photos: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -65,13 +64,13 @@ class MediaLibraryViewModel: ObservableObject {
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
-                    self?.messageViewModel.message = "No photos found"
+                    MessageViewModel.shared.message = "No photos found"
                     return
                 }
                 self?.listOfImagesURLStrings = captureInfoList.reversed().map{ $0.fileURL }
-                self?.messageViewModel.message = "Downloading \(captureInfoList.count) photos"
-            } onError: { [weak self] (error) in
-                self?.messageViewModel.message = "Error get list of all photos: \(error)"
+                MessageViewModel.shared.message = "Downloading \(captureInfoList.count) photos"
+            } onError: { (error) in
+                MessageViewModel.shared.message = "Error get list of all photos: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -82,13 +81,13 @@ class MediaLibraryViewModel: ObservableObject {
             .observeOn(MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
-                    self?.messageViewModel.message = "No photos found since connection"
+                    MessageViewModel.shared.message = "No photos found since connection"
                     return
                 }
                 self?.listOfImagesURLStrings = captureInfoList.reversed().map{ $0.fileURL }
-                self?.messageViewModel.message = "Downloading \(captureInfoList.count) photos"
-            } onError: { [weak self] (error) in
-                self?.messageViewModel.message = "Error get list of photos since connection: \(error)"
+                MessageViewModel.shared.message = "Downloading \(captureInfoList.count) photos"
+            } onError: { (error) in
+                MessageViewModel.shared.message = "Error get list of photos since connection: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -97,10 +96,10 @@ class MediaLibraryViewModel: ObservableObject {
         drone.camera.formatStorage()
             .subscribeOn(MavScheduler)
             .observeOn(MainScheduler.instance)
-            .subscribe { [weak self] in
-                self?.messageViewModel.message = "Storage formatted"
-            } onError: { [weak self] (error) in
-                self?.messageViewModel.message = "Storage format error: \(error)"
+            .subscribe {
+                MessageViewModel.shared.message = "Storage formatted"
+            } onError: { (error) in
+                MessageViewModel.shared.message = "Storage format error: \(error)"
             }
             .disposed(by: disposeBag)
     }

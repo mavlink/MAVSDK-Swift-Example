@@ -11,7 +11,6 @@ import RxSwift
 
 final class ActionsViewModel: ObservableObject {
     let drone = mavsdkDrone.drone
-    let messageViewModel = MessageViewModel.shared
     let disposeBag = DisposeBag()
     
     var actions: [Action] {
@@ -30,9 +29,9 @@ final class ActionsViewModel: ObservableObject {
     func armAction() {
         drone?.action.arm()
             .subscribe {
-                self.messageViewModel.message = "Armed Success"
+                MessageViewModel.shared.message = "Armed Success"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Arming: \(error)"
+                MessageViewModel.shared.message = "Error Arming: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -40,9 +39,9 @@ final class ActionsViewModel: ObservableObject {
     func disarmAction() {
         drone?.action.disarm()
             .subscribe {
-                self.messageViewModel.message = "Disarmed Success"
+                MessageViewModel.shared.message = "Disarmed Success"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Disarming: \(error)"
+                MessageViewModel.shared.message = "Error Disarming: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -50,9 +49,9 @@ final class ActionsViewModel: ObservableObject {
     func takeOffAction() {
         drone?.action.takeoff()
             .subscribe {
-                self.messageViewModel.message = "Taking Off Success"
+                MessageViewModel.shared.message = "Taking Off Success"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Taking Off: \(error)"
+                MessageViewModel.shared.message = "Error Taking Off: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -60,9 +59,9 @@ final class ActionsViewModel: ObservableObject {
     func landAction() {
         drone?.action.land()
             .subscribe {
-                self.messageViewModel.message = "Landing Success"
+                MessageViewModel.shared.message = "Landing Success"
             } onError: { (error) in
-                self.messageViewModel.message = "Error Landing: \(error)"
+                MessageViewModel.shared.message = "Error Landing: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -70,9 +69,9 @@ final class ActionsViewModel: ObservableObject {
     func rtlAction() {
         drone?.action.returnToLaunch()
             .subscribe {
-                self.messageViewModel.message = "RTL Success"
+                MessageViewModel.shared.message = "RTL Success"
             } onError: { (error) in
-                self.messageViewModel.message = "Error RTL: \(error)"
+                MessageViewModel.shared.message = "Error RTL: \(error)"
             }
             .disposed(by: disposeBag)
     }
@@ -80,9 +79,9 @@ final class ActionsViewModel: ObservableObject {
     func setRTLAltitude() {
         drone?.action.setReturnToLaunchAltitude(relativeAltitudeM: 40)
             .subscribe(onCompleted: {
-                self.messageViewModel.message = "Set RTL Altitude 40m Success"
+                MessageViewModel.shared.message = "Set RTL Altitude 40m Success"
             }, onError: { (error) in
-                self.messageViewModel.message = "Error Setting RTL Altitude: \(error)"
+                MessageViewModel.shared.message = "Error Setting RTL Altitude: \(error)"
             })
             .disposed(by: disposeBag)
     }
