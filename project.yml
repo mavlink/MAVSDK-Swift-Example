@@ -1,15 +1,15 @@
 name: MAVSDK-Swift-Example
 options:
   deploymentTarget:
-    iOS: "13.0"
+    iOS: "14.0"
   bundleIdPrefix: io.mavlink.mavsdk
 settings:
   ENABLE_BITCODE: NO
-  SWIFT_OBJC_BRIDGING_HEADER: "$(PROJECT_DIR)/MAVSDK-Swift-Example/VideoFeed/RtspClient-Bridging-Header.h"
+  SWIFT_OBJC_BRIDGING_HEADER: "$(PROJECT_DIR)/MAVSDK-Swift-Example/Helpers/FFMpeg/RtspClient-Bridging-Header.h"
 packages:
   Mavsdk:
-    url: https://github.com/mavlink/MAVSDK-Swift
-    minorVersion: 0.13.0
+    url: https://github.com/esri/MAVSDK-Swift
+    exactVersion: 0.47.0-v1
   FFmpeg-iOS:
     url: https://github.com/kewlbear/FFmpeg-iOS
     minorVersion: 0.0.3
@@ -20,8 +20,6 @@ targets:
     info:
       path: MAVSDK-Swift-Example/Info.plist
       properties:
-        UILaunchStoryboardName: LaunchScreen
-        UIMainStoryboardFile: Main
         UISupportedInterfaceOrientations:
           [
             UIInterfaceOrientationPortrait,
