@@ -30,11 +30,11 @@ class MediaLibraryViewModel: ObservableObject {
     
     func fetchListOfPhotos(photosRange: Camera.PhotosRange) {
         drone.camera.listPhotos(photosRange: photosRange)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { (captureInfoList) in
                 MessageViewModel.shared.message = "Count of photos \(photosRange): \(captureInfoList.count)"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error get list of \(photosRange) photos: \(error)"
             }
             .disposed(by: disposeBag)
@@ -43,8 +43,8 @@ class MediaLibraryViewModel: ObservableObject {
     
     func downloadLastPhoto() {
         drone.camera.listPhotos(photosRange: .all)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
                     MessageViewModel.shared.message = "No photos found"
@@ -52,7 +52,7 @@ class MediaLibraryViewModel: ObservableObject {
                 }
                 self?.listOfImagesURLStrings = [captureInfoList.last!.fileURL]
                 MessageViewModel.shared.message = "Downloading \(captureInfoList.last!.fileURL)"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error get list of all photos: \(error)"
             }
             .disposed(by: disposeBag)
@@ -60,8 +60,8 @@ class MediaLibraryViewModel: ObservableObject {
     
     func downloadAllPhotos() {
         drone.camera.listPhotos(photosRange: .all)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
                     MessageViewModel.shared.message = "No photos found"
@@ -69,7 +69,7 @@ class MediaLibraryViewModel: ObservableObject {
                 }
                 self?.listOfImagesURLStrings = captureInfoList.reversed().map{ $0.fileURL }
                 MessageViewModel.shared.message = "Downloading \(captureInfoList.count) photos"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error get list of all photos: \(error)"
             }
             .disposed(by: disposeBag)
@@ -77,8 +77,8 @@ class MediaLibraryViewModel: ObservableObject {
     
     func downloadPhotosSinceConnection() {
         drone.camera.listPhotos(photosRange: .sinceConnection)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (captureInfoList) in
                 guard !captureInfoList.isEmpty else {
                     MessageViewModel.shared.message = "No photos found since connection"
@@ -86,7 +86,7 @@ class MediaLibraryViewModel: ObservableObject {
                 }
                 self?.listOfImagesURLStrings = captureInfoList.reversed().map{ $0.fileURL }
                 MessageViewModel.shared.message = "Downloading \(captureInfoList.count) photos"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error get list of photos since connection: \(error)"
             }
             .disposed(by: disposeBag)
@@ -94,8 +94,8 @@ class MediaLibraryViewModel: ObservableObject {
     
     func formatStorage() {
         drone.camera.formatStorage()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Storage formatted"
             } onError: { (error) in

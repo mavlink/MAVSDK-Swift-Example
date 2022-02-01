@@ -26,16 +26,16 @@ final class CameraSettingsViewModel: ObservableObject {
     
     func observeCameraSettings() {
         drone?.camera.currentSettings
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (currentSettings) in
                 self?.currentSettings = currentSettings
             })
             .disposed(by: disposeBag)
 
         drone?.camera.possibleSettingOptions
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (possibleSettingOptions) in
                 self?.settingOptions = possibleSettingOptions
             })
@@ -49,8 +49,8 @@ final class CameraSettingsViewModel: ObservableObject {
                                         isRange: setting.isRange)
         
         drone?.camera.setSetting(setting: newSetting)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Set Camera Setting \(newSetting.settingDescription) to \(newSetting.option.optionDescription)"
             } onError: { (error) in

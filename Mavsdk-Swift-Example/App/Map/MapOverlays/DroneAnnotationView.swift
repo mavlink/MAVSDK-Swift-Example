@@ -30,8 +30,8 @@ class DroneAnnotationView: MKAnnotationView {
     
     func observeDroneConnectionState(drone: Drone) {
         drone.telemetry.attitudeEuler
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (angle) in
                 self?.transform = CGAffineTransform(rotationAngle: CGFloat(angle.yawDeg) * .pi / 180)
             }, onError: { (error) in

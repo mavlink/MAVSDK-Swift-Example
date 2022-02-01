@@ -25,8 +25,8 @@ class MavsdkDrone: ObservableObject {
         let newDrone = Drone()
         self.systemAddress = systemAddress
         newDrone.connect(systemAddress: systemAddress)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onCompleted: {  [weak self] in
                 self?.serverStarted = true
                 self?.drone = newDrone
@@ -50,8 +50,8 @@ class MavsdkDrone: ObservableObject {
     func subscribeOnConnectionState(drone: Drone) {
         drone
             .core.connectionState
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
                 self?.isConnected = state.isConnected
             })

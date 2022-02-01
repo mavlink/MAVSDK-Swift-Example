@@ -43,8 +43,8 @@ final class MissionViewModel: ObservableObject {
         }
         
         drone.mission.uploadMission(missionPlan: missionPlan)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onError: { (error) in
                 MessageViewModel.shared.message = "Error Uploading Mission \(error)"
             }, onCompleted: {
@@ -58,8 +58,8 @@ final class MissionViewModel: ObservableObject {
     
     func cancelUpload() {
         drone.mission.cancelMissionUpload()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Cancelled Mission Upload"
             } onError: { (error) in
@@ -70,8 +70,8 @@ final class MissionViewModel: ObservableObject {
     
     func startMission() {
         drone.mission.startMission()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Mission Started"
             } onError: { (error) in
@@ -83,8 +83,8 @@ final class MissionViewModel: ObservableObject {
     func armAndStartMission() {
         drone.action.arm()
             .andThen(drone.mission.startMission())
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Mission Started"
             } onError: { (error) in
@@ -95,8 +95,8 @@ final class MissionViewModel: ObservableObject {
     
     func pauseMission() {
         drone.mission.pauseMission()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Mission Paused"
             } onError: { (error) in
@@ -107,8 +107,8 @@ final class MissionViewModel: ObservableObject {
     
     func setIndex() {
         drone.mission.setCurrentMissionItem(index: 0)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Current Index Set to 0"
             } onError: { (error) in
@@ -119,8 +119,8 @@ final class MissionViewModel: ObservableObject {
     
     func downloadMission() {
         drone.mission.downloadMission()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onSuccess: {  [weak self] (mission) in
                 MessageViewModel.shared.message = "Mission Downloaded with \(mission.missionItems.count) Items"
                 self?.missionOperator.addDownloadedMission(plan: mission)
@@ -135,8 +135,8 @@ final class MissionViewModel: ObservableObject {
     
     func cancelMissionDownload() {
         drone.mission.cancelMissionDownload()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Cancelled Mission Download"
             } onError: { (error) in
@@ -147,8 +147,8 @@ final class MissionViewModel: ObservableObject {
     
     func clearMission() {
         drone.mission.clearMission()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] in
                 MessageViewModel.shared.message = "Mission Cleared"
                 self?.missionOperator.removeDownloaededMissionPlan()
@@ -160,8 +160,8 @@ final class MissionViewModel: ObservableObject {
     
     func enableRTLAfterMission() {
         drone.mission.setReturnToLaunchAfterMission(enable: true)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "RTL After Mission Enabled"
             } onError: { (error) in
@@ -172,8 +172,8 @@ final class MissionViewModel: ObservableObject {
     
     func disableRTLAfterMission() {
         drone.mission.setReturnToLaunchAfterMission(enable: false)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "RTL After Mission Disabled"
             } onError: { (error) in
@@ -184,11 +184,11 @@ final class MissionViewModel: ObservableObject {
     
     func getRTLAfterMission() {
         drone.mission.getReturnToLaunchAfterMission()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { value in
                 MessageViewModel.shared.message = "RTL After Mission Set To \(value)"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error Getting RTL After Mission \(error)"
             }
             .disposed(by: disposeBag)
@@ -196,11 +196,11 @@ final class MissionViewModel: ObservableObject {
     
     func isMissionFinished() {
         drone.mission.isMissionFinished()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe { value in
                 MessageViewModel.shared.message = value ? "Mission Finished" : "Mission Not Finished"
-            } onError: { (error) in
+            } onFailure: { (error) in
                 MessageViewModel.shared.message = "Error Getting Mission Finished \(error)"
             }
             .disposed(by: disposeBag)

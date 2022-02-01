@@ -69,16 +69,16 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate, ObservableObject {
     
     func observeMavsdkUpdates(drone: Drone) {
         drone.telemetry.position
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (position) in
                 self?.updateDroneAnnotation(coordinate: CLLocationCoordinate2D(latitude: position.latitudeDeg, longitude: position.longitudeDeg))
             })
             .disposed(by: disposeBag)
         
         drone.camera.captureInfo
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (captureInfo) in
                 self?.captureInfoCoordinates.append(CLLocationCoordinate2D(latitude: captureInfo.position.latitudeDeg, longitude: captureInfo.position.longitudeDeg))
             }, onError: { (error) in
