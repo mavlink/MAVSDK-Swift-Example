@@ -62,8 +62,8 @@ final class SiteScanViewModel: ObservableObject {
         }
         
         drone.mission.uploadMission(missionPlan: missionPlan)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onError: { (error) in
                 MessageViewModel.shared.message = "Error Uploading Mission \(error)"
             }, onCompleted: {
@@ -88,7 +88,7 @@ final class SiteScanViewModel: ObservableObject {
         ])
         
         routine
-            .subscribeOn(SerialDispatchQueueScheduler(qos: .userInitiated))
+            .subscribe(on: SerialDispatchQueueScheduler(qos: .userInitiated))
             .do(onError: { (error) in
                 print("PreFli: Error \(error)")
             }, onCompleted: {
@@ -180,8 +180,8 @@ final class SiteScanViewModel: ObservableObject {
         }
         
         Completable.concat(checks)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onError: { (error) in
                 MessageViewModel.shared.message = "Error CameraSettingsCheck \(error)"
             }, onCompleted: {

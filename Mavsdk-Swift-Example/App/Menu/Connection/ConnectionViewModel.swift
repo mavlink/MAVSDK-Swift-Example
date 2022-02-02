@@ -27,8 +27,8 @@ final class ConnectionViewModel: ObservableObject {
     func observeDroneConnectionState(drone: Drone) {
         drone
             .core.connectionState
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
                 self?.isConnected = state.isConnected
             })

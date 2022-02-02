@@ -46,8 +46,8 @@ final class CameraViewModel: ObservableObject {
     
     func observeCamera(drone: Drone) {
         drone.camera.captureInfo
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (captureInfo) in
                 let message = "isSuccess:\(captureInfo.isSuccess), index:\(captureInfo.index)\nurl:\(captureInfo.fileURL)"
                 self?.captureInfo = message
@@ -56,24 +56,24 @@ final class CameraViewModel: ObservableObject {
             .disposed(by: disposeBag)
         
         drone.camera.mode
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (mode) in
                 self?.mode = String(describing: mode)
             })
             .disposed(by: disposeBag)
         
         drone.camera.information
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (information) in
                 self?.information = "\(information.vendorName),\(information.modelName)\nfocalLength:\(information.focalLengthMm), \(information.verticalResolutionPx)/\(information.horizontalResolutionPx)"
             })
             .disposed(by: disposeBag)
         
         drone.camera.status
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (status) in
                 self?.status = "photoIntervalOn:\(status.photoIntervalOn), videoOn:\(status.videoOn)\nused/total Mib:\(status.usedStorageMib)/\(status.totalStorageMib)\n recordingTime:\(status.recordingTimeS)\nstorageStatus:\(String(describing: status.storageStatus))"
             })
@@ -82,8 +82,8 @@ final class CameraViewModel: ObservableObject {
     
     func setPhotoMode() {
         drone.camera.setMode(mode: .photo)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Set to Photo Mode"
             } onError: { (error) in
@@ -94,8 +94,8 @@ final class CameraViewModel: ObservableObject {
     
     func setVideoMode() {
         drone.camera.setMode(mode: .video)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Set to Video Mode"
             } onError: { (error) in
@@ -106,8 +106,8 @@ final class CameraViewModel: ObservableObject {
     
     func takePhoto() {
         drone.camera.takePhoto()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Photo Taken"
             } onError: { (error) in
@@ -118,8 +118,8 @@ final class CameraViewModel: ObservableObject {
     
     func starTakingPhotos() {
         drone.camera.startPhotoInterval(intervalS: 2.0)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Start Taking Photos with 2 sec interval"
             } onError: { (error) in
@@ -130,8 +130,8 @@ final class CameraViewModel: ObservableObject {
     
     func stopTakingPhotos() {
         drone.camera.stopPhotoInterval()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Stop Taking Photos"
             } onError: { (error) in
@@ -142,8 +142,8 @@ final class CameraViewModel: ObservableObject {
     
     func startVideo() {
         drone.camera.startVideo()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Start Video Recording"
             } onError: { (error) in
@@ -154,8 +154,8 @@ final class CameraViewModel: ObservableObject {
     
     func stopVideo() {
         drone.camera.stopVideo()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Stop Video Recording"
             } onError: { (error) in
@@ -166,8 +166,8 @@ final class CameraViewModel: ObservableObject {
     
     func getListOfPhotos() {
         drone.camera.listPhotos(photosRange: .all)
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .do(onSuccess: { (captureInfo) in
                 MessageViewModel.shared.message = "List Count \(captureInfo.count)"
             }, onError: { (error) in
@@ -181,8 +181,8 @@ final class CameraViewModel: ObservableObject {
     
     func formatStorage() {
         drone.camera.formatStorage()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Format Storage"
             } onError: { (error) in
@@ -193,8 +193,8 @@ final class CameraViewModel: ObservableObject {
     
     func startVideoStreaming() {
         drone.camera.startVideoStreaming()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Start Video Streaming"
             } onError: { (error) in
@@ -205,8 +205,8 @@ final class CameraViewModel: ObservableObject {
     
     func stopVideoStreaming() {
         drone.camera.stopVideoStreaming()
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe {
                 MessageViewModel.shared.message = "Stop Video Streaming"
             } onError: { (error) in

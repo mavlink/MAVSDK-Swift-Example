@@ -31,8 +31,8 @@ final class TelemetryDetailViewModel: ObservableObject {
     
     func observeDroneTelemetry(drone: Drone) {
         drone.telemetry.position
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (position) in
                 self?.altitude = Int(position.relativeAltitudeM)
@@ -40,8 +40,8 @@ final class TelemetryDetailViewModel: ObservableObject {
             .disposed(by: disposeBag)
         
         drone.telemetry.battery
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (info) in
                 self?.battery = Int(info.remainingPercent * 100)
@@ -51,8 +51,8 @@ final class TelemetryDetailViewModel: ObservableObject {
     
     func observeCameraUpdates(drone: Drone) {
         drone.camera.captureInfo
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (info) in
                 self?.photosTaken = Int(info.index)
             })
@@ -62,8 +62,8 @@ final class TelemetryDetailViewModel: ObservableObject {
     
     func observeMissionProgress(drone: Drone) {
         drone.mission.missionProgress
-            .subscribeOn(MavScheduler)
-            .observeOn(MainScheduler.instance)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (progress) in
                 self?.missionProgressCurrent = Double(progress.current)
                 self?.missionProgressTotal = Double(progress.total)

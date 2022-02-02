@@ -225,7 +225,7 @@ extension SiteScanMavsdk {
         drone.info.getIdentification()
             .subscribe(onSuccess: { value in
                 //print("+DC+ info getIdentification: \(value)")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ info getIdentification error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
@@ -235,7 +235,7 @@ extension SiteScanMavsdk {
         drone.info.getProduct()
             .subscribe(onSuccess: { value in
                 //print("+DC+ info getProduct: \(value)")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ info getProduct error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
@@ -245,7 +245,7 @@ extension SiteScanMavsdk {
         drone.info.getFlightInformation()
             .subscribe(onSuccess: { value in
                 //print("+DC+ info getFlightInformation: \(value)")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ info getFlightInformation error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
@@ -255,7 +255,7 @@ extension SiteScanMavsdk {
         drone.info.getVersion()
             .subscribe(onSuccess: { value in
                 //print("+DC+ info getVersion: \(value)")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ info getVersion error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
@@ -361,7 +361,7 @@ extension SiteScanMavsdk {
         drone.camera.listPhotos(photosRange: .sinceConnection)
             .subscribe(onSuccess: { (value) in
                 //print("+DC+ camera listPhotos \(value).")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ camera listPhotos error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
@@ -551,7 +551,7 @@ extension SiteScanMavsdk {
         drone.mission.downloadMission()
             .subscribe(onSuccess: { (value) in
                 //print("+DC+ mission downloadMission \(value).")
-            }, onError: { (error) in
+            }, onFailure: { (error) in
                 //print("+DC+ mission downloadMission error: \(String(describing: error))")
             })
             .disposed(by: disposeBag)
