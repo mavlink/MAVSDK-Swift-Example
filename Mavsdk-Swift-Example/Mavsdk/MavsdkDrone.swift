@@ -46,6 +46,23 @@ class MavsdkDrone: ObservableObject {
         drone = nil
         systemAddress = nil
     }
+
+    func connectToServer(serverAddress: String, serverPort: Int32 = 50051) {
+        let newDrone = Drone()
+        newDrone.connect(mavsdkServerAddress: serverAddress, mavsdkServerPort: serverPort)
+            .subscribe(on: MavScheduler)
+            .observe(on: MainScheduler.instance)
+            .do(onCompleted: { [weak self] in
+                self?.serverStarted = true
+                self?.drone = newDrone
+                self?.subscribeOnConnectionState(drone: newDrone)
+            })
+            .andThen(Observable<Any>.never()) // So that it does not dispose automatically
+            .subscribe(onDisposed: {
+                newDrone.disconnect()
+            })
+            .disposed(by: disposeBag)
+    }
     
     func subscribeOnConnectionState(drone: Drone) {
         drone

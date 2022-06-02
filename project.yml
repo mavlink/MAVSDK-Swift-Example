@@ -8,8 +8,8 @@ settings:
   SWIFT_OBJC_BRIDGING_HEADER: "$(PROJECT_DIR)/MAVSDK-Swift-Example/Helpers/FFMpeg/RtspClient-Bridging-Header.h"
 packages:
   Mavsdk:
-    url: https://github.com/esri/MAVSDK-Swift
-    exactVersion: 1.4.0
+    url: https://github.com/MAVLink/MAVSDK-Swift
+    exactVersion: 1.1.0
   FFmpeg-iOS:
     url: https://github.com/kewlbear/FFmpeg-iOS
     minorVersion: 0.0.3

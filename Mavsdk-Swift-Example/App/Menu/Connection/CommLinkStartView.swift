@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommLinkView: View {
+struct CommLinkStartView: View {
     @ObservedObject var mavsdk = mavsdkDrone
     
     let name: String
