@@ -22,8 +22,9 @@ struct ConnectionView: View {
                 }
             } else {
                 Section(header: Text("Select comm link to connect")) {
-                    CommLinkView(name: "Drone", uri: "udp://:14540", connectingToUri: $connectingToUri)
-                    CommLinkView(name: "Cloud Sim", uri: "tcp://10.194.41.45:5790", connectingToUri: $connectingToUri)
+                    CommLinkStartView(name: "Drone", uri: "udp://:14540", connectingToUri: $connectingToUri)
+                    CommLinkStartView(name: "Cloud Sim", uri: "tcp://10.194.41.45:5790", connectingToUri: $connectingToUri)
+                    CommLinkConnectView(name: "Mavsdk Server", uri: "192.168.1.10", connectingToUri: $connectingToUri)
                 }
                 if connectingToUri != nil {
                     Section(header: Text("")) {
