@@ -42,15 +42,15 @@ final class MissionViewModel: ObservableObject {
             return
         }
         
-        drone.mission.uploadMission(missionPlan: missionPlan)
+        drone.mission.uploadMissionWithProgress(missionPlan: missionPlan)
             .subscribe(on: MavScheduler)
             .observe(on: MainScheduler.instance)
-            .do(onError: { (error) in
+            .do(onNext: { progress in
+                MessageViewModel.shared.message = "Mission Upload Progress: \(progress.progress)"
+            }, onError: { error in
                 MessageViewModel.shared.message = "Error Uploading Mission \(error)"
             }, onCompleted: {
                 MessageViewModel.shared.message = "Mission Uploaded"
-            }, onSubscribe: {
-                MessageViewModel.shared.message = "Uploading Mission"
             })
             .subscribe()
             .disposed(by: disposeBag)
@@ -118,16 +118,21 @@ final class MissionViewModel: ObservableObject {
     }
     
     func downloadMission() {
-        drone.mission.downloadMission()
+        drone.mission.downloadMissionWithProgress()
             .subscribe(on: MavScheduler)
             .observe(on: MainScheduler.instance)
-            .do(onSuccess: {  [weak self] (mission) in
-                MessageViewModel.shared.message = "Mission Downloaded with \(mission.missionItems.count) Items"
-                self?.missionOperator.addDownloadedMission(plan: mission)
-            }, onError: { (error) in
+            .do(onNext: { [weak self] progress in
+                if progress.hasProgress {
+                    MessageViewModel.shared.message = "Mission Download Progress: \(progress.progress)"
+                }
+                if progress.hasMission {
+                    MessageViewModel.shared.message = "Mission Downloaded With \(progress.missionPlan.missionItems.count) Items"
+                    self?.missionOperator.addDownloadedMission(plan: progress.missionPlan)
+                }
+            }, onError: { error in
                 MessageViewModel.shared.message = "Error Downloading Mission \(error)"
-            },  onSubscribe: {
-                MessageViewModel.shared.message = "Downloading Mission"
+            }, onCompleted: {
+                MessageViewModel.shared.message = "Downloading Mission Complete"
             })
             .subscribe()
             .disposed(by: disposeBag)

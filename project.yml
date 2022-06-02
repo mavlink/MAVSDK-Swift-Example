@@ -9,7 +9,7 @@ settings:
 packages:
   Mavsdk:
     url: https://github.com/esri/MAVSDK-Swift
-    exactVersion: 1.0.8
+    exactVersion: 1.4.0
   FFmpeg-iOS:
     url: https://github.com/kewlbear/FFmpeg-iOS
     minorVersion: 0.0.3

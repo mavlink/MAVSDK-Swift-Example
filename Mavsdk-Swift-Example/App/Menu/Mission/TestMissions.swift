@@ -13,7 +13,6 @@ import Mavsdk
 func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) -> Mavsdk.Mission.MissionPlan {
     let relativeAltitudeM: Float = 40
     let speedMS: Float = 4
-    let isFlyThrough = false
     let loiterTimeS: Float = 1
     
     var missionItems = [Mavsdk.Mission.MissionItem]()
@@ -24,14 +23,14 @@ func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) ->
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: false,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .startPhotoInterval,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 3,
-                                                   acceptanceRadiusM: .nan,
-                                                   yawDeg: 270,
+                                                   acceptanceRadiusM: 10,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     currentLocation = computeLocation(currentLocation, 60, 270)
@@ -40,14 +39,14 @@ func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) ->
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: true,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .stopPhotoInterval,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 3,
-                                                   acceptanceRadiusM: .nan,
-                                                   yawDeg: 270,
+                                                   acceptanceRadiusM: 10,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     currentLocation = computeLocation(currentLocation, 20, 180)
@@ -56,14 +55,14 @@ func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) ->
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: false,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .startPhotoInterval,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 3,
-                                                   acceptanceRadiusM: .nan,
-                                                   yawDeg: 90,
+                                                   acceptanceRadiusM: 10,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     currentLocation = computeLocation(currentLocation, 60, 90)
@@ -72,14 +71,14 @@ func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) ->
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: true,
                                                    gimbalPitchDeg: 0, // Return gimbal to the initial position after the mission
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .stopPhotoInterval,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 3,
-                                                   acceptanceRadiusM: .nan,
-                                                   yawDeg: 90,
+                                                   acceptanceRadiusM: 10,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     return Mavsdk.Mission.MissionPlan(missionItems: missionItems)
@@ -88,7 +87,6 @@ func surveyMissionPlan(center: CLLocationCoordinate2D, gimbalPitchDeg: Float) ->
 func surveyMissionPlanDistanceTrigger(center: CLLocationCoordinate2D) -> Mavsdk.Mission.MissionPlan {
     let relativeAltitudeM: Float = 40
     let speedMS: Float = 4
-    let isFlyThrough = false
     let loiterTimeS: Float = 1
     let gimbalPitchDeg: Float = -90
     
@@ -100,14 +98,14 @@ func surveyMissionPlanDistanceTrigger(center: CLLocationCoordinate2D) -> Mavsdk.
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: 5,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: false,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .startPhotoDistance,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 0,
                                                    acceptanceRadiusM: .nan,
-                                                   yawDeg: 270,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 20))
     
     currentLocation = computeLocation(currentLocation, 100, 270)
@@ -116,14 +114,14 @@ func surveyMissionPlanDistanceTrigger(center: CLLocationCoordinate2D) -> Mavsdk.
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: true,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .stopPhotoDistance,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 0,
                                                    acceptanceRadiusM: .nan,
-                                                   yawDeg: 270,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     currentLocation = computeLocation(currentLocation, 20, 180)
@@ -132,14 +130,14 @@ func surveyMissionPlanDistanceTrigger(center: CLLocationCoordinate2D) -> Mavsdk.
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: 2,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: false,
                                                    gimbalPitchDeg: gimbalPitchDeg,
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .startPhotoDistance,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 0,
                                                    acceptanceRadiusM: .nan,
-                                                   yawDeg: 90,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 5))
     
     currentLocation = computeLocation(currentLocation, 100, 90)
@@ -148,14 +146,14 @@ func surveyMissionPlanDistanceTrigger(center: CLLocationCoordinate2D) -> Mavsdk.
                                                    longitudeDeg: currentLocation.longitude,
                                                    relativeAltitudeM: relativeAltitudeM,
                                                    speedMS: speedMS,
-                                                   isFlyThrough: isFlyThrough,
+                                                   isFlyThrough: true,
                                                    gimbalPitchDeg: 0, // Return gimbal to the initial position after the mission
                                                    gimbalYawDeg: 0,
                                                    cameraAction: .stopPhotoDistance,
                                                    loiterTimeS: loiterTimeS,
                                                    cameraPhotoIntervalS: 0,
                                                    acceptanceRadiusM: .nan,
-                                                   yawDeg: 90,
+                                                   yawDeg: .nan,
                                                    cameraPhotoDistanceM: 0))
     
     return Mavsdk.Mission.MissionPlan(missionItems: missionItems)
